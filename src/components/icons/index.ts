@@ -1,0 +1,6 @@
+export { IconCanteen } from "./IconCanteen"
+export { IconEmail } from "./IconEmail"
+export { IconGoogle } from "./IconGoogle"
+export { IconLogout } from "./IconLogout"
+export { IconMenu } from "./IconMenu"
+export { IconSofascore } from "./IconSofascore"

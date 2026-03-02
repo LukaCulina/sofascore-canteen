@@ -1,0 +1,1 @@
+export { CanteenPage } from "./Canteen"
