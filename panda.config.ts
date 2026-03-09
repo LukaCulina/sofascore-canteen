@@ -27,6 +27,14 @@ const textStyles = defineTextStyles({
         letterSpacing: "-0.2px",
       },
     },
+    micro: {
+      value: {
+        fontSize: "12px",
+        fontWeight: 700,
+        lineHeight: "14px",
+        letterSpacing: "-0.012px",
+      },
+    },
   },
   assistive: {
     default: {
