@@ -84,7 +84,7 @@ export const inputRecipe = sva({
     },
 
     adornment: {
-      minWidth: "xl",
+      minWidth: "fit-content",
       display: "flex",
       alignItems: "center",
     },

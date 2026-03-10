@@ -17,7 +17,7 @@ export type InputProps<T = string> = {
   name?: string
   placeholder?: string
   style?: React.CSSProperties
-  type?: "text" | "number" | "password" | "email"
+  type?: "text" | "number" | "password" | "email" | "date"
   value?: T
   defaultValue?: T
   startAdornment?: React.ReactNode

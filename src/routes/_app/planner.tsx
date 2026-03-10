@@ -1,11 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router"
+import { Planner } from "@/pages/Planner/Planner"
 
-const PlannerPage = () => {
-  return <div>Planner page</div>
-}
-
-export const Route = createFileRoute("/planner")({
-  component: PlannerPage,
+export const Route = createFileRoute("/_app/planner")({
+  component: Planner,
   head: () => ({
     meta: [
       {
