@@ -1,12 +1,26 @@
 import { Link, useNavigate } from "@tanstack/react-router"
 import { IconSofascore } from "@/components/icons"
 import { Text } from "@/components/ui/Text"
-import { canAccessPlanner, useAuthStore } from "@/stores/auth"
+import { Role, useAuthStore } from "@/stores/auth"
 import { css, cx } from "@/styled-system/css"
 import { Box, Flex } from "@/styled-system/jsx"
 
-import { IconCanteen, IconLogout, IconPlanner } from "../icons"
+import { IconCanteen, IconLogout, IconOrders, IconPlanner } from "../icons"
+import type { IconProps } from "../icons/interface"
 import * as S from "./AppSidebar.styles"
+
+interface NavItem {
+  to: string
+  icon: React.FunctionComponent<IconProps>
+  label: string
+  roles?: Role[]
+}
+
+const navItems: NavItem[] = [
+  { to: "/", icon: IconCanteen, label: "Canteen" },
+  { to: "/planner", icon: IconPlanner, label: "Planner", roles: [Role.ADMIN, Role.CATERING] },
+  { to: "/orders", icon: IconOrders, label: "My Orders", roles: [Role.EMPLOYEE, Role.CATERING] },
+] as const
 
 interface AppSidebarProps {
   isOpen: boolean
@@ -18,17 +32,14 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
   const logout = useAuthStore((s) => s.logout)
   const navigate = useNavigate()
 
-  const navItems = [
-    { to: "/", icon: IconCanteen, label: "Canteen" },
-    ...(user?.role && canAccessPlanner(user.role)
-      ? [{ to: "/planner", icon: IconPlanner, label: "Planner" }]
-      : []),
-  ] as const
-
   const handleLogout = () => {
     logout()
     navigate({ to: "/login" })
   }
+
+  const visibleNavItems = user
+    ? navItems.filter((item) => !item.roles || item.roles.includes(user.role))
+    : []
 
   return (
     <>
@@ -61,7 +72,7 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
         {/* Nav Items */}
         <Box flex="1" p="lg" overflow="auto">
           <S.SidebarNavigationList>
-            {navItems.map(({ to, icon: Icon, label }) => (
+            {visibleNavItems.map(({ to, icon: Icon, label }) => (
               <li key={to}>
                 <Link
                   to={to}
