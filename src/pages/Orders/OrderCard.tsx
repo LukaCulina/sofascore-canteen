@@ -27,8 +27,8 @@ export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
         cursor="pointer"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <Flex direction="column" gap="xs">
-          <Flex align="center" gap="sm">
+        <Flex direction="column" gap="sm">
+          <Flex align="center" gap="md">
             <Text textStyle="display.medium">
               #{order.id}
             </Text>
