@@ -71,6 +71,14 @@ const textStyles = defineTextStyles({
         letterSpacing: "-0.2px",
       },
     },
+    small: {
+      value: {
+        fontSize: "12px",
+        fontWeight: "normal",
+        lineHeight: "16px",
+        letterSpacing: "-0.2px",
+      },
+    },
   },
   label: {
     medium: {
@@ -142,10 +150,17 @@ export default defineConfig({
               _dark: "rgba(255, 255, 255, 0.15)",
             },
           },
+          nLv5: {
+            value: {
+              base: "rgba(34, 34, 38, 0.06)",
+              _dark: "rgba(255, 255, 255, 0.08)",
+            },
+          },
         },
         status: {
-          alert: { value: "#C7921F" },
-          success: { value: "#15B168" },
+          success: { value: { base: "#15B168", _dark: "#39B57A" } },
+          error: { value: { base: "#C7361F", _dark: "#E35C47" } },
+          alert: { value: { base: "#C7921F", _dark: "#DBAA3F" } },
         },
         icons: {
           vegetarian: {
