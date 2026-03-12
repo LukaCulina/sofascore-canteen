@@ -8,8 +8,10 @@ import { Box, Flex } from "@/styled-system/jsx"
 import { IconCanteen, IconLogout } from "../icons"
 import * as S from "./AppSidebar.styles"
 
-const navItems = [{ to: "/", icon: IconCanteen, label: "Canteen" }, 
-  {to: "catering/catalog", icon: IconMealCatalog, label: "Meal Catalog"}] as const
+const navItems = [
+  { to: "/", icon: IconCanteen, label: "Canteen" },
+  { to: "/catering/catalog", icon: IconMealCatalog, label: "Meal Catalog" },
+] as const
 
 interface AppSidebarProps {
   isOpen: boolean
@@ -58,7 +60,12 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
         <Box flex="1" p="lg" overflow="auto">
           <S.SidebarNavigationList>
             {navItems.map(({ to, icon: Icon, label }) => {
-              if (label === "Meal Catalog" && user?.role !== Role.CATERING && user?.role !== Role.ADMIN) return null
+              if (
+                label === "Meal Catalog" &&
+                user?.role !== Role.CATERING &&
+                user?.role !== Role.ADMIN
+              )
+                return null
 
               return (
                 <li key={to}>
