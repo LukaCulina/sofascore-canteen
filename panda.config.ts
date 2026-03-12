@@ -158,9 +158,24 @@ export default defineConfig({
           },
         },
         status: {
-          success: { value: { base: "#15B168", _dark: "#39B57A" } },
-          error: { value: { base: "#C7361F", _dark: "#E35C47" } },
-          alert: { value: { base: "#C7921F", _dark: "#DBAA3F" } },
+          success: {
+            default: { value: { base: "#15B168", _dark: "#39B57A" } },
+            highlight: {
+              value: { base: "rgba(21, 177, 104, 0.1)", _dark: "rgba(57, 181, 122, 0.1)" },
+            },
+          },
+          error: {
+            default: { value: { base: "#C7361F", _dark: "#E35C47" } },
+            highlight: {
+              value: { base: "rgba(199, 54, 31, 0.1)", _dark: "rgba(227, 92, 71, 0.1)" },
+            },
+          },
+          alert: {
+            default: { value: { base: "#C7921F", _dark: "#DBAA3F" } },
+            highlight: {
+              value: { base: "rgba(199, 146, 31, 0.1)", _dark: "rgba(255, 117, 0, 0.1)" },
+            },
+          },
         },
         icons: {
           vegetarian: {
