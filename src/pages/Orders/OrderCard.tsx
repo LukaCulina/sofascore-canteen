@@ -17,21 +17,17 @@ export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
       borderColor="neutrals.nLv4"
       borderRadius="lg"
       overflow="hidden"
-      bg="white"
+      bg="surface.s1"
     >
       <Flex
         p="lg"
         justify="space-between"
         align="center"
-        borderColor="neutrals.nLv3"
-        cursor="pointer"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <Flex direction="column" gap="sm">
           <Flex align="center" gap="md">
-            <Text textStyle="display.medium">
-              #{order.id}
-            </Text>
+            <Text textStyle="display.medium">#{order.id}</Text>
             <GreyText>{order.user}</GreyText>
           </Flex>
           <GreyText>{order.submitted}</GreyText>
@@ -42,9 +38,7 @@ export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
         </Flex>
 
         <Flex direction="column" align="end" gap="xs">
-          <Text textStyle="display.small">
-            €{order.total.toFixed(2)}
-          </Text>
+          <Text textStyle="display.small">€{order.total.toFixed(2)}</Text>
           <Text textStyle="assistive.default" color="status.success.default">
             -€{order.discount.toFixed(2)}
           </Text>

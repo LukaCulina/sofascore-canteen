@@ -20,9 +20,6 @@ export const OrderRow = ({ order }: OrderRowProps) => {
           <Box
             as="button"
             onClick={() => setIsExpanded(!isExpanded)}
-            display="flex"
-            _hover={{ bg: "neutrals.nLv6", rounded: "md" }}
-            transition="all 0.2s"
           >
             {isExpanded ? <IconArrowUp /> : <IconArrowDown />}
           </Box>
