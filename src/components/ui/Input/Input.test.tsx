@@ -35,9 +35,7 @@ describe("Input", () => {
     const handleFocus = vi.fn()
     const handleBlur = vi.fn()
 
-    render(
-      <Input label="Field" name="field" onFocus={handleFocus} onBlur={handleBlur} />,
-    )
+    render(<Input label="Field" name="field" onFocus={handleFocus} onBlur={handleBlur} />)
 
     const input = screen.getByLabelText("field")
 

@@ -1,14 +1,15 @@
 import { Link, useNavigate } from "@tanstack/react-router"
-import { IconSofascore } from "@/components/icons"
+import { IconMealCatalog, IconSofascore } from "@/components/icons"
 import { Text } from "@/components/ui/Text"
-import { useAuthStore } from "@/stores/auth"
+import { Role, useAuthStore } from "@/stores/auth"
 import { css, cx } from "@/styled-system/css"
 import { Box, Flex } from "@/styled-system/jsx"
 
 import { IconCanteen, IconLogout } from "../icons"
 import * as S from "./AppSidebar.styles"
 
-const navItems = [{ to: "/", icon: IconCanteen, label: "Canteen" }] as const
+const navItems = [{ to: "/", icon: IconCanteen, label: "Canteen" }, 
+  {to: "catering/catalog", icon: IconMealCatalog, label: "Meal Catalog"}] as const
 
 interface AppSidebarProps {
   isOpen: boolean
@@ -56,30 +57,34 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
         {/* Nav Items */}
         <Box flex="1" p="lg" overflow="auto">
           <S.SidebarNavigationList>
-            {navItems.map(({ to, icon: Icon, label }) => (
-              <li key={to}>
-                <Link
-                  to={to}
-                  className={S.navItemStyle}
-                  activeProps={{
-                    className: cx(S.navItemStyle, S.navItemActiveStyle),
-                  }}
-                  activeOptions={{ exact: to === "/" }}
-                >
-                  <Flex align="center" justify="center" w="24px" h="24px">
-                    <Icon />
-                  </Flex>
-                  {label}
-                </Link>
-              </li>
-            ))}
+            {navItems.map(({ to, icon: Icon, label }) => {
+              if (label === "Meal Catalog" && user?.role !== Role.CATERING && user?.role !== Role.ADMIN) return null
+
+              return (
+                <li key={to}>
+                  <Link
+                    to={to}
+                    className={S.navItemStyle}
+                    activeProps={{
+                      className: cx(S.navItemStyle, S.navItemActiveStyle),
+                    }}
+                    activeOptions={{ exact: to === "/" }}
+                  >
+                    <Flex align="center" justify="center" w="24px" h="24px">
+                      <Icon />
+                    </Flex>
+                    {label}
+                  </Link>
+                </li>
+              )
+            })}
             <li>
               <button
                 type="button"
                 onClick={handleLogout}
                 className={cx(
                   S.navItemStyle,
-                  css({ bg: "transparent", border: "none", width: "100%" })
+                  css({ bg: "transparent", border: "none", width: "100%" }),
                 )}
               >
                 <Flex align="center" justify="center" w="24px" h="24px">
@@ -92,11 +97,7 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
         </Box>
 
         {/* Nav Footer */}
-        <Box
-          px="lg"
-          py="xl"
-          boxShadow="inset 0 1px 0 0 token(colors.neutrals.nLv4)"
-        >
+        <Box px="lg" py="xl" boxShadow="inset 0 1px 0 0 token(colors.neutrals.nLv4)">
           <Box
             bg="tertiary.highlight"
             border="1px solid"
@@ -105,18 +106,10 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
             px="lg"
             py="sm"
           >
-            <Text
-              textStyle="assistive.default"
-              color="neutrals.nLv3"
-              display="block"
-            >
+            <Text textStyle="assistive.default" color="neutrals.nLv3" display="block">
               Logged as
             </Text>
-            <Text
-              textStyle="display.small"
-              color="neutrals.nLv1"
-              display="block"
-            >
+            <Text textStyle="display.small" color="neutrals.nLv1" display="block">
               {user!.email}
             </Text>
           </Box>

@@ -1,0 +1,1 @@
+export { MealCatalogPage } from "./MealCatalog"

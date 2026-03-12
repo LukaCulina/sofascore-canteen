@@ -44,8 +44,7 @@ export const Input = (inputProps: InputProps) => {
   const fieldRef = useRef<HTMLInputElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
 
-  const isLabelFloating =
-    isFocused || !!startAdornment || !!placeholder || !!fieldValue
+  const isLabelFloating = isFocused || !!startAdornment || !!placeholder || !!fieldValue
 
   const classes = inputRecipe(variantProps)
 
@@ -111,19 +110,13 @@ export const Input = (inputProps: InputProps) => {
         data-hasvalue={isLabelFloating || undefined}
       >
         {label && (
-          <label
-            className={classes.label}
-            htmlFor={name}
-            style={{ width: containerWidth }}
-          >
+          <label className={classes.label} htmlFor={name} style={{ width: containerWidth }}>
             {label}
             {required && " *"}
           </label>
         )}
 
-        {startAdornment && (
-          <div className={classes.adornment}>{startAdornment}</div>
-        )}
+        {startAdornment && <div className={classes.adornment}>{startAdornment}</div>}
 
         <input
           ref={mergeRefs(ref, fieldRef)}
@@ -152,9 +145,7 @@ export const Input = (inputProps: InputProps) => {
           maxLength={maxLength}
         />
 
-        {!disabled && endAdornment && (
-          <div className={classes.adornment}>{endAdornment}</div>
-        )}
+        {!disabled && endAdornment && <div className={classes.adornment}>{endAdornment}</div>}
       </div>
     </div>
   )
