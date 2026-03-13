@@ -1,5 +1,3 @@
-// types.ts
-
 export interface Meal {
   id: number
   price: number

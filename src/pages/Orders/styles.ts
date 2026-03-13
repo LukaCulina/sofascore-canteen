@@ -6,7 +6,6 @@ export const Table = styled("table", {
     border: "1px solid",
     borderColor: "neutrals.nLv4",
     borderRadius: "lg",
-    minWidth: "800px",
     tableLayout: "fixed",
     borderCollapse: "collapse",
     overflow: "hidden",

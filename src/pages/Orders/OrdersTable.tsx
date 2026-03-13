@@ -78,7 +78,7 @@ export const OrdersTable = () => {
   return (
     <Box>
       {/* Desktop View */}
-      <Box overflowX="auto" display={{ base: "none", md: "block" }}>
+      <Box overflowX="auto" display={{ base: "none", lg: "block" }}>
         <Table>
           <thead>
             <Tr>
@@ -107,7 +107,7 @@ export const OrdersTable = () => {
       </Box>
 
       {/* Mobile View */}
-      <Flex direction="column" gap="sm" display={{ base: "flex", md: "none" }}>
+      <Flex direction="column" gap="sm" display={{ base: "flex", lg: "none" }}>
         {orders.map((order) => (
           <OrderCard key={order.id} order={order} />
         ))}
