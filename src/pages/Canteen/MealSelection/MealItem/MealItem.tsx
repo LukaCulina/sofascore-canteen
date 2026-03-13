@@ -1,4 +1,4 @@
-import { useCallback, useId } from "react"
+import { useId } from "react"
 import { IconRadioFilled, IconVegan } from "@/components/icons"
 import { Text } from "@/components/ui"
 import { formatPrice } from "@/lib/formatPrice"
@@ -28,7 +28,7 @@ export function MealItem({
   isNoMeal = false,
 }: Readonly<MealItemProps>) {
   const itemId = useId()
-  const handleChange = useCallback(() => onChange(mealId), [onChange, mealId])
+  const handleChange = () => onChange(mealId)
 
   return (
     <S.MealItem
@@ -36,7 +36,7 @@ export function MealItem({
       justifyItems="center"
       gap="lg"
       bg="surface.s1"
-      className={isNoMeal ? "no-meal" : undefined}
+      noMeal={isNoMeal}
       htmlFor={itemId}
     >
       <Flex p="sm" rounded="sm">
@@ -48,6 +48,7 @@ export function MealItem({
             type="radio"
             aria-label={title}
             aria-checked={checked}
+            className="peer"
           />
           <S.RadioIcon className="radioIcon">
             <IconRadioFilled width={19} height={19} />

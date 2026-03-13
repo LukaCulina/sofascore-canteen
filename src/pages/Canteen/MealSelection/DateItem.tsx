@@ -1,4 +1,4 @@
-import { memo } from "react"
+import { useIntl } from "react-intl"
 import { Text } from "@/components/ui"
 import { Flex } from "@/styled-system/jsx"
 
@@ -6,18 +6,12 @@ export interface DateItemProps {
   date: Date
 }
 
-const weekdayShortFmt = new Intl.DateTimeFormat("en-US", { weekday: "short" })
-const weekdayLongFmt = new Intl.DateTimeFormat("en-US", { weekday: "long" })
-const fullDateFmt = new Intl.DateTimeFormat("en-US", {
-  month: "long",
-  day: "numeric",
-  year: "numeric",
-})
+export function DateItem({ date }: Readonly<DateItemProps>) {
+  const intl = useIntl()
 
-export const DateItem = memo(function DateItem({ date }: Readonly<DateItemProps>) {
-  const dayNameShort = weekdayShortFmt.format(date).toUpperCase()
-  const dayNameFull = weekdayLongFmt.format(date)
-  const formattedDate = fullDateFmt.format(date)
+  const dayNameShort = intl.formatDate(date, { weekday: "short" }).toUpperCase()
+  const dayNameFull = intl.formatDate(date, { weekday: "long" })
+  const formattedDate = intl.formatDate(date, { month: "long", day: "numeric", year: "numeric" })
 
   return (
     <Flex p="lg" roundedTop="lg" justifyItems="center" gap="lg" bg="surface.s1">
@@ -32,4 +26,4 @@ export const DateItem = memo(function DateItem({ date }: Readonly<DateItemProps>
       </Flex>
     </Flex>
   )
-})
+}

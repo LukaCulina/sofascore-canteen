@@ -1,6 +1,10 @@
 import type { IconProps } from "./interface"
 
-export const IconVegan = (props: IconProps) => {
+interface IconVeganFilledProps extends IconProps {
+  fill?: string
+}
+
+export const IconVegan = ({ fill = "#15B168", ...props }: IconVeganFilledProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

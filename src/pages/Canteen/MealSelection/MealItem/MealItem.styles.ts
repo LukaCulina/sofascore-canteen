@@ -8,11 +8,6 @@ export const RadioWrap = styled("span", {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-
-    "& > input:checked + .radioIcon": {
-      opacity: 1,
-      transform: "scale(1)",
-    },
   },
 })
 
@@ -21,16 +16,18 @@ export const MealItemRadio = styled("input", {
     height: "19px",
     width: "19px",
     cursor: "pointer",
-    border: "2px solid token(colors.neutrals.nLv3)",
+    borderWidth: "2px",
+    borderStyle: "solid",
+    borderColor: "neutrals.nLv3",
     borderRadius: "50%",
-    backgroundColor: "token(colors.surface.s1)",
+    backgroundColor: "surface.s1",
 
     appearance: "none",
     WebkitAppearance: "none",
 
     "&:checked": {
-      borderColor: "token(colors.primary.default)",
-      backgroundColor: "token(colors.primary.s1)",
+      borderColor: "primary.default",
+      backgroundColor: "primary.s1",
     },
   },
 })
@@ -43,10 +40,15 @@ export const RadioIcon = styled("span", {
     alignItems: "center",
     inset: 0,
     pointerEvents: "none",
-    color: "token(colors.primary.default)",
+    color: "primary.default",
     opacity: 0,
     transform: "scale(0.5)",
     transition: "opacity 0.15s ease, transform 0.15s ease",
+
+    _peerChecked: {
+      opacity: 1,
+      transform: "scale(1)",
+    },
   },
 })
 
@@ -58,10 +60,13 @@ export const MealItem = styled("label", {
     padding: "lg",
     bg: "surface.s1",
     cursor: "pointer",
-
-    "&.no-meal": {
-      borderBottomLeftRadius: "lg",
-      borderBottomRightRadius: "lg",
+  },
+  variants: {
+    noMeal: {
+      true: {
+        borderBottomLeftRadius: "lg",
+        borderBottomRightRadius: "lg",
+      },
     },
   },
 })

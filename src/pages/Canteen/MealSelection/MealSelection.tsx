@@ -1,8 +1,8 @@
 import { memo, useCallback } from "react"
-import { DateItem } from "@/components/MealSelection/DateItem.tsx"
-import { MealItem } from "@/components/MealSelection/MealItem"
-import { useSelectionFromDay, useSetSelection } from "@/hooks"
 import type { PlanDay } from "@/lib/types/mealOptions"
+import { useSelectionFromDay, useSetSelection } from "@/pages/Canteen/hooks"
+import { DateItem } from "@/pages/Canteen/MealSelection/DateItem.tsx"
+import { MealItem } from "@/pages/Canteen/MealSelection/MealItem"
 import { Flex } from "@/styled-system/jsx"
 
 interface MealSelectionProps {
@@ -18,7 +18,7 @@ export const MealSelection = memo(function MealSelection({ item }: Readonly<Meal
   )
 
   return (
-    <Flex direction="column" rounded="lg" bg="red.100" divideY={1} divideColor="neutrals.nLv4">
+    <Flex direction="column" rounded="lg" divideY={1} divideColor="neutrals.nLv4">
       <DateItem date={new Date(item.day)} />
       {item.dayMeal.map((meal) => (
         <MealItem

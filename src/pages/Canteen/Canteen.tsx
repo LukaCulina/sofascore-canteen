@@ -1,19 +1,17 @@
 import { useEffect } from "react"
-import { MealSelectionForm } from "@/components/MealSelection"
+import { useIntl } from "react-intl"
 import { Text } from "@/components/ui/Text"
-import { useInitSelection } from "@/hooks"
 import { mockMealOptions } from "@/mocks/mealOptions.ts"
+import { useInitSelection } from "@/pages/Canteen/hooks"
+import { MealSelectionForm } from "@/pages/Canteen/MealSelection"
 import { Flex } from "@/styled-system/jsx"
-
-const titleDateFormatter = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  day: "numeric",
-})
-
-const formatTitleDate = (unixTime: number): string => titleDateFormatter.format(new Date(unixTime))
 
 export const CanteenPage = () => {
   const init = useInitSelection()
+  const intl = useIntl()
+
+  const formatTitleDate = (unixTime: number) =>
+    intl.formatDate(new Date(unixTime), { month: "short", day: "numeric" })
 
   useEffect(() => {
     init(mockMealOptions.plan)
