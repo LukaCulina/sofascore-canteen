@@ -13,7 +13,14 @@ export const MealCard = ({ meal, planDay }: MealCardProps) => {
   const rawIsoDate = planDay ? new Date(planDay.day).toISOString().replace(".000Z", "+00:00") : ""
 
   return (
-    <Flex p="lg" border="1px solid gray" borderRadius="lg" bg="surface.s1" gap="sm" direction="column">
+    <Flex
+      p="lg"
+      border="1px solid gray"
+      borderRadius="lg"
+      bg="surface.s1"
+      gap="sm"
+      direction="column"
+    >
       <GreyText>{rawIsoDate}</GreyText>
       <Box>
         <P textStyle="display.small">{meal.description}</P>

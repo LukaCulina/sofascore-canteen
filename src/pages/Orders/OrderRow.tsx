@@ -17,10 +17,7 @@ export const OrderRow = ({ order }: OrderRowProps) => {
     <>
       <Tr>
         <Td w="72px">
-          <Box
-            as="button"
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
+          <Box as="button" onClick={() => setIsExpanded(!isExpanded)}>
             {isExpanded ? <IconArrowUp /> : <IconArrowDown />}
           </Box>
         </Td>
