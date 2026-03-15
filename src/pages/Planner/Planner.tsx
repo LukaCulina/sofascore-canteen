@@ -96,7 +96,7 @@ export const Planner = () => {
       {/* Header */}
       <Flex direction="column" gap="lg">
         <Flex align="center" gap="sm">
-          <IconPlanner width="22" height="25" className={css({ color: "primary.default" })} />
+          <IconPlanner width="22" height="25" />
           <Text textStyle="display.extraLarge" color="neutrals.nLv1">
             Menu Planner
           </Text>
