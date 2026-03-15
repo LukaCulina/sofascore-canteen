@@ -136,9 +136,9 @@ export default defineConfig({
           },
         },
         status: {
-              alert: { value: "#C7921F" },
-              success: { value: "#15B168" },
-            }
+          alert: { value: "#C7921F" },
+          success: { value: "#15B168" },
+        },
       },
     },
     extend: {
@@ -170,12 +170,12 @@ export default defineConfig({
   },
   globalCss: {
     "input[type='date']::-webkit-calendar-picker-indicator": {
-    opacity: 0,
-    position: "absolute",
-    right: 0,
-    width: "40px",
-    height: "100%",
-    cursor: "pointer",
+      opacity: 0,
+      position: "absolute",
+      right: 0,
+      width: "40px",
+      height: "100%",
+      cursor: "pointer",
     },
   },
 })

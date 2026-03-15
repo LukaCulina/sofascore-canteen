@@ -8,7 +8,6 @@ import { Box, Flex } from "@/styled-system/jsx"
 import { IconCanteen, IconLogout, IconPlanner } from "../icons"
 import * as S from "./AppSidebar.styles"
 
-
 interface AppSidebarProps {
   isOpen: boolean
   onClose: () => void
@@ -18,16 +17,12 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
   const user = useAuthStore((s) => s.user)
   const logout = useAuthStore((s) => s.logout)
   const navigate = useNavigate()
-  const canAccessPlanner =
-  user?.role === Role.CATERING || user?.role === Role.ADMIN
+  const canAccessPlanner = user?.role === Role.CATERING || user?.role === Role.ADMIN
 
-
-const navItems = [
-  { to: "/", icon: IconCanteen, label: "Canteen" },
-  ...(canAccessPlanner
-    ? [{ to: "/planner", icon: IconPlanner, label: "Planner" }]
-    : []),
-] as const
+  const navItems = [
+    { to: "/", icon: IconCanteen, label: "Canteen" },
+    ...(canAccessPlanner ? [{ to: "/planner", icon: IconPlanner, label: "Planner" }] : []),
+  ] as const
 
   const handleLogout = () => {
     logout()
@@ -88,7 +83,7 @@ const navItems = [
                 onClick={handleLogout}
                 className={cx(
                   S.navItemStyle,
-                  css({ bg: "transparent", border: "none", width: "100%" })
+                  css({ bg: "transparent", border: "none", width: "100%" }),
                 )}
               >
                 <Flex align="center" justify="center" w="24px" h="24px">
@@ -101,11 +96,7 @@ const navItems = [
         </Box>
 
         {/* Nav Footer */}
-        <Box
-          px="lg"
-          py="xl"
-          boxShadow="inset 0 1px 0 0 token(colors.neutrals.nLv4)"
-        >
+        <Box px="lg" py="xl" boxShadow="inset 0 1px 0 0 token(colors.neutrals.nLv4)">
           <Box
             bg="tertiary.highlight"
             border="1px solid"
@@ -114,18 +105,10 @@ const navItems = [
             px="lg"
             py="sm"
           >
-            <Text
-              textStyle="assistive.default"
-              color="neutrals.nLv3"
-              display="block"
-            >
+            <Text textStyle="assistive.default" color="neutrals.nLv3" display="block">
               Logged as
             </Text>
-            <Text
-              textStyle="display.small"
-              color="neutrals.nLv1"
-              display="block"
-            >
+            <Text textStyle="display.small" color="neutrals.nLv1" display="block">
               {user!.email}
             </Text>
           </Box>

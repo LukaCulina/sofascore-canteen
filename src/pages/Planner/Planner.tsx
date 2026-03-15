@@ -1,18 +1,16 @@
 import { useState } from "react"
-import { Input } from "@/components/ui/Input"
-import { Box, Flex } from "@/styled-system/jsx"
-import { Text } from "@/components/ui/Text"
 import { IconPlanner, IconVegan } from "@/components/icons"
-import { css } from "@/styled-system/css"
 import { Button } from "@/components/ui/Button"
+import { Input } from "@/components/ui/Input"
+import { Text } from "@/components/ui/Text"
 import { mockMealOptions } from "@/mocks/mealOptions"
+import { css } from "@/styled-system/css"
+import { Box, Flex } from "@/styled-system/jsx"
 
 const MAX_DAYS = 5
 
 // Merge all meals from all days into a single array
-const allMeals = mockMealOptions.plan.planDay.flatMap(
-  (day) => day.dayMeal ?? day.day_meal ?? []
-)
+const allMeals = mockMealOptions.plan.planDay.flatMap((day) => day.dayMeal ?? day.day_meal ?? [])
 
 // Format Date object to "YYYY-MM-DD" string for date input
 const formatDate = (date: Date) => {
@@ -61,8 +59,7 @@ export const Planner = () => {
   const [selectedMeals, setSelectedMeals] = useState<Record<string, number[]>>({})
 
   // Only compute date range if both dates are set and there's no error
-  const dateRange =
-    startDate && endDate && !error ? getDateRange(startDate, endDate) : []
+  const dateRange = startDate && endDate && !error ? getDateRange(startDate, endDate) : []
 
   const handleStartDate = (value: string) => {
     setStartDate(value)
@@ -81,9 +78,7 @@ export const Planner = () => {
       const isSelected = currentMeals.includes(mealId)
       return {
         ...prev,
-        [date]: isSelected
-          ? currentMeals.filter((id) => id !== mealId)
-          : [...currentMeals, mealId],
+        [date]: isSelected ? currentMeals.filter((id) => id !== mealId) : [...currentMeals, mealId],
       }
     })
   }
@@ -101,35 +96,22 @@ export const Planner = () => {
       {/* Header */}
       <Flex direction="column" gap="lg">
         <Flex align="center" gap="sm">
-          <IconPlanner
-            width="22"
-            height="25"
-            className={css({ color: "primary.default" })}
-          />
+          <IconPlanner width="22" height="25" className={css({ color: "primary.default" })} />
           <Text textStyle="display.extraLarge" color="neutrals.nLv1">
             Menu Planner
           </Text>
         </Flex>
         <Text textStyle="body.large" color="neutrals.nLv2">
-          Choose a date range and select meals from the catalog for each day.
-          Employees will be able to choose from these options.
+          Choose a date range and select meals from the catalog for each day. Employees will be able
+          to choose from these options.
         </Text>
       </Flex>
 
       {/* Content — column on mobile, row on desktop */}
-      <Flex
-        align="flex-start"
-        gap="xl"
-        direction={{ base: "column", md: "row" }}
-      >
+      <Flex align="flex-start" gap="xl" direction={{ base: "column", md: "row" }}>
         {/* Left — Date Range */}
         <Box minW={{ base: "100%", md: "388px" }} p="lg">
-          <Text
-            textStyle="display.medium"
-            color="neutrals.nLv1"
-            mb="md"
-            display="block"
-          >
+          <Text textStyle="display.medium" color="neutrals.nLv1" mb="md" display="block">
             Select Date Range
           </Text>
           <Flex direction="column" gap="lg">
@@ -141,9 +123,7 @@ export const Planner = () => {
               placeholder=" "
               onChange={handleStartDate}
               backgroundColor="surface.s1"
-              endAdornment={
-                <IconPlanner className={css({ color: "neutrals.nLv1" })} />
-              }
+              endAdornment={<IconPlanner className={css({ color: "neutrals.nLv1" })} />}
             />
             <Input
               label="End date"
@@ -153,9 +133,7 @@ export const Planner = () => {
               placeholder=" "
               onChange={handleEndDate}
               backgroundColor="surface.s1"
-              endAdornment={
-                <IconPlanner className={css({ color: "neutrals.nLv1" })} />
-              }
+              endAdornment={<IconPlanner className={css({ color: "neutrals.nLv1" })} />}
             />
             {/* Show error if date range is invalid */}
             {error && (
@@ -174,12 +152,7 @@ export const Planner = () => {
 
         {/* Right — Meals */}
         <Box flex="1" p="lg" w={{ base: "100%", md: "auto" }}>
-          <Text
-            textStyle="display.medium"
-            color="neutrals.nLv1"
-            mb="md"
-            display="block"
-          >
+          <Text textStyle="display.medium" color="neutrals.nLv1" mb="md" display="block">
             Select meals for each day
           </Text>
 
@@ -195,11 +168,7 @@ export const Planner = () => {
               borderRadius="md"
               p="2xl"
             >
-              <IconPlanner
-                width="34"
-                height="38"
-                className={css({ color: "neutrals.nLv3" })}
-              />
+              <IconPlanner width="34" height="38" className={css({ color: "neutrals.nLv3" })} />
               <Text textStyle="body.medium" color="neutrals.nLv3">
                 Choose a start and end date to plan meals for that range.
               </Text>
@@ -225,12 +194,7 @@ export const Planner = () => {
                     borderBottom="1px solid"
                     borderColor="neutrals.nLv4"
                   >
-                    <Box
-                      bg="neutrals.nLv4"
-                      borderRadius="sm"
-                      p="sm"
-                      textAlign="center"
-                    >
+                    <Box bg="neutrals.nLv4" borderRadius="sm" p="sm" textAlign="center">
                       <Text textStyle="display.small" color="neutrals.nLv1">
                         {new Date(date)
                           .toLocaleDateString("en-US", { weekday: "short" })
@@ -255,8 +219,7 @@ export const Planner = () => {
 
                   {/* Meal rows — same meals shown for each day */}
                   {allMeals.map((item) => {
-                    const isSelected =
-                      selectedMeals[date]?.includes(item.meal.id) ?? false
+                    const isSelected = selectedMeals[date]?.includes(item.meal.id) ?? false
 
                     return (
                       <Flex
