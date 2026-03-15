@@ -9,8 +9,7 @@ import { Box, Flex } from "@/styled-system/jsx"
 
 const MAX_DAYS = 5
 
-// Merge all meals from all days into a single array
-const allMeals = mockMealOptions.plan.planDay.flatMap((day) => day.dayMeal ?? day.day_meal ?? [])
+const allMeals = mockMealOptions.plan.planDay.flatMap((day) => day.dayMeal ?? [])
 
 // Format Date object to "YYYY-MM-DD" string for date input
 const formatDate = (date: Date) => {

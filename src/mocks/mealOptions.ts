@@ -59,7 +59,7 @@ export const mockMealOptions = {
         id: 37,
         day: 1772665200000,
         planId: 15,
-        day_meal: [
+        dayMeal: [
           {
             id: 110,
             meal: {
