@@ -67,6 +67,8 @@ export const navItemStyle = css({
 })
 
 export const navItemActiveStyle = css({
-  color: "primary.default",
-  bg: "primary.highlight",
+  "&": {
+    color: "primary.default",
+    bg: "primary.highlight",
+  },
 })
