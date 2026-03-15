@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router"
 import { IconSofascore } from "@/components/icons"
 import { Text } from "@/components/ui/Text"
-import { Role, useAuthStore } from "@/stores/auth"
+import { canAccessPlanner, useAuthStore } from "@/stores/auth"
 import { css, cx } from "@/styled-system/css"
 import { Box, Flex } from "@/styled-system/jsx"
 
@@ -17,11 +17,12 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
   const user = useAuthStore((s) => s.user)
   const logout = useAuthStore((s) => s.logout)
   const navigate = useNavigate()
-  const canAccessPlanner = user?.role === Role.CATERING || user?.role === Role.ADMIN
 
   const navItems = [
     { to: "/", icon: IconCanteen, label: "Canteen" },
-    ...(canAccessPlanner ? [{ to: "/planner", icon: IconPlanner, label: "Planner" }] : []),
+    ...(user?.role && canAccessPlanner(user.role)
+      ? [{ to: "/planner", icon: IconPlanner, label: "Planner" }]
+      : []),
   ] as const
 
   const handleLogout = () => {
