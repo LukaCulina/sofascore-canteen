@@ -21,7 +21,7 @@ const textStyles = defineTextStyles({
     },
     medium: {
       value: {
-        fontSize: "16px",
+        fontSize: "lg",
         fontWeight: "bold",
         lineHeight: "20px",
         letterSpacing: "-0.032px;",
@@ -49,7 +49,7 @@ const textStyles = defineTextStyles({
   body: {
     large: {
       value: {
-        fontSize: "16px",
+        fontSize: "lg",
         fontWeight: "normal",
         lineHeight: "20px",
         letterSpacing: "-0.1px",
@@ -182,7 +182,7 @@ export default defineConfig({
       opacity: 0,
       position: "absolute",
       right: 0,
-      width: "40px",
+      width: "3xl",
       height: "100%",
       cursor: "pointer",
     },

@@ -96,7 +96,7 @@ export const Planner = () => {
       {/* Header */}
       <Flex direction="column" gap="lg">
         <Flex align="center" gap="sm">
-          <IconPlanner width="22" height="25" />
+          <IconPlanner width="22" height="25" fill="primary.default" />
           <Text textStyle="display.extraLarge" color="neutrals.nLv1">
             Menu Planner
           </Text>
@@ -123,7 +123,7 @@ export const Planner = () => {
               placeholder=" "
               onChange={handleStartDate}
               backgroundColor="surface.s1"
-              endAdornment={<IconPlanner className={css({ color: "neutrals.nLv1" })} />}
+              endAdornment={<IconPlanner fill="neutrals.nLv1" />}
             />
             <Input
               label="End date"
@@ -133,7 +133,7 @@ export const Planner = () => {
               placeholder=" "
               onChange={handleEndDate}
               backgroundColor="surface.s1"
-              endAdornment={<IconPlanner className={css({ color: "neutrals.nLv1" })} />}
+              endAdornment={<IconPlanner fill="neutrals.nLv1" />}
             />
             {/* Show error if date range is invalid */}
             {error && (
@@ -168,7 +168,7 @@ export const Planner = () => {
               borderRadius="md"
               p="2xl"
             >
-              <IconPlanner width="34" height="38" className={css({ color: "neutrals.nLv3" })} />
+              <IconPlanner width="34" height="38" fill="neutrals.nLv3" />
               <Text textStyle="body.medium" color="neutrals.nLv3">
                 Choose a start and end date to plan meals for that range.
               </Text>
