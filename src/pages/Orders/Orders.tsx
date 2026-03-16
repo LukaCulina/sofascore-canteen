@@ -15,7 +15,7 @@ export const Orders = () => {
         <Flex direction="column" gap="lg">
           <Flex direction="row" gap="sm" align="center">
             <Flex align="center" justify="center" w="32px" h="32px">
-              <IconOrders width={32} height={32} />
+              <IconOrders width={32} height={32} fill="var(--colors-primary-default)" />
             </Flex>
             <H1 fontSize={{ base: "24px", md: "28px" }}>All Orders</H1>
           </Flex>
