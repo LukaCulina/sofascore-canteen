@@ -78,7 +78,7 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
                   to={to}
                   className={S.navItemStyle}
                   activeProps={{
-                    className: cx(S.navItemStyle, S.navItemActiveStyle),
+                    "data-active": "true",
                   }}
                   activeOptions={{ exact: to === "/" }}
                 >
