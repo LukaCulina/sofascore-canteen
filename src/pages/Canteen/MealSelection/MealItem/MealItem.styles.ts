@@ -3,8 +3,8 @@ import { styled } from "@/styled-system/jsx"
 export const RadioWrap = styled("span", {
   base: {
     position: "relative",
-    width: "24px",
-    height: "24px",
+    width: "xl",
+    height: "xl",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

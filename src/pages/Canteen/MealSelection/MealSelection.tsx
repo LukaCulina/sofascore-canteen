@@ -1,20 +1,25 @@
-import { memo, useCallback } from "react"
+import { type Dispatch, memo, useCallback } from "react"
 import type { PlanDay } from "@/lib/types/mealOptions"
-import { useSelectionFromDay, useSetSelection } from "@/pages/Canteen/hooks"
 import { DateItem } from "@/pages/Canteen/MealSelection/DateItem.tsx"
 import { MealItem } from "@/pages/Canteen/MealSelection/MealItem"
+import type { MealSelectionAction } from "@/pages/Canteen/mealSelectionReducer.ts"
 import { Flex } from "@/styled-system/jsx"
 
 interface MealSelectionProps {
   item: PlanDay
+  selectedMealId: number | null
+  dispatch: Dispatch<MealSelectionAction>
 }
-export const MealSelection = memo(function MealSelection({ item }: Readonly<MealSelectionProps>) {
-  const setSelection = useSetSelection()
-  const selectedMealId = useSelectionFromDay(item.id)
-
+export const MealSelection = memo(function MealSelection({
+  item,
+  selectedMealId,
+  dispatch,
+}: Readonly<MealSelectionProps>) {
   const handleMealChange = useCallback(
-    (mealId: number | null) => setSelection(item.id, mealId),
-    [item.id, setSelection],
+    (mealId: number | null) => {
+      dispatch({ type: "SET_SELECTION", payload: { planDayId: item.id, mealId } })
+    },
+    [item.id, dispatch],
   )
 
   return (
