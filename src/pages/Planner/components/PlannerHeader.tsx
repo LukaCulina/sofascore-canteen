@@ -6,7 +6,7 @@ export const PlannerHeader = () => {
   return (
     <Flex direction="column" gap="lg">
       <Flex align="center" gap="sm">
-        <IconPlanner width="22" height="25" />
+        <IconPlanner width="22" height="25" fill="primary.default" />
         <Text textStyle="display.extraLarge" color="neutrals.nLv1">
           Menu Planner
         </Text>

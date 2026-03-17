@@ -46,7 +46,7 @@ export const MealRow = ({ meal, isSelected, onToggle }: MealRowProps) => {
         <Text textStyle="body.medium" color="neutrals.nLv3">
           €{meal.price.toFixed(2)}
         </Text>
-        {meal.isVegetarian && <IconVegan />}
+        {meal.isVegetarian && <IconVegan fill="status.success" />}
       </Flex>
     </Flex>
   )

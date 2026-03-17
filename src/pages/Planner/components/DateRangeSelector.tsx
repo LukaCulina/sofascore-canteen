@@ -37,7 +37,7 @@ export const DateRangeSelector = ({
           placeholder=" "
           onChange={onStartDateChange}
           backgroundColor="surface.s1"
-          endAdornment={<IconPlanner fill="var(--colors-neutrals-nLv1)" />}
+          endAdornment={<IconPlanner fill="neutrals.nLv1" />}
         />
         <Input
           label="End date"
@@ -47,7 +47,7 @@ export const DateRangeSelector = ({
           placeholder=" "
           onChange={onEndDateChange}
           backgroundColor="surface.s1"
-          endAdornment={<IconPlanner fill="var(--colors-neutrals-nLv1)" />}
+          endAdornment={<IconPlanner fill="neutrals.nLv1" />}
         />
         {error && (
           <Text textStyle="assistive.default" color="status.alert">

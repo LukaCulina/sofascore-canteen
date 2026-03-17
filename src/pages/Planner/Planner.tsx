@@ -97,7 +97,7 @@ export const Planner = () => {
         />
 
         {/* Right — Meals */}
-        <Flex flex="1" p="lg" w={{ base: "100%", md: "auto" }} direction="column" gap="lg">
+        <Flex flex="1" p="lg" w={{ base: "100%", md: "auto" }} direction="column">
           <Text textStyle="display.medium" color="neutrals.nLv1" mb="md" display="block">
             Select meals for each day
           </Text>
@@ -113,7 +113,7 @@ export const Planner = () => {
               borderRadius="md"
               p="2xl"
             >
-              <IconPlanner width="34" height="38" fill="var(--colors-neutrals-nLv3)" />
+              <IconPlanner width="34" height="38" fill="neutrals.nLv3" />
               <Text textStyle="body.medium" color="neutrals.nLv3">
                 Choose a start and end date to plan meals for that range.
               </Text>

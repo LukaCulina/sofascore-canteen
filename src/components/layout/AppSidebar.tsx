@@ -74,13 +74,7 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
                   {({ isActive }) => (
                     <>
                       <Flex align="center" justify="center" w="24px" h="24px">
-                        <Icon
-                          fill={
-                            isActive
-                              ? "var(--colors-primary-default)"
-                              : "var(--colors-neutrals-nLv1)"
-                          }
-                        />
+                        <Icon fill={isActive ? "primary.default" : "neutrals.nLv1"} />
                       </Flex>
                       {label}
                     </>
