@@ -1,3 +1,4 @@
+import { useIntl } from "react-intl"
 import { Button, P } from "@/components/ui"
 import { Box, Flex } from "@/styled-system/jsx"
 import { GreyText } from "./styles"
@@ -9,8 +10,14 @@ interface MealCardProps {
 }
 
 export const MealCard = ({ meal, planDay }: MealCardProps) => {
+  const intl = useIntl()
+
   const finalPrice = (meal.price * (100 - meal.discount)) / 100
-  const rawIsoDate = planDay ? new Date(planDay.day).toISOString().replace(".000Z", "+00:00") : ""
+  const formattedMealDate = intl.formatDate(new Date(planDay.day), {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  })
 
   return (
     <Flex
@@ -21,7 +28,7 @@ export const MealCard = ({ meal, planDay }: MealCardProps) => {
       gap="sm"
       direction="column"
     >
-      <GreyText>{rawIsoDate}</GreyText>
+      <GreyText>{formattedMealDate}</GreyText>
       <Box>
         <P textStyle="display.small">{meal.description}</P>
         <GreyText>€{finalPrice.toFixed(2)}</GreyText>

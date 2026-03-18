@@ -1,4 +1,5 @@
 import { useMemo } from "react"
+import { useIntl } from "react-intl"
 import { Text } from "@/components/ui/Text"
 import { mockOrders } from "@/mocks/orders"
 import { useAuthStore } from "@/stores/auth"
@@ -9,27 +10,28 @@ import { OrderRow } from "./OrderRow"
 import { Table, Td, Th, Tr } from "./styles"
 import type { ProcessedOrder, RawOrder } from "./types"
 
-const formatDate = (timestamp: number) =>
-  new Date(timestamp).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  })
-
-const formatPeriod = (start: number, end: number) =>
-  `${new Date(start).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-  })} - ${new Date(end).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-  })}`
-
 export const OrdersTable = () => {
   const { user } = useAuthStore()
+  const intl = useIntl()
+
+  const formatDate = (timestamp: number) =>
+    intl.formatDate(new Date(timestamp), {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    })
+
+  const formatPeriod = (start: number, end: number) =>
+    `${intl.formatDate(new Date(start), {
+      month: "short",
+      day: "numeric",
+    })} - ${intl.formatDate(new Date(end), {
+      month: "short",
+      day: "numeric",
+    })}`
 
   const orders = useMemo<ProcessedOrder[]>(() => {
     if (!user?.id) return []
