@@ -1,8 +1,8 @@
 import { useIntl } from "react-intl"
 import { Button, P } from "@/components/ui"
 import { Box, Flex } from "@/styled-system/jsx"
-import { GreyText } from "./styles"
-import type { Meal, PlanDay } from "./types"
+import { GreyText } from "../styles"
+import type { Meal, PlanDay } from "../types"
 
 interface MealCardProps {
   meal: Meal
@@ -22,7 +22,8 @@ export const MealCard = ({ meal, planDay }: MealCardProps) => {
   return (
     <Flex
       p="lg"
-      border="1px solid gray"
+      border="1px solid"
+      borderColor="neutrals.nLv4"
       borderRadius="lg"
       bg="surface.s1"
       gap="sm"

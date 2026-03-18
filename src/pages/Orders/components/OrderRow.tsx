@@ -2,9 +2,9 @@ import { useState } from "react"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
 import { P } from "@/components/ui/Text"
 import { Box, Flex } from "@/styled-system/jsx"
+import { Td, Tr } from "../styles"
+import type { ProcessedOrder } from "../types"
 import { MealCard } from "./MealCard"
-import { Td, Tr } from "./styles"
-import type { ProcessedOrder } from "./types"
 
 interface OrderRowProps {
   order: ProcessedOrder

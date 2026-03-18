@@ -5,10 +5,10 @@ import { mockOrders } from "@/mocks/orders"
 import { useAuthStore } from "@/stores/auth"
 import { Box } from "@/styled-system/jsx/box"
 import { Flex } from "@/styled-system/jsx/flex"
+import { Table, Td, Th, Tr } from "../styles"
+import type { ProcessedOrder, RawOrder } from "../types"
 import { OrderCard } from "./OrderCard"
 import { OrderRow } from "./OrderRow"
-import { Table, Td, Th, Tr } from "./styles"
-import type { ProcessedOrder, RawOrder } from "./types"
 
 export const OrdersTable = () => {
   const { user } = useAuthStore()

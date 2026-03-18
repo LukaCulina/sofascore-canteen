@@ -1,7 +1,7 @@
 import { IconOrders, IconPen } from "@/components/icons"
 import { Button, H1, P } from "@/components/ui"
 import { Flex } from "@/styled-system/jsx"
-import { OrdersTable } from "./OrdersTable"
+import { OrdersTable } from "./components/OrdersTable"
 
 export const Orders = () => {
   return (

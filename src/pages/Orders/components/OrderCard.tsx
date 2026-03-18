@@ -2,9 +2,9 @@ import { useState } from "react"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
 import { P, Text } from "@/components/ui/Text"
 import { Box, Flex } from "@/styled-system/jsx"
+import { GreyText } from "../styles"
+import type { ProcessedOrder } from "../types"
 import { MealCard } from "./MealCard"
-import { GreyText } from "./styles"
-import type { ProcessedOrder } from "./types"
 
 export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
   const [isExpanded, setIsExpanded] = useState(false)
