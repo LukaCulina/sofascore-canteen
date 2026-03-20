@@ -72,12 +72,15 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
                   activeOptions={{ exact: to === "/" }}
                 >
                   {({ isActive }) => (
-                    <>
-                      <Flex align="center" justify="center" w="24px" h="24px">
-                        <Icon fill={isActive ? "primary.default" : "neutrals.nLv1"} />
-                      </Flex>
-                      {label}
-                    </>
+                    <Flex align="center" justify="center" gap="sm">
+                      <Icon fill={isActive ? "primary.default" : "neutrals.nLv1"} />
+                      <Text
+                        textStyle="display.small"
+                        color={isActive ? "primary.default" : "neutrals.nLv1"}
+                      >
+                        {label}
+                      </Text>
+                    </Flex>
                   )}
                 </Link>
               </li>
