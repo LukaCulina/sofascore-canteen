@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
 import { P } from "@/components/ui/Text"
-import { Box, Flex } from "@/styled-system/jsx"
+import { Flex } from "@/styled-system/jsx"
 import { Td, Tr } from "../styles"
 import type { ProcessedOrder } from "../types"
 import { MealCard } from "./MealCard"
@@ -15,13 +15,8 @@ export const OrderRow = ({ order }: OrderRowProps) => {
 
   return (
     <>
-      <Tr>
-        <Td w="72px">
-          <Box as="button" onClick={() => setIsExpanded(!isExpanded)}>
-            {isExpanded ? <IconArrowUp /> : <IconArrowDown />}
-          </Box>
-        </Td>
-
+      <Tr onClick={() => setIsExpanded(!isExpanded)} cursor="pointer" bg="surface.s1">
+        <Td w="72px">{isExpanded ? <IconArrowUp /> : <IconArrowDown />}</Td>
         <Td>#{order.id}</Td>
         <Td>{order.user}</Td>
         <Td>{order.period}</Td>
@@ -32,7 +27,7 @@ export const OrderRow = ({ order }: OrderRowProps) => {
       </Tr>
 
       {isExpanded && (
-        <Tr>
+        <Tr bg="surface.s1">
           <Td colSpan={8}>
             <P textStyle="display.micro" p="lg">
               Meal Selections:

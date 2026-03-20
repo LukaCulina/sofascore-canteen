@@ -3,9 +3,6 @@ import { styled } from "@/styled-system/jsx"
 export const Table = styled("table", {
   base: {
     width: "100%",
-    border: "1px solid",
-    borderColor: "neutrals.nLv4",
-    borderRadius: "lg",
     tableLayout: "fixed",
     borderCollapse: "collapse",
     overflow: "hidden",
@@ -15,7 +12,6 @@ export const Table = styled("table", {
 
 export const Tr = styled("tr", {
   base: {
-    backgroundColor: "surface.s1",
     borderBottom: "1px solid",
     borderColor: "neutrals.nLv4",
   },

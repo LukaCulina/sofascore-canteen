@@ -1,5 +1,5 @@
 import { IconOrders, IconPen } from "@/components/icons"
-import { Button, H1, P } from "@/components/ui"
+import { Button, H1, P, Text } from "@/components/ui"
 import { Flex } from "@/styled-system/jsx"
 import { OrdersTable } from "./components/OrdersTable"
 
@@ -26,7 +26,9 @@ export const Orders = () => {
             <Flex align="center" justify="center" w="32px" h="32px">
               <IconPen />
             </Flex>
-            Edit Payment Status
+            <Text textStyle="label.medium" color="primary.default">
+              Edit Payment Status
+            </Text>
           </Flex>
         </Button>
       </Flex>

@@ -80,7 +80,13 @@ export const OrdersTable = () => {
   return (
     <Box>
       {/* Desktop View */}
-      <Box overflowX="auto" display={{ base: "none", lg: "block" }}>
+      <Box
+        overflowX="auto"
+        display={{ base: "none", lg: "block" }}
+        border="1px solid"
+        borderColor="neutrals.nLv4"
+        borderRadius="lg"
+      >
         <Table>
           <thead>
             <Tr>
