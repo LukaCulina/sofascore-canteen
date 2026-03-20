@@ -42,7 +42,7 @@ export const MealDayCard = ({ date, meals, selectedMeals, onToggleMeal }: MealDa
         borderBottom="1px solid"
         borderColor="neutrals.nLv4"
       >
-        <Box bg="neutrals.nLv4" borderRadius="sm" p="sm" textAlign="center">
+        <Box bg="surface.s2" borderRadius="sm" p="sm" textAlign="center">
           <Text textStyle="display.small" color="neutrals.nLv1">
             {new Date(date).toLocaleDateString("en-US", { weekday: "short" }).toUpperCase()}
           </Text>
