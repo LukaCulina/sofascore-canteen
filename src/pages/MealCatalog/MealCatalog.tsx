@@ -12,7 +12,7 @@ export const MealCatalogPage = () => {
     <Box p="xl">
       {/* Header */}
       <Flex align="center" gap="md" mb="sm">
-        <IconMealCatalog width={24} height={24} />
+        <IconMealCatalog />
         <Text textStyle="display.extraLarge" color="neutrals.nLv1">
           Meal Catalog
         </Text>
@@ -23,7 +23,10 @@ export const MealCatalogPage = () => {
       </Text>
 
       {/* Meal Grid */}
-      <Grid gridTemplateColumns="repeat(3, 1fr)" gap="lg">
+      <Grid
+        gridTemplateColumns={{ base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }}
+        gap="lg"
+      >
         {meals.map((meal) => (
           <MealCard key={meal.id} meal={meal} />
         ))}

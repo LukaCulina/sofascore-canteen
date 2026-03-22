@@ -3,23 +3,13 @@ import { css } from "@/styled-system/css"
 import { Box, Flex } from "@/styled-system/jsx"
 import type { Meal } from "@/types"
 
-interface MealCardProps {
-  meal: Meal
-}
-
-export const MealCard = ({ meal }: MealCardProps) => {
+export const MealCard = ({ meal }: { meal: Meal }) => {
   const { description, price, isVegetarian, discount, imageUrl } = meal
 
   const discountedPrice = discount > 0 ? price * (1 - discount / 100) : price
 
   return (
-    <Box
-      bg="surface.s1"
-      borderRadius="sm"
-      overflow="hidden"
-      border="1px solid"
-      borderColor="neutrals.nLv4"
-    >
+    <Box bg="surface.s1" borderRadius="sm" overflow="hidden" borderColor="neutrals.nLv4">
       {/* Image */}
       <Box position="relative" h="180px" bg="neutrals.nLv4">
         {imageUrl ? (
@@ -42,13 +32,15 @@ export const MealCard = ({ meal }: MealCardProps) => {
             position="absolute"
             top="sm"
             right="sm"
-            bg="green.500"
+            bg="status.success.default"
+            borderColor="status.success.border"
+            borderWidth="1px"
+            borderStyle="solid"
             color="white"
             px="sm"
-            py="2xs"
-            borderRadius="xs"
+            py="xs"
+            borderRadius="xl"
             align="center"
-            gap="2xs"
           >
             <Text textStyle="assistive.default">Vegetarian</Text>
           </Flex>
@@ -56,8 +48,8 @@ export const MealCard = ({ meal }: MealCardProps) => {
       </Box>
 
       {/* Content */}
-      <Box p="md">
-        <Text textStyle="body.medium" color="neutrals.nLv1" display="block">
+      <Box p="lg">
+        <Text textStyle="body.large" color="neutrals.nLv1" display="block">
           {description}
         </Text>
 
@@ -71,10 +63,10 @@ export const MealCard = ({ meal }: MealCardProps) => {
               >
                 €{price.toFixed(2)}
               </Text>
-              <Text textStyle="body.medium" color="status.error">
+              <Text textStyle="body.medium" color="status.error.default">
                 €{discountedPrice.toFixed(2)}
               </Text>
-              <Text textStyle="assistive.default" color="status.error" ml="auto">
+              <Text textStyle="assistive.default" color="status.error.default" ml="auto">
                 {discount}% off
               </Text>
             </>

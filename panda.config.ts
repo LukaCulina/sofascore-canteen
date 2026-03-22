@@ -106,6 +106,20 @@ export default defineConfig({
             },
           },
         },
+        status: {
+          error: {
+            default: { value: { base: "#DC2828", _dark: "#FF6B6B" } },
+          },
+          success: {
+            default: { value: { base: "#15B168", _dark: "#4FD67A" } },
+            border: {
+              value: {
+                base: "rgba(0, 0, 0, 0.25)",
+                _dark: "rgba(79, 214, 122, 0.32)",
+              },
+            },
+          },
+        },
         neutrals: {
           nLv1: { value: { base: "#222226", _dark: "#ECEDEF" } },
           nLv2: {
