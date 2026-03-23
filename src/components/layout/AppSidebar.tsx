@@ -79,7 +79,7 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
                 onClick={handleLogout}
                 className={cx(
                   S.navItemStyle,
-                  css({ bg: "transparent", border: "none", width: "100%" })
+                  css({ bg: "transparent", border: "none", width: "100%" }),
                 )}
               >
                 <Flex align="center" justify="center" w="24px" h="24px">
@@ -92,11 +92,7 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
         </Box>
 
         {/* Nav Footer */}
-        <Box
-          px="lg"
-          py="xl"
-          boxShadow="inset 0 1px 0 0 token(colors.neutrals.nLv4)"
-        >
+        <Box px="lg" py="xl" boxShadow="inset 0 1px 0 0 token(colors.neutrals.nLv4)">
           <Box
             bg="tertiary.highlight"
             border="1px solid"
@@ -105,18 +101,10 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
             px="lg"
             py="sm"
           >
-            <Text
-              textStyle="assistive.default"
-              color="neutrals.nLv3"
-              display="block"
-            >
+            <Text textStyle="assistive.default" color="neutrals.nLv3" display="block">
               Logged as
             </Text>
-            <Text
-              textStyle="display.small"
-              color="neutrals.nLv1"
-              display="block"
-            >
+            <Text textStyle="display.small" color="neutrals.nLv1" display="block">
               {user!.email}
             </Text>
           </Box>
