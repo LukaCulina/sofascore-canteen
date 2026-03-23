@@ -22,18 +22,12 @@ export const AppHeader = ({ onOpenSidebar }: AppHeaderProps) => {
 
   return (
     <S.Header>
-      <S.HamburgerButton
-        type="button"
-        onClick={onOpenSidebar}
-        aria-label="Open navigation"
-      >
+      <S.HamburgerButton type="button" onClick={onOpenSidebar} aria-label="Open navigation">
         <IconMenu />
       </S.HamburgerButton>
 
       <Flex align="center" gap="lg">
-        <S.InitialsContainer>
-          {user ? getInitials(user.email) : "??"}
-        </S.InitialsContainer>
+        <S.InitialsContainer>{user ? getInitials(user.email) : "??"}</S.InitialsContainer>
       </Flex>
     </S.Header>
   )

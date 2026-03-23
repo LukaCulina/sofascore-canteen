@@ -1,14 +1,12 @@
 import { Link, useNavigate } from "@tanstack/react-router"
 import { IconSofascore } from "@/components/icons"
 import { Text } from "@/components/ui/Text"
-import { useAuthStore } from "@/stores/auth"
+import { canAccessPlanner, useAuthStore } from "@/stores/auth"
 import { css, cx } from "@/styled-system/css"
 import { Box, Flex } from "@/styled-system/jsx"
 
-import { IconCanteen, IconLogout } from "../icons"
+import { IconCanteen, IconLogout, IconPlanner } from "../icons"
 import * as S from "./AppSidebar.styles"
-
-const navItems = [{ to: "/", icon: IconCanteen, label: "Canteen" }] as const
 
 interface AppSidebarProps {
   isOpen: boolean
@@ -19,6 +17,13 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
   const user = useAuthStore((s) => s.user)
   const logout = useAuthStore((s) => s.logout)
   const navigate = useNavigate()
+
+  const navItems = [
+    { to: "/", icon: IconCanteen, label: "Canteen" },
+    ...(user?.role && canAccessPlanner(user.role)
+      ? [{ to: "/planner", icon: IconPlanner, label: "Planner" }]
+      : []),
+  ] as const
 
   const handleLogout = () => {
     logout()
@@ -66,10 +71,17 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
                   }}
                   activeOptions={{ exact: to === "/" }}
                 >
-                  <Flex align="center" justify="center" w="24px" h="24px">
-                    <Icon />
-                  </Flex>
-                  {label}
+                  {({ isActive }) => (
+                    <Flex align="center" justify="center" gap="sm">
+                      <Icon fill={isActive ? "primary.default" : "neutrals.nLv1"} />
+                      <Text
+                        textStyle="display.small"
+                        color={isActive ? "primary.default" : "neutrals.nLv1"}
+                      >
+                        {label}
+                      </Text>
+                    </Flex>
+                  )}
                 </Link>
               </li>
             ))}

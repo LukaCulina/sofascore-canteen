@@ -33,3 +33,7 @@ export const useAuthStore = create<AuthState>()(
     { name: "auth" },
   ),
 )
+
+export const canAccessPlanner = (role: Role) => {
+  return role === Role.CATERING || role === Role.ADMIN
+}

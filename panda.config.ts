@@ -19,6 +19,14 @@ const textStyles = defineTextStyles({
         letterSpacing: "-0.2px",
       },
     },
+    medium: {
+      value: {
+        fontSize: "lg",
+        fontWeight: "bold",
+        lineHeight: "20px",
+        letterSpacing: "-0.032px;",
+      },
+    },
     small: {
       value: {
         fontSize: "14px",
@@ -49,7 +57,7 @@ const textStyles = defineTextStyles({
   body: {
     large: {
       value: {
-        fontSize: "16px",
+        fontSize: "lg",
         fontWeight: "normal",
         lineHeight: "20px",
         letterSpacing: "-0.1px",
@@ -135,6 +143,10 @@ export default defineConfig({
             },
           },
         },
+        status: {
+          alert: { value: "#C7921F" },
+          success: { value: "#15B168" },
+        },
         icons: {
           vegetarian: {
             value: {
@@ -163,6 +175,7 @@ export default defineConfig({
           md: { value: "12px" },
           lg: { value: "16px" },
           xl: { value: "24px" },
+          "2xl": { value: "32px" },
           "4xl": { value: "48px" },
         },
         radii: {
@@ -178,6 +191,16 @@ export default defineConfig({
   conditions: {
     extend: {
       groupHasValue: '.group:is([data-hasvalue="true"]) &',
+    },
+  },
+  globalCss: {
+    "input[type='date']::-webkit-calendar-picker-indicator": {
+      opacity: 0,
+      position: "absolute",
+      right: 0,
+      width: "3xl",
+      height: "100%",
+      cursor: "pointer",
     },
   },
 })

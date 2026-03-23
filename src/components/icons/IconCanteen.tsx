@@ -12,7 +12,6 @@ export const IconCanteen = ({ fill = "primary.default", ...props }: IconCanteenP
       width="18"
       height="18"
       viewBox="0 0 18 18"
-      fill="none"
       aria-label="Canteen logo"
       {...props}
     >

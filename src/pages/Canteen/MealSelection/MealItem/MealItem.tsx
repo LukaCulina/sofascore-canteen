@@ -1,5 +1,5 @@
 import { useId } from "react"
-import { IconRadioFilled, IconVegan } from "@/components/icons"
+import { IconRadioFilled, IconVeganMealSelector } from "@/components/icons"
 import { Text } from "@/components/ui"
 import { formatPrice } from "@/lib/formatPrice"
 import { Flex } from "@/styled-system/jsx"
@@ -69,7 +69,7 @@ export function MealItem({
         <Flex direction="column">
           <Flex gap="xs" alignItems="center">
             <Text textStyle="display.small">{title}</Text>
-            {isVegan && <IconVegan />}
+            {isVegan && <IconVeganMealSelector />}
           </Flex>
           {description && (
             <Text textStyle="assistive.default" color="neutrals.nLv3">
