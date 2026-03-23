@@ -5,7 +5,7 @@ import { Role, useAuthStore } from "@/stores/auth"
 import { css, cx } from "@/styled-system/css"
 import { Box, Flex } from "@/styled-system/jsx"
 
-import { IconCanteen, IconLogout } from "../icons"
+import { IconCanteen, IconLogout, IconPlanner } from "../icons"
 import * as S from "./AppSidebar.styles"
 
 const navItems = [
@@ -22,6 +22,13 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
   const user = useAuthStore((s) => s.user)
   const logout = useAuthStore((s) => s.logout)
   const navigate = useNavigate()
+
+  const navItems = [
+    { to: "/", icon: IconCanteen, label: "Canteen" },
+    ...(user?.role && canAccessPlanner(user.role)
+      ? [{ to: "/planner", icon: IconPlanner, label: "Planner" }]
+      : []),
+  ] as const
 
   const handleLogout = () => {
     logout()
