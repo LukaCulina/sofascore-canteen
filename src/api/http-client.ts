@@ -3,7 +3,7 @@ export const API_BASE_URL = "https://frontend-academy.sofascore-api.deno.net/api
 const getUrl = (path: string) => `${API_BASE_URL}${path}`
 
 const dbTargetHeader = {
-  'x-target-db': 'pbsrb'
+  "x-target-db": "pbsrb",
 }
 
 /**

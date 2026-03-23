@@ -17,7 +17,7 @@ export type InputProps<T = string> = {
   name?: string
   placeholder?: string
   style?: React.CSSProperties
-  type?: "text" | "number" | "password" | "email"
+  type?: "text" | "number" | "password" | "email" | "date"
   value?: T
   defaultValue?: T
   startAdornment?: React.ReactNode
@@ -25,8 +25,7 @@ export type InputProps<T = string> = {
   onChange?: (value: T, event: React.ChangeEvent<HTMLInputElement>) => void
   onFocus?: (value: T) => void
   onBlur?: (value: T, event: React.FocusEvent<HTMLInputElement>) => void
-  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement> &
-    React.KeyboardEventHandler<"input">
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement> & React.KeyboardEventHandler<"input">
   onPaste?: React.ClipboardEventHandler<HTMLInputElement>
   onClick?: React.MouseEventHandler<HTMLInputElement>
 } & Omit<BoxProps, "onBlur" | "onChange" | "onFocus" | "onKeyDown"> &
