@@ -71,6 +71,14 @@ const textStyles = defineTextStyles({
         letterSpacing: "-0.2px",
       },
     },
+    small: {
+      value: {
+        fontSize: "12px",
+        fontWeight: "normal",
+        lineHeight: "16px",
+        letterSpacing: "-0.2px",
+      },
+    },
   },
   label: {
     medium: {
@@ -142,10 +150,32 @@ export default defineConfig({
               _dark: "rgba(255, 255, 255, 0.15)",
             },
           },
+          nLv5: {
+            value: {
+              base: "rgba(34, 34, 38, 0.06)",
+              _dark: "rgba(255, 255, 255, 0.08)",
+            },
+          },
         },
         status: {
-          alert: { value: "#C7921F" },
-          success: { value: "#15B168" },
+          success: {
+            default: { value: { base: "#15B168", _dark: "#39B57A" } },
+            highlight: {
+              value: { base: "rgba(21, 177, 104, 0.1)", _dark: "rgba(57, 181, 122, 0.1)" },
+            },
+          },
+          error: {
+            default: { value: { base: "#C7361F", _dark: "#E35C47" } },
+            highlight: {
+              value: { base: "rgba(199, 54, 31, 0.1)", _dark: "rgba(227, 92, 71, 0.1)" },
+            },
+          },
+          alert: {
+            default: { value: { base: "#C7921F", _dark: "#DBAA3F" } },
+            highlight: {
+              value: { base: "rgba(199, 146, 31, 0.1)", _dark: "rgba(255, 117, 0, 0.1)" },
+            },
+          },
         },
         icons: {
           vegetarian: {
