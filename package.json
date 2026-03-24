@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@tanstack/react-router": "~1.161.3",
+    "framer-motion": "^12.38.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-intl": "^10.0.0",

@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
 import { P } from "@/components/ui/Text"
@@ -26,20 +27,34 @@ export const OrderRow = ({ order }: OrderRowProps) => {
         <Td textAlign="right">€{order.total.toFixed(2)}</Td>
       </Tr>
 
-      {isExpanded && (
-        <Tr bg="surface.s1">
-          <Td colSpan={8}>
-            <P textStyle="display.micro" p="lg">
-              Meal Selections:
-            </P>
-            <Flex p="lg" direction="row" flexWrap="wrap" gap="lg" w="100%">
-              {order.orderSelection.map((selection) => (
-                <MealCard key={selection.id} meal={selection.meal} planDay={selection.planDay} />
-              ))}
-            </Flex>
-          </Td>
-        </Tr>
-      )}
+      <AnimatePresence>
+        {isExpanded && (
+          <Tr bg="surface.s1">
+            <Td colSpan={8}>
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                style={{ overflow: "hidden" }}
+              >
+                <P textStyle="display.micro" p="lg">
+                  Meal Selections:
+                </P>
+                <Flex p="lg" direction="row" flexWrap="wrap" gap="lg" w="100%">
+                  {order.orderSelection.map((selection) => (
+                    <MealCard
+                      key={selection.id}
+                      meal={selection.meal}
+                      planDay={selection.planDay}
+                    />
+                  ))}
+                </Flex>
+              </motion.div>
+            </Td>
+          </Tr>
+        )}
+      </AnimatePresence>
     </>
   )
 }

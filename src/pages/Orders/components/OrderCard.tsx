@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
 import { P, Text } from "@/components/ui/Text"
@@ -47,18 +48,28 @@ export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
         </Flex>
       </Flex>
 
-      {isExpanded && (
-        <Box p="md">
-          <P textStyle="display.micro" mb="md">
-            Meal Selections:
-          </P>
-          <Flex direction="column" gap="md">
-            {order.orderSelection.map((selection) => (
-              <MealCard key={selection.id} meal={selection.meal} planDay={selection.planDay} />
-            ))}
-          </Flex>
-        </Box>
-      )}
+      <AnimatePresence>
+        {isExpanded && (
+          <Box p="md">
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              style={{ overflow: "hidden" }}
+            >
+              <P textStyle="display.micro" mb="md">
+                Meal Selections:
+              </P>
+              <Flex direction="column" gap="md">
+                {order.orderSelection.map((selection) => (
+                  <MealCard key={selection.id} meal={selection.meal} planDay={selection.planDay} />
+                ))}
+              </Flex>
+            </motion.div>
+          </Box>
+        )}
+      </AnimatePresence>
     </Flex>
   )
 }

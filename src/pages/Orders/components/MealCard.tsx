@@ -1,5 +1,5 @@
 import { useIntl } from "react-intl"
-import { Button, P } from "@/components/ui"
+import { Button, P, Text } from "@/components/ui"
 import { Box, Flex } from "@/styled-system/jsx"
 import { GreyText } from "../styles"
 import type { Meal, PlanDay } from "../types"
@@ -28,14 +28,17 @@ export const MealCard = ({ meal, planDay }: MealCardProps) => {
       bg="surface.s1"
       gap="sm"
       direction="column"
+      width={{ base: "100%", lg: "31%" }}
     >
       <GreyText>{formattedMealDate}</GreyText>
       <Box>
         <P textStyle="display.small">{meal.description}</P>
         <GreyText>€{finalPrice.toFixed(2)}</GreyText>
       </Box>
-      <Button variant="outline" px="md">
-        Leave Feedback
+      <Button variant="outline" px="md" width="115px">
+        <Text textStyle="assistive.default" color="primary.default">
+          Leave Feedback
+        </Text>
       </Button>
     </Flex>
   )

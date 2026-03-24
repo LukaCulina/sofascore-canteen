@@ -15,7 +15,7 @@ export const Orders = () => {
         <Flex direction="column" gap="lg">
           <Flex direction="row" gap="sm" align="center">
             <Flex align="center" justify="center" w="32px" h="32px">
-              <IconOrders width={28} height={28} fill="primary.default"/>
+              <IconOrders width={28} height={28} />
             </Flex>
             <H1 fontSize="28px">All Orders</H1>
           </Flex>
