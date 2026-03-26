@@ -12,7 +12,7 @@ export const MealCatalogPage = () => {
     <Box p="xl">
       {/* Header */}
       <Flex align="center" gap="md" mb="sm">
-        <IconMealCatalog />
+        <IconMealCatalog fill="neutrals.nLv1" height={32} width={32} />
         <Text textStyle="display.extraLarge" color="neutrals.nLv1">
           Meal Catalog
         </Text>
