@@ -64,9 +64,8 @@ export const navItemStyle = css({
   _hover: {
     bg: "primary.highlight",
   },
-})
-
-export const navItemActiveStyle = css({
-  color: "primary.default!",
-  bg: "primary.highlight",
+  "&[data-active='true']": {
+    color: "primary.default",
+    bg: "primary.highlight",
+  },
 })

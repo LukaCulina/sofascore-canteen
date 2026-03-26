@@ -5,12 +5,27 @@ import { Role, useAuthStore } from "@/stores/auth"
 import { css, cx } from "@/styled-system/css"
 import { Box, Flex } from "@/styled-system/jsx"
 
-import { IconCanteen, IconLogout, IconPlanner } from "../icons"
+import { IconCanteen, IconLogout, IconOrders, IconPlanner } from "../icons"
+import type { IconProps } from "../icons/interface"
 import * as S from "./AppSidebar.styles"
 
-const navItems = [
+interface NavItem {
+  to: string
+  icon: React.FunctionComponent<IconProps>
+  label: string
+  roles?: Role[]
+}
+
+const navItems: NavItem[] = [
   { to: "/", icon: IconCanteen, label: "Canteen" },
-  { to: "/catering/catalog", icon: IconMealCatalog, label: "Meal Catalog" },
+  { to: "/planner", icon: IconPlanner, label: "Planner", roles: [Role.ADMIN, Role.CATERING] },
+  { to: "/orders", icon: IconOrders, label: "My Orders", roles: [Role.EMPLOYEE, Role.CATERING] },
+  {
+    to: "/catering/catalog",
+    icon: IconMealCatalog,
+    label: "Meal Catalog",
+    roles: [Role.CATERING, Role.ADMIN],
+  },
 ] as const
 
 interface AppSidebarProps {
@@ -23,17 +38,14 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
   const logout = useAuthStore((s) => s.logout)
   const navigate = useNavigate()
 
-  const navItems = [
-    { to: "/", icon: IconCanteen, label: "Canteen" },
-    ...(user?.role && canAccessPlanner(user.role)
-      ? [{ to: "/planner", icon: IconPlanner, label: "Planner" }]
-      : []),
-  ] as const
-
   const handleLogout = () => {
     logout()
     navigate({ to: "/login" })
   }
+
+  const visibleNavItems = user
+    ? navItems.filter((item) => !item.roles || item.roles.includes(user.role))
+    : []
 
   return (
     <>
@@ -66,32 +78,30 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
         {/* Nav Items */}
         <Box flex="1" p="lg" overflow="auto">
           <S.SidebarNavigationList>
-            {navItems.map(({ to, icon: Icon, label }) => {
-              if (
-                label === "Meal Catalog" &&
-                user?.role !== Role.CATERING &&
-                user?.role !== Role.ADMIN
-              )
-                return null
-
-              return (
-                <li key={to}>
-                  <Link
-                    to={to}
-                    className={S.navItemStyle}
-                    activeProps={{
-                      className: cx(S.navItemStyle, S.navItemActiveStyle),
-                    }}
-                    activeOptions={{ exact: to === "/" }}
-                  >
-                    <Flex align="center" justify="center" w="24px" h="24px">
-                      <Icon />
+            {visibleNavItems.map(({ to, icon: Icon, label }) => (
+              <li key={to}>
+                <Link
+                  to={to}
+                  className={S.navItemStyle}
+                  activeProps={{
+                    "data-active": "true",
+                  }}
+                  activeOptions={{ exact: to === "/" }}
+                >
+                  {({ isActive }) => (
+                    <Flex align="center" justify="center" gap="sm">
+                      <Icon fill={isActive ? "primary.default" : "neutrals.nLv1"} />
+                      <Text
+                        textStyle="display.small"
+                        color={isActive ? "primary.default" : "neutrals.nLv1"}
+                      >
+                        {label}
+                      </Text>
                     </Flex>
-                    {label}
-                  </Link>
-                </li>
-              )
-            })}
+                  )}
+                </Link>
+              </li>
+            ))}
             <li>
               <button
                 type="button"

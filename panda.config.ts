@@ -71,6 +71,14 @@ const textStyles = defineTextStyles({
         letterSpacing: "-0.2px",
       },
     },
+    small: {
+      value: {
+        fontSize: "12px",
+        fontWeight: "normal",
+        lineHeight: "16px",
+        letterSpacing: "-0.2px",
+      },
+    },
   },
   label: {
     medium: {
@@ -122,20 +130,6 @@ export default defineConfig({
             },
           },
         },
-        status: {
-          error: {
-            default: { value: { base: "#DC2828", _dark: "#FF6B6B" } },
-          },
-          success: {
-            default: { value: { base: "#15B168", _dark: "#4FD67A" } },
-            border: {
-              value: {
-                base: "rgba(0, 0, 0, 0.25)",
-                _dark: "rgba(79, 214, 122, 0.32)",
-              },
-            },
-          },
-        },
         neutrals: {
           nLv1: { value: { base: "#222226", _dark: "#ECEDEF" } },
           nLv2: {
@@ -156,10 +150,32 @@ export default defineConfig({
               _dark: "rgba(255, 255, 255, 0.15)",
             },
           },
+          nLv5: {
+            value: {
+              base: "rgba(34, 34, 38, 0.06)",
+              _dark: "rgba(255, 255, 255, 0.08)",
+            },
+          },
         },
         status: {
-          alert: { value: "#C7921F" },
-          success: { value: "#15B168" },
+          success: {
+            default: { value: { base: "#15B168", _dark: "#39B57A" } },
+            highlight: {
+              value: { base: "rgba(21, 177, 104, 0.1)", _dark: "rgba(57, 181, 122, 0.1)" },
+            },
+          },
+          error: {
+            default: { value: { base: "#C7361F", _dark: "#E35C47" } },
+            highlight: {
+              value: { base: "rgba(199, 54, 31, 0.1)", _dark: "rgba(227, 92, 71, 0.1)" },
+            },
+          },
+          alert: {
+            default: { value: { base: "#C7921F", _dark: "#DBAA3F" } },
+            highlight: {
+              value: { base: "rgba(199, 146, 31, 0.1)", _dark: "rgba(255, 117, 0, 0.1)" },
+            },
+          },
         },
         icons: {
           vegetarian: {
@@ -173,15 +189,6 @@ export default defineConfig({
     },
     extend: {
       tokens: {
-        sizes: {
-          "2xs": { value: "2px" },
-          xs: { value: "4px" },
-          sm: { value: "8px" },
-          md: { value: "12px" },
-          lg: { value: "16px" },
-          xl: { value: "24px" },
-          "4xl": { value: "48px" },
-        },
         spacing: {
           "2xs": { value: "2px" },
           xs: { value: "4px" },
