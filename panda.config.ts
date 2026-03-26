@@ -234,6 +234,12 @@ export default defineConfig({
           "4xl": { value: "48px" },
         },
       },
+      keyframes: {
+        spin: {
+          from: { transform: "rotate(0deg)" },
+          to: { transform: "rotate(360deg)" },
+        },
+      },
     },
   },
   conditions: {
