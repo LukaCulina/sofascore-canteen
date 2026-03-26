@@ -7,7 +7,7 @@ interface Meal {
   id: number
   description: string
   price: number
-  isVegetarian: boolean
+  is_vegetarian: boolean
 }
 
 interface MealRowProps {
@@ -46,7 +46,7 @@ export const MealRow = ({ meal, isSelected, onToggle }: MealRowProps) => {
         <Text textStyle="body.medium" color="neutrals.nLv3">
           €{meal.price.toFixed(2)}
         </Text>
-        {meal.isVegetarian && <IconVegan fill="status.success.default" />}
+        {meal.is_vegetarian && <IconVegan fill="status.success.default" />}
       </Flex>
     </Flex>
   )

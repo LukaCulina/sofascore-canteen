@@ -1,10 +1,12 @@
 import { useState } from "react"
+import { postJson } from "@/api/http-client"
+import { plans } from "@/api/routes"
 import { IconPlanner } from "@/components/icons"
 import { Text } from "@/components/ui/Text"
-import { mockMealOptions } from "@/mocks/mealOptions"
 import { Flex } from "@/styled-system/jsx"
-
 import { DateRangeSelector, MealDayCard, PlannerHeader } from "./components"
+import { PlannerFooter } from "./components/PlannerFooter"
+import { useMeals } from "./hooks/useMeals"
 
 const MAX_DAYS = 5
 
@@ -43,8 +45,6 @@ const getDateRange = (start: string, end: string): string[] => {
   return dates
 }
 
-const allMeals = mockMealOptions.plan.planDay.flatMap((day) => day.dayMeal ?? [])
-
 export const Planner = () => {
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
@@ -52,6 +52,7 @@ export const Planner = () => {
   const [selectedMeals, setSelectedMeals] = useState<Record<string, number[]>>({})
 
   const dateRange = startDate && endDate && !error ? getDateRange(startDate, endDate) : []
+  const { meals, isLoading } = useMeals(dateRange.length > 0)
 
   const handleStartDate = (value: string) => {
     setStartDate(value)
@@ -81,11 +82,32 @@ export const Planner = () => {
     setSelectedMeals({})
   }
 
+  const isSubmitEnabled =
+    dateRange.length > 0 && dateRange.every((date) => (selectedMeals[date] ?? []).length > 0)
+
+  const handleSubmit = async () => {
+    const body = {
+      periodStart: startDate,
+      periodEnd: endDate,
+      days: dateRange.map((date) => ({
+        date,
+        meals: (selectedMeals[date] ?? []).map((id) => ({ existingMealId: id })),
+      })),
+    }
+
+    try {
+      await postJson(plans(), body)
+      handleClear()
+    } catch (err) {
+      console.error("Failed to create plan:", err)
+    }
+  }
+
   return (
     <Flex direction="column" gap="xl">
       <PlannerHeader />
 
-      <Flex align="flex-start" gap="xl" direction={{ base: "column", md: "row" }}>
+      <Flex align="flex-start" gap="xl" direction={{ base: "column", lg: "row" }}>
         <DateRangeSelector
           startDate={startDate}
           endDate={endDate}
@@ -102,7 +124,13 @@ export const Planner = () => {
             Select meals for each day
           </Text>
 
-          {dateRange.length === 0 ? (
+          {isLoading ? (
+            <Flex align="center" justify="center" p="2xl">
+              <Text textStyle="body.medium" color="neutrals.nLv3">
+                Loading meals...
+              </Text>
+            </Flex>
+          ) : dateRange.length === 0 ? (
             <Flex
               align="center"
               justify="center"
@@ -124,7 +152,7 @@ export const Planner = () => {
                 <MealDayCard
                   key={date}
                   date={date}
-                  meals={allMeals}
+                  meals={meals}
                   selectedMeals={selectedMeals[date] ?? []}
                   onToggleMeal={(mealId) => toggleMeal(date, mealId)}
                 />
@@ -133,6 +161,9 @@ export const Planner = () => {
           )}
         </Flex>
       </Flex>
+      {dateRange.length > 0 && !isLoading && (
+        <PlannerFooter isSubmitEnabled={isSubmitEnabled} onSubmit={handleSubmit} />
+      )}
     </Flex>
   )
 }

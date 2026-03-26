@@ -1,4 +1,5 @@
 export { DateRangeSelector } from "./DateRangeSelector"
 export { MealDayCard } from "./MealDayCard"
 export { MealRow } from "./MealRow"
+export { PlannerFooter } from "./PlannerFooter"
 export { PlannerHeader } from "./PlannerHeader"
