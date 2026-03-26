@@ -7,14 +7,12 @@ interface Meal {
   id: number
   description: string
   price: number
-  is_vegetarian: boolean // ← promijenjeno iz isVegetarian
+  is_vegetarian: boolean
 }
-
-// DayMeal interface OBRISAN — više ne trebamo wrapper
 
 interface MealDayCardProps {
   date: string
-  meals: Meal[] // ← bilo DayMeal[], sad Meal[]
+  meals: Meal[]
   selectedMeals: number[]
   onToggleMeal: (mealId: number) => void
 }
@@ -56,7 +54,7 @@ export const MealDayCard = ({ date, meals, selectedMeals, onToggleMeal }: MealDa
         </Flex>
       </Flex>
 
-      {/* Meal rows — sad iteriramo direktno po meal objektima */}
+      {/* Meals list */}
       {meals.map((meal) => (
         <MealRow
           key={meal.id}
