@@ -35,7 +35,7 @@ export const CanteenPage = () => {
         </Text>
         <Text textStyle="body.large">Choose your meals for the upcoming work week.</Text>
       </Flex>
-      <MealSelectionForm plan={mockMealOptions.plan} />
+      {data.order ? <ConfirmedOrder order={data.order} /> : <MealSelectionForm plan={data?.plan} />}
     </Flex>
   )
 }

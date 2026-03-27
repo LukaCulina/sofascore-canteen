@@ -5,7 +5,10 @@ interface IconRadioFilledProps extends IconProps {
   fill?: ColorToken
 }
 
-export const IconRadioFilled = ({ fill = "primary.default", ...props }: IconRadioFilledProps) => {
+export const IconCircleCheckFilled = ({
+  fill = "primary.default",
+  ...props
+}: IconRadioFilledProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

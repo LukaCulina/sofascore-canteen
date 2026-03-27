@@ -1,5 +1,5 @@
 import { useId } from "react"
-import { IconRadioFilled, IconVeganMealSelector } from "@/components/icons"
+import { IconCircleCheckFilled, IconVeganMealSelector } from "@/components/icons"
 import { Text } from "@/components/ui"
 import { formatPrice } from "@/lib/formatPrice"
 import { Flex } from "@/styled-system/jsx"
@@ -51,7 +51,7 @@ export function MealItem({
             className="peer"
           />
           <S.RadioIcon className="radioIcon">
-            <IconRadioFilled width={19} height={19} />
+            <IconCircleCheckFilled width={19} height={19} />
           </S.RadioIcon>
         </S.RadioWrap>
       </Flex>
