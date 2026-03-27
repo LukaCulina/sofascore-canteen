@@ -15,7 +15,7 @@ export const mealSelectionReducer = (
   switch (action.type) {
     case "INIT": {
       const base: Record<number, number | null> = {}
-      for (const day of action.payload.planDay) {
+      for (const day of action.payload.plan_day) {
         base[day.id] = null
       }
       return { selections: base }
