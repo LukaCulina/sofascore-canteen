@@ -1,7 +1,7 @@
 import { type Dispatch, memo, useCallback } from "react"
 import type { PlanDay } from "@/lib/types/mealOptions"
-import { DateItem } from "@/pages/Canteen/MealSelection/DateItem.tsx"
-import { MealItem } from "@/pages/Canteen/MealSelection/MealItem"
+import { DateItem } from "@/pages/Canteen/components/MealSelection/DateItem.tsx"
+import { MealItem } from "@/pages/Canteen/components/MealSelection/MealItem"
 import type { MealSelectionAction } from "@/pages/Canteen/mealSelectionReducer.ts"
 import { Flex } from "@/styled-system/jsx"
 
@@ -25,16 +25,16 @@ export const MealSelection = memo(function MealSelection({
   return (
     <Flex direction="column" rounded="lg" divideY={1} divideColor="neutrals.nLv4">
       <DateItem date={new Date(item.day)} />
-      {item.dayMeal.map((meal) => (
+      {item.day_meal.map((meal) => (
         <MealItem
-          key={meal.id}
+          key={meal.meal.id}
           title={meal.meal.description}
           price={meal.meal.price}
-          image={meal.meal.imageUrl}
-          isVegan={meal.meal.isVegetarian}
+          image={meal.meal.image_url}
+          isVegan={meal.meal.is_vegetarian}
           onChange={handleMealChange}
-          mealId={meal.id}
-          checked={selectedMealId === meal.id}
+          mealId={meal.meal.id}
+          checked={selectedMealId === meal.meal.id}
         />
       ))}
       <MealItem
