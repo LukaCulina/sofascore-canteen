@@ -189,15 +189,6 @@ export default defineConfig({
     },
     extend: {
       tokens: {
-        sizes: {
-          "2xs": { value: "2px" },
-          xs: { value: "4px" },
-          sm: { value: "8px" },
-          md: { value: "12px" },
-          lg: { value: "16px" },
-          xl: { value: "24px" },
-          "4xl": { value: "48px" },
-        },
         spacing: {
           "2xs": { value: "2px" },
           xs: { value: "4px" },
@@ -214,6 +205,15 @@ export default defineConfig({
           sm: { value: "8px" },
           md: { value: "12px" },
           lg: { value: "16px" },
+        },
+        sizes: {
+          "2xs": { value: "2px" },
+          xs: { value: "4px" },
+          sm: { value: "8px" },
+          md: { value: "12px" },
+          lg: { value: "16px" },
+          xl: { value: "24px" },
+          "4xl": { value: "48px" },
         },
       },
     },
