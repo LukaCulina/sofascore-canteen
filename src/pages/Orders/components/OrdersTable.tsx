@@ -1,30 +1,21 @@
 import { useMemo } from "react"
 import { useIntl } from "react-intl"
-import useSWR from "swr"
-import { getJson } from "@/api/http-client"
 import { getOrders } from "@/api/routes"
 import { Spinner } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
-import { useAuthStore } from "@/stores/auth"
+import { useAuthSWR } from "@/hooks/useAuthSWR"
 import { Box } from "@/styled-system/jsx/box"
 import { Flex } from "@/styled-system/jsx/flex"
-import { Table, Td, Th, Tr } from "../styles"
+import { GreyText, Table, Td, Th, Tr } from "../styles"
 
 import type { ProcessedOrder, RawOrder } from "../types"
 import { OrderCard } from "./OrderCard"
 import { OrderRow } from "./OrderRow"
 
 export const OrdersTable = () => {
-  const { token } = useAuthStore()
   const intl = useIntl()
 
-  const { data, isLoading, error } = useSWR(token ? getOrders() : null, (url) =>
-    getJson<{ orders: RawOrder[] }>(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }),
-  )
+  const { data, isLoading, error } = useAuthSWR<{ orders: RawOrder[] }>(getOrders())
 
   const formatDate = (timestamp: number) =>
     intl.formatDate(new Date(timestamp * 1000), {
@@ -133,8 +124,8 @@ export const OrdersTable = () => {
             <Tr>
               <Td colSpan={5}>Totals</Td>
               <Td>{totals.meals}</Td>
-              <Td color="status.success.default">€{totals.discount}</Td>
-              <Td textAlign="right">€{totals.total}</Td>
+              <Td color="status.success.default">€{totals.discount.toFixed(2)}</Td>
+              <Td textAlign="right">€{totals.total.toFixed(2)}</Td>
             </Tr>
           </tbody>
         </Table>
@@ -155,10 +146,15 @@ export const OrdersTable = () => {
           justify="space-between"
           align="center"
         >
-          <Text textStyle="display.medium">Totals</Text>
-          <Flex direction="column" align="end" gap="sm">
-            <Text>{totals.meals} meals</Text>
-            <Text textStyle="display.large">€{totals.total}</Text>
+          <Flex direction="row" align="end" gap="xl">
+            <Text textStyle="display.medium">Totals</Text>
+            <GreyText>{totals.meals} meals</GreyText>
+          </Flex>
+          <Flex direction="column" align="end" gap="xs">
+            <Text textStyle="display.large">€{totals.total.toFixed(2)}</Text>
+            <Text textStyle="assistive.default" color="status.success.default">
+              €{totals.discount.toFixed(2)}
+            </Text>
           </Flex>
         </Flex>
       </Flex>
