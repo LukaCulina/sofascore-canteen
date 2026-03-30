@@ -1,14 +1,14 @@
 import { type ColorToken, token } from "@/styled-system/tokens"
 import type { IconProps } from "./interface"
 
-interface IconRadioFilledProps extends IconProps {
+interface IconCircleCheckFilledProps extends IconProps {
   fill?: ColorToken
 }
 
 export const IconCircleCheckFilled = ({
   fill = "primary.default",
   ...props
-}: IconRadioFilledProps) => {
+}: IconCircleCheckFilledProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

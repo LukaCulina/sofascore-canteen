@@ -16,7 +16,7 @@ interface MealSelectionFormProps {
 
 export function MealSelectionForm({ plan }: Readonly<MealSelectionFormProps>) {
   const [state, dispatch] = useReducer(mealSelectionReducer, initialMealSelectionState)
-  const { trigger, isMutating } = useAuthSWRMutation<
+  const { trigger, isMutating, error } = useAuthSWRMutation<
     { planId: number; isDraft: boolean; selections: Record<string, number | null> },
     { success: boolean; orderId: number; message: string }
   >(order())
@@ -24,6 +24,11 @@ export function MealSelectionForm({ plan }: Readonly<MealSelectionFormProps>) {
   useEffect(() => {
     dispatch({ type: "INIT", payload: plan })
   }, [plan])
+
+  if (error) {
+    // alert until toast component is implemented
+    alert("Something went wrong, please try again later")
+  }
 
   return (
     <form
