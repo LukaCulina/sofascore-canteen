@@ -29,7 +29,6 @@ export function MealSelectionForm({ plan }: Readonly<MealSelectionFormProps>) {
     <form
       onSubmit={(e) => {
         e.preventDefault()
-        console.log({ planId: plan.id, isDraft: false, selections: state.selections })
         trigger({ planId: plan.id, isDraft: false, selections: state.selections })
       }}
     >
