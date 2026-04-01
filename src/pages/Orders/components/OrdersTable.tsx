@@ -51,7 +51,7 @@ export const OrdersTable = () => {
 
       return {
         id: order.id,
-        user: order.user?.name ?? `${order.user_id}...`,
+        user: order.user?.name ?? `${order.user_id}`,
         period: formatPeriod(order.plan.period_start, order.plan.period_end),
         submitted: formatDate(order.submitted_at),
         meals: numMeals,

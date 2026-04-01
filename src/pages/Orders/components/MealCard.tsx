@@ -1,6 +1,5 @@
 import { useIntl } from "react-intl"
-import { Button, P, Text } from "@/components/ui"
-import { Badge } from "@/components/ui/Badge"
+import { Badge, Button, P, Text } from "@/components/ui"
 import { Box, Flex } from "@/styled-system/jsx"
 import { GreyText } from "../styles"
 import type { OrderSelection } from "../types"
