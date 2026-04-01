@@ -1,5 +1,6 @@
 import { useIntl } from "react-intl"
 import { Button, P, Text } from "@/components/ui"
+import { Badge } from "@/components/ui/Badge"
 import { Box, Flex } from "@/styled-system/jsx"
 import { GreyText } from "../styles"
 import type { OrderSelection } from "../types"
@@ -32,13 +33,13 @@ export const MealCard = ({ selection }: MealCardProps) => {
     >
       <Flex align="center" gap="sm">
         <GreyText>{formattedMealDate}</GreyText>
-        {unpaid && <Button variant="error">Not Paid</Button>}
+        {unpaid && <Badge>Not Paid</Badge>}
       </Flex>
       <Box>
         <P textStyle="display.small">{meal.description}</P>
         <GreyText>€{finalPrice.toFixed(2)}</GreyText>
       </Box>
-      <Button variant="outline" px="md" width="115px">
+      <Button variant="outline" px="md" width="fit-content">
         <Text textStyle="assistive.default" color="primary.default">
           Leave Feedback
         </Text>

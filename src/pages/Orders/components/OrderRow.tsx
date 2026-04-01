@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
-import { Button, P } from "@/components/ui/"
+import { P } from "@/components/ui/"
+import { Badge } from "@/components/ui/Badge"
 import { Flex } from "@/styled-system/jsx"
 import { Td, Tr } from "../styles"
 import type { ProcessedOrder } from "../types"
@@ -25,7 +26,7 @@ export const OrderRow = ({ order }: OrderRowProps) => {
         <Td>
           <Flex justify="space-between" align="center" gap="sm">
             #{order.id}
-            {order.hasUnpaid && <Button variant="error">Not Paid</Button>}
+            {order.hasUnpaid && <Badge>Not Paid</Badge>}
           </Flex>
         </Td>
         <Td>{order.user}</Td>

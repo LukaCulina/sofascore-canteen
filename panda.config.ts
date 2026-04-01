@@ -223,6 +223,7 @@ export default defineConfig({
           sm: { value: "8px" },
           md: { value: "12px" },
           lg: { value: "16px" },
+          xl: { value: "24px" },
         },
         sizes: {
           "2xs": { value: "2px" },

@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
-import { Button, P, Text } from "@/components/ui/"
+import { P, Text } from "@/components/ui/"
+import { Badge } from "@/components/ui/Badge"
 import { Box, Flex } from "@/styled-system/jsx"
 import { GreyText } from "../styles"
 import type { ProcessedOrder } from "../types"
@@ -34,7 +35,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
         <Flex direction="column" gap="sm">
           <Flex align="center" gap="md">
             <Text textStyle="display.medium">#{order.id}</Text>
-            {order.hasUnpaid && <Button variant="error">Not Paid</Button>}
+            {order.hasUnpaid && <Badge>Not Paid</Badge>}
           </Flex>
           <Text textStyle="body.medium">{order.user}</Text>
           <Flex direction="column" gap="sm">
