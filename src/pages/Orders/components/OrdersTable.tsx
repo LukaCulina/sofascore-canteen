@@ -1,13 +1,12 @@
 import { useMemo } from "react"
 import { useIntl } from "react-intl"
+import useSWR from "swr"
 import { getOrders } from "@/api/routes"
 import { Spinner } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
-import { useAuthSWR } from "@/hooks/useAuthSWR"
 import { Box } from "@/styled-system/jsx/box"
 import { Flex } from "@/styled-system/jsx/flex"
 import { GreyText, Table, Td, Th, Tr } from "../styles"
-
 import type { ProcessedOrder, RawOrder } from "../types"
 import { OrderCard } from "./OrderCard"
 import { OrderRow } from "./OrderRow"
@@ -15,7 +14,7 @@ import { OrderRow } from "./OrderRow"
 export const OrdersTable = () => {
   const intl = useIntl()
 
-  const { data, isLoading, error } = useAuthSWR<{ orders: RawOrder[] }>(getOrders())
+  const { data, isLoading, error } = useSWR<{ orders: RawOrder[] }>(getOrders())
 
   const formatDate = (timestamp: number) =>
     intl.formatDate(new Date(timestamp * 1000), {
@@ -52,7 +51,7 @@ export const OrdersTable = () => {
 
       return {
         id: order.id,
-        user: order.user?.name ?? `${order.user_id.slice(0, 8)}...`,
+        user: order.user?.name ?? `${order.user_id}...`,
         period: formatPeriod(order.plan.period_start, order.plan.period_end),
         submitted: formatDate(order.submitted_at),
         meals: numMeals,
@@ -62,7 +61,7 @@ export const OrdersTable = () => {
         hasUnpaid: order.order_selection.some((sel) => sel.unpaid),
       }
     })
-  }, [data, intl])
+  }, [data, intl.locale])
 
   const totals = useMemo(
     () =>
@@ -80,7 +79,7 @@ export const OrdersTable = () => {
   if (isLoading) {
     return (
       <Flex justify="center" align="center" direction="column" p="4xl" gap="md">
-        <Spinner></Spinner>
+        <Spinner />
         <Text>Loading...</Text>
       </Flex>
     )
