@@ -50,6 +50,8 @@ export const Planner = () => {
   const [endDate, setEndDate] = useState("")
   const [error, setError] = useState("")
   const [selectedMeals, setSelectedMeals] = useState<Record<string, number[]>>({})
+  const [submitError, setSubmitError] = useState("")
+  const [submitSuccess, setSubmitSuccess] = useState(false)
 
   const dateRange = startDate && endDate && !error ? getDateRange(startDate, endDate) : []
   const { meals, isLoading } = useMeals(dateRange.length > 0)
@@ -86,6 +88,9 @@ export const Planner = () => {
     dateRange.length > 0 && dateRange.every((date) => (selectedMeals[date] ?? []).length > 0)
 
   const handleSubmit = async () => {
+    setSubmitError("")
+    setSubmitSuccess(false)
+
     const body = {
       periodStart: startDate,
       periodEnd: endDate,
@@ -97,9 +102,10 @@ export const Planner = () => {
 
     try {
       await postJson(plans(), body)
+      setSubmitSuccess(true)
       handleClear()
-    } catch (err) {
-      console.error("Failed to create plan:", err)
+    } catch {
+      setSubmitError("Failed to create plan. Please try again.")
     }
   }
 
@@ -116,6 +122,8 @@ export const Planner = () => {
           onStartDateChange={handleStartDate}
           onEndDateChange={handleEndDate}
           onClear={handleClear}
+          success={submitSuccess}
+          submitError={submitError}
         />
 
         {/* Right — Meals */}

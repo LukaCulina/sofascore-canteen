@@ -12,6 +12,8 @@ interface DateRangeSelectorProps {
   onStartDateChange: (value: string) => void
   onEndDateChange: (value: string) => void
   onClear: () => void
+  success?: boolean
+  submitError?: string
 }
 
 export const DateRangeSelector = ({
@@ -22,6 +24,8 @@ export const DateRangeSelector = ({
   onStartDateChange,
   onEndDateChange,
   onClear,
+  success,
+  submitError,
 }: DateRangeSelectorProps) => {
   return (
     <Box minW={{ base: "100%", md: "388px" }} p="lg">
@@ -53,6 +57,20 @@ export const DateRangeSelector = ({
           <Text textStyle="assistive.default" color="status.alert">
             {error}
           </Text>
+        )}
+        {success && (
+          <Flex align="center" gap="sm" p="lg" bg="status.success.highlight" borderRadius="sm">
+            <Text textStyle="body.medium" color="status.success.default">
+              Plan created successfully!
+            </Text>
+          </Flex>
+        )}
+        {submitError && (
+          <Flex align="center" gap="sm" p="lg" bg="status.error.highlight" borderRadius="sm">
+            <Text textStyle="body.medium" color="status.error.default">
+              {submitError}
+            </Text>
+          </Flex>
         )}
         {hasDateRange && (
           <Button variant="outline" onClick={onClear}>
