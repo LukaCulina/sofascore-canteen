@@ -5,4 +5,6 @@ export interface Meal {
   is_vegetarian: boolean
   discount: number
   image_url: string
+  average_rating?: number
+  review_count?: number
 }

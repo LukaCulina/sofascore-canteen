@@ -1,1 +1,23 @@
 @layer reset, base, tokens, recipes, utilities;
+
+@font-face {
+  font-family: "SofascoreSans";
+  src: url("/fonts/SofascoreSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+}
+  
+@font-face {
+  font-family: "SofascoreSans";
+  src: url("/fonts/SofascoreSans-Medium.woff2") format("woff2");
+  font-weight: 500;
+}
+  
+@font-face {
+  font-family: "SofascoreSans";
+  src: url("/fonts/SofascoreSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+}
+  
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+}

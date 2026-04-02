@@ -4,7 +4,7 @@ const textStyles = defineTextStyles({
   display: {
     extraLarge: {
       value: {
-        fontFamily: "sans",
+        fontFamily: "SofascoreSans",
         fontSize: "2xl",
         fontWeight: 700,
         lineHeight: 1.14,
@@ -13,6 +13,7 @@ const textStyles = defineTextStyles({
     },
     large: {
       value: {
+        fontFamily: "SofascoreSans",
         fontSize: "18px",
         fontWeight: "bold",
         lineHeight: "24px",
@@ -21,6 +22,7 @@ const textStyles = defineTextStyles({
     },
     medium: {
       value: {
+        fontFamily: "SofascoreSans",
         fontSize: "lg",
         fontWeight: "bold",
         lineHeight: "20px",
@@ -29,6 +31,7 @@ const textStyles = defineTextStyles({
     },
     small: {
       value: {
+        fontFamily: "SofascoreSans",
         fontSize: "14px",
         fontWeight: "bold",
         lineHeight: "16px",
@@ -37,6 +40,7 @@ const textStyles = defineTextStyles({
     },
     micro: {
       value: {
+        fontFamily: "SofascoreSans",
         fontSize: "12px",
         fontWeight: 700,
         lineHeight: "14px",
@@ -47,6 +51,7 @@ const textStyles = defineTextStyles({
   assistive: {
     default: {
       value: {
+        fontFamily: "SofascoreSans",
         fontSize: "12px",
         fontWeight: 550,
         lineHeight: "16px",
@@ -57,6 +62,7 @@ const textStyles = defineTextStyles({
   body: {
     large: {
       value: {
+        fontFamily: "SofascoreSans",
         fontSize: "lg",
         fontWeight: "normal",
         lineHeight: "20px",
@@ -65,14 +71,16 @@ const textStyles = defineTextStyles({
     },
     medium: {
       value: {
+        fontFamily: "SofascoreSans",
         fontSize: "14px",
-        fontWeight: "normal",
+        fontWeight: "400",
         lineHeight: "16px",
         letterSpacing: "-0.2px",
       },
     },
     small: {
       value: {
+        fontFamily: "SofascoreSans",
         fontSize: "12px",
         fontWeight: "normal",
         lineHeight: "16px",
@@ -83,6 +91,7 @@ const textStyles = defineTextStyles({
   label: {
     medium: {
       value: {
+        fontFamily: "SofascoreSans",
         fontSize: "14px",
         fontWeight: "bold",
         lineHeight: "24px",
@@ -161,19 +170,28 @@ export default defineConfig({
           success: {
             default: { value: { base: "#15B168", _dark: "#39B57A" } },
             highlight: {
-              value: { base: "rgba(21, 177, 104, 0.1)", _dark: "rgba(57, 181, 122, 0.1)" },
+              value: {
+                base: "rgba(21, 177, 104, 0.1)",
+                _dark: "rgba(57, 181, 122, 0.1)",
+              },
             },
           },
           error: {
             default: { value: { base: "#C7361F", _dark: "#E35C47" } },
             highlight: {
-              value: { base: "rgba(199, 54, 31, 0.1)", _dark: "rgba(227, 92, 71, 0.1)" },
+              value: {
+                base: "rgba(199, 54, 31, 0.1)",
+                _dark: "rgba(227, 92, 71, 0.1)",
+              },
             },
           },
           alert: {
             default: { value: { base: "#C7921F", _dark: "#DBAA3F" } },
             highlight: {
-              value: { base: "rgba(199, 146, 31, 0.1)", _dark: "rgba(255, 117, 0, 0.1)" },
+              value: {
+                base: "rgba(199, 146, 31, 0.1)",
+                _dark: "rgba(255, 117, 0, 0.1)",
+              },
             },
           },
         },
@@ -189,15 +207,6 @@ export default defineConfig({
     },
     extend: {
       tokens: {
-        sizes: {
-          "2xs": { value: "2px" },
-          xs: { value: "4px" },
-          sm: { value: "8px" },
-          md: { value: "12px" },
-          lg: { value: "16px" },
-          xl: { value: "24px" },
-          "4xl": { value: "48px" },
-        },
         spacing: {
           "2xs": { value: "2px" },
           xs: { value: "4px" },
@@ -214,6 +223,21 @@ export default defineConfig({
           sm: { value: "8px" },
           md: { value: "12px" },
           lg: { value: "16px" },
+        },
+        sizes: {
+          "2xs": { value: "2px" },
+          xs: { value: "4px" },
+          sm: { value: "8px" },
+          md: { value: "12px" },
+          lg: { value: "16px" },
+          xl: { value: "24px" },
+          "4xl": { value: "48px" },
+        },
+      },
+      keyframes: {
+        rotation: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
         },
       },
     },

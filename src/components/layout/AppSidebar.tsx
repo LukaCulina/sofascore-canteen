@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router"
-import { IconSofascore } from "@/components/icons"
+import { IconMealCatalog, IconSofascore } from "@/components/icons"
 import { Text } from "@/components/ui/Text"
 import { Role, useAuthStore } from "@/stores/auth"
 import { css, cx } from "@/styled-system/css"
@@ -20,6 +20,12 @@ const navItems: NavItem[] = [
   { to: "/", icon: IconCanteen, label: "Canteen" },
   { to: "/planner", icon: IconPlanner, label: "Planner", roles: [Role.ADMIN, Role.CATERING] },
   { to: "/orders", icon: IconOrders, label: "My Orders", roles: [Role.EMPLOYEE, Role.CATERING] },
+  {
+    to: "/catering/catalog",
+    icon: IconMealCatalog,
+    label: "Meal Catalog",
+    roles: [Role.CATERING, Role.ADMIN],
+  },
 ] as const
 
 interface AppSidebarProps {
