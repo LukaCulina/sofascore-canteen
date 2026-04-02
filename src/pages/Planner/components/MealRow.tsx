@@ -20,6 +20,8 @@ export const MealRow = ({ meal, isSelected, onToggle }: MealRowProps) => {
       borderBottom="1px solid"
       borderColor="neutrals.nLv4"
       _last={{ borderBottom: "none" }}
+      cursor="pointer"
+      onClick={onToggle}
     >
       <input
         type="checkbox"
