@@ -2,6 +2,7 @@ import { useState } from "react"
 import { postJson } from "@/api/http-client"
 import { plans } from "@/api/routes"
 import { IconPlanner } from "@/components/icons"
+import { Spinner } from "@/components/spinner"
 import { Text } from "@/components/ui/Text"
 import { Flex } from "@/styled-system/jsx"
 import { DateRangeSelector, MealDayCard, PlannerHeader } from "./components"
@@ -151,7 +152,7 @@ export const Planner = () => {
           {isLoading ? (
             <Flex align="center" justify="center" p="2xl">
               <Text textStyle="body.medium" color="neutrals.nLv3">
-                Loading meals...
+                <Spinner /> Loading meals...
               </Text>
             </Flex>
           ) : mealsError ? (
