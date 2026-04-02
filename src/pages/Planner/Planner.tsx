@@ -7,6 +7,7 @@ import { Flex } from "@/styled-system/jsx"
 import { DateRangeSelector, MealDayCard, PlannerHeader } from "./components"
 import { PlannerFooter } from "./components/PlannerFooter"
 import { useMeals } from "./hooks/useMeals"
+import { usePlans } from "./hooks/usePlans"
 
 const MAX_DAYS = 5
 
@@ -56,6 +57,18 @@ export const Planner = () => {
   const dateRange = startDate && endDate && !error ? getDateRange(startDate, endDate) : []
   const { meals, isLoading, error: mealsError } = useMeals(dateRange.length > 0)
 
+  const { plans: existingPlans } = usePlans()
+
+  const hasOverlap =
+    dateRange.length > 0 &&
+    existingPlans.some((plan) => {
+      const planStart = new Date(plan.period_start * 1000)
+      const planEnd = new Date(plan.period_end * 1000)
+      const newStart = new Date(startDate)
+      const newEnd = new Date(endDate)
+      return newStart <= planEnd && newEnd >= planStart
+    })
+
   const handleStartDate = (value: string) => {
     setStartDate(value)
     setError(validateRange(value, endDate))
@@ -85,7 +98,9 @@ export const Planner = () => {
   }
 
   const isSubmitEnabled =
-    dateRange.length > 0 && dateRange.every((date) => (selectedMeals[date] ?? []).length > 0)
+    dateRange.length > 0 &&
+    !hasOverlap &&
+    dateRange.every((date) => (selectedMeals[date] ?? []).length > 0)
 
   const handleSubmit = async () => {
     setSubmitError("")
@@ -124,6 +139,7 @@ export const Planner = () => {
           onClear={handleClear}
           success={submitSuccess}
           submitError={submitError}
+          overlapError={hasOverlap ? "A plan already exists for the selected dates." : ""}
         />
 
         {/* Right — Meals */}

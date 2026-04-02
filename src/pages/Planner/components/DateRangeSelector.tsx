@@ -14,6 +14,7 @@ interface DateRangeSelectorProps {
   onClear: () => void
   success?: boolean
   submitError?: string
+  overlapError?: string
 }
 
 export const DateRangeSelector = ({
@@ -26,6 +27,7 @@ export const DateRangeSelector = ({
   onClear,
   success,
   submitError,
+  overlapError,
 }: DateRangeSelectorProps) => {
   return (
     <Box minW={{ base: "100%", md: "388px" }} p="lg">
@@ -76,6 +78,13 @@ export const DateRangeSelector = ({
           <Button variant="outline" onClick={onClear}>
             Clear dates
           </Button>
+        )}
+        {overlapError && (
+          <Flex align="center" gap="sm" p="lg" bg="status.error.highlight" borderRadius="sm">
+            <Text textStyle="assistive.default" color="status.error.default">
+              {overlapError}
+            </Text>
+          </Flex>
         )}
       </Flex>
     </Box>
