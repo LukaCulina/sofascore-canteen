@@ -54,7 +54,7 @@ export const Planner = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false)
 
   const dateRange = startDate && endDate && !error ? getDateRange(startDate, endDate) : []
-  const { meals, isLoading } = useMeals(dateRange.length > 0)
+  const { meals, isLoading, error: mealsError } = useMeals(dateRange.length > 0)
 
   const handleStartDate = (value: string) => {
     setStartDate(value)
@@ -136,6 +136,12 @@ export const Planner = () => {
             <Flex align="center" justify="center" p="2xl">
               <Text textStyle="body.medium" color="neutrals.nLv3">
                 Loading meals...
+              </Text>
+            </Flex>
+          ) : mealsError ? (
+            <Flex align="center" justify="center" p="2xl">
+              <Text textStyle="body.medium" color="status.error.default">
+                Failed to load meals. Please try again.
               </Text>
             </Flex>
           ) : dateRange.length === 0 ? (
