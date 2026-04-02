@@ -2,9 +2,9 @@ export interface Meal {
   id: number
   price: number
   discount: number
-  imageUrl: string
+  image_url: string
   description: string
-  isVegetarian: boolean
+  is_vegetarian: boolean
   averageRating?: number
   reviewCount?: number
 }

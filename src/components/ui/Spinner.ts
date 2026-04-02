@@ -9,6 +9,6 @@ export const Spinner = styled("div", {
     borderColor: "neutrals.nLv4",
     borderTopColor: "primary.default",
     borderRadius: "50%",
-    animation: "spin 0.8s linear infinite",
+    animation: "rotation 0.8s linear infinite",
   },
 })
