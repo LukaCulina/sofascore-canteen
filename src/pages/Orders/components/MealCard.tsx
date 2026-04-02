@@ -1,19 +1,19 @@
 import { useIntl } from "react-intl"
-import { Button, P, Text } from "@/components/ui"
+import { Badge, Button, P, Text } from "@/components/ui"
 import { Box, Flex } from "@/styled-system/jsx"
 import { GreyText } from "../styles"
-import type { Meal, PlanDay } from "../types"
+import type { OrderSelection } from "../types"
 
 interface MealCardProps {
-  meal: Meal
-  planDay: PlanDay
+  selection: OrderSelection
 }
 
-export const MealCard = ({ meal, planDay }: MealCardProps) => {
+export const MealCard = ({ selection }: MealCardProps) => {
   const intl = useIntl()
+  const { meal, plan_day, unpaid } = selection
 
   const finalPrice = (meal.price * (100 - meal.discount)) / 100
-  const formattedMealDate = intl.formatDate(new Date(planDay.day), {
+  const formattedMealDate = intl.formatDate(new Date(plan_day.day * 1000), {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -23,19 +23,22 @@ export const MealCard = ({ meal, planDay }: MealCardProps) => {
     <Flex
       p="lg"
       border="1px solid"
-      borderColor="neutrals.nLv4"
+      borderColor={unpaid ? "status.error.default" : "neutrals.nLv4"}
       borderRadius="lg"
-      bg="surface.s1"
+      bg={unpaid ? "status.error.highlight" : "surface.s1"}
       gap="sm"
       direction="column"
       width={{ base: "100%", lg: "31%" }}
     >
-      <GreyText>{formattedMealDate}</GreyText>
+      <Flex align="center" gap="sm">
+        <GreyText>{formattedMealDate}</GreyText>
+        {unpaid && <Badge>Not Paid</Badge>}
+      </Flex>
       <Box>
         <P textStyle="display.small">{meal.description}</P>
         <GreyText>€{finalPrice.toFixed(2)}</GreyText>
       </Box>
-      <Button variant="outline" px="md" width="115px">
+      <Button variant="outline" px="md" width="fit-content">
         <Text textStyle="assistive.default" color="primary.default">
           Leave Feedback
         </Text>
