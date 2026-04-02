@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
-import { P } from "@/components/ui/Text"
+import { Badge, P } from "@/components/ui/"
 import { Flex } from "@/styled-system/jsx"
 import { Td, Tr } from "../styles"
 import type { ProcessedOrder } from "../types"
@@ -16,9 +16,18 @@ export const OrderRow = ({ order }: OrderRowProps) => {
 
   return (
     <>
-      <Tr onClick={() => setIsExpanded(!isExpanded)} cursor="pointer" bg="surface.s1">
+      <Tr
+        onClick={() => setIsExpanded(!isExpanded)}
+        cursor="pointer"
+        bg={order.hasUnpaid ? "status.error.highlight" : "surface.s1"}
+      >
         <Td w="72px">{isExpanded ? <IconArrowUp /> : <IconArrowDown />}</Td>
-        <Td>#{order.id}</Td>
+        <Td>
+          <Flex justify="space-between" align="center" gap="sm">
+            #{order.id}
+            {order.hasUnpaid && <Badge>Not Paid</Badge>}
+          </Flex>
+        </Td>
         <Td>{order.user}</Td>
         <Td>{order.period}</Td>
         <Td>{order.submitted}</Td>
@@ -43,11 +52,7 @@ export const OrderRow = ({ order }: OrderRowProps) => {
                 </P>
                 <Flex p="lg" direction="row" flexWrap="wrap" gap="lg" w="100%">
                   {order.orderSelection.map((selection) => (
-                    <MealCard
-                      key={selection.id}
-                      meal={selection.meal}
-                      planDay={selection.planDay}
-                    />
+                    <MealCard key={selection.id} selection={selection} />
                   ))}
                 </Flex>
               </motion.div>

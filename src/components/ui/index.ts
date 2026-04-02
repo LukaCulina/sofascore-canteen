@@ -1,4 +1,6 @@
+export { Badge } from "./Badge"
 export { Button } from "./Button"
 export { Input } from "./Input"
 export { MealCard } from "./MealCard"
+export { Spinner } from "./Spinner"
 export * from "./Text"

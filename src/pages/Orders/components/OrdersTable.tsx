@@ -1,21 +1,23 @@
 import { useMemo } from "react"
 import { useIntl } from "react-intl"
+import useSWR from "swr"
+import { getOrders } from "@/api/routes"
+import { Spinner } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
-import { mockOrders } from "@/mocks/orders"
-import { useAuthStore } from "@/stores/auth"
 import { Box } from "@/styled-system/jsx/box"
 import { Flex } from "@/styled-system/jsx/flex"
-import { Table, Td, Th, Tr } from "../styles"
+import { GreyText, Table, Td, Th, Tr } from "../styles"
 import type { ProcessedOrder, RawOrder } from "../types"
 import { OrderCard } from "./OrderCard"
 import { OrderRow } from "./OrderRow"
 
 export const OrdersTable = () => {
-  const { user } = useAuthStore()
   const intl = useIntl()
 
+  const { data, isLoading, error } = useSWR<{ orders: RawOrder[] }>(getOrders())
+
   const formatDate = (timestamp: number) =>
-    intl.formatDate(new Date(timestamp), {
+    intl.formatDate(new Date(timestamp * 1000), {
       month: "short",
       day: "numeric",
       year: "numeric",
@@ -25,44 +27,41 @@ export const OrdersTable = () => {
     })
 
   const formatPeriod = (start: number, end: number) =>
-    `${intl.formatDate(new Date(start), {
+    `${intl.formatDate(new Date(start * 1000), {
       month: "short",
       day: "numeric",
-    })} - ${intl.formatDate(new Date(end), {
+    })} - ${intl.formatDate(new Date(end * 1000), {
       month: "short",
       day: "numeric",
     })}`
 
   const orders = useMemo<ProcessedOrder[]>(() => {
-    if (!user?.id) return []
+    if (!data?.orders) return []
 
-    return (
-      mockOrders
-        //.filter(order => order.userId === user.id)
-        .map((order: RawOrder) => {
-          const numMeals = order.orderSelection.length
-          const totalPrice = order.orderSelection.reduce(
-            (sum, sel) => sum + (sel.meal.price * (100 - sel.meal.discount)) / 100,
-            0,
-          )
-          const totalDiscount = order.orderSelection.reduce(
-            (sum, sel) => sum + (sel.meal.price * sel.meal.discount) / 100,
-            0,
-          )
+    return data.orders.map((order: RawOrder) => {
+      const numMeals = order.order_selection.length
+      const totalPrice = order.order_selection.reduce(
+        (sum, sel) => sum + (sel.meal.price * (100 - sel.meal.discount)) / 100,
+        0,
+      )
+      const totalDiscount = order.order_selection.reduce(
+        (sum, sel) => sum + (sel.meal.price * sel.meal.discount) / 100,
+        0,
+      )
 
-          return {
-            id: order.id,
-            user: `${order.userId.slice(0, 8)}...`,
-            period: formatPeriod(order.plan.periodStart, order.plan.periodEnd),
-            submitted: formatDate(order.submittedAt),
-            meals: numMeals,
-            discount: Number(totalDiscount.toFixed(2)),
-            total: Number(totalPrice.toFixed(2)),
-            orderSelection: order.orderSelection,
-          }
-        })
-    )
-  }, [user?.id])
+      return {
+        id: order.id,
+        user: order.user?.name ?? `${order.user_id}`,
+        period: formatPeriod(order.plan.period_start, order.plan.period_end),
+        submitted: formatDate(order.submitted_at),
+        meals: numMeals,
+        discount: Number(totalDiscount.toFixed(2)),
+        total: Number(totalPrice.toFixed(2)),
+        orderSelection: order.order_selection,
+        hasUnpaid: order.order_selection.some((sel) => sel.unpaid),
+      }
+    })
+  }, [data, intl.locale])
 
   const totals = useMemo(
     () =>
@@ -76,6 +75,23 @@ export const OrdersTable = () => {
       ),
     [orders],
   )
+
+  if (isLoading) {
+    return (
+      <Flex justify="center" align="center" direction="column" p="4xl" gap="md">
+        <Spinner />
+        <Text>Loading...</Text>
+      </Flex>
+    )
+  }
+
+  if (error) {
+    return (
+      <Text textStyle="display.medium" color="status.error.default">
+        Failed to load orders
+      </Text>
+    )
+  }
 
   return (
     <Box>
@@ -107,8 +123,8 @@ export const OrdersTable = () => {
             <Tr>
               <Td colSpan={5}>Totals</Td>
               <Td>{totals.meals}</Td>
-              <Td color="status.success.default">€{totals.discount}</Td>
-              <Td textAlign="right">€{totals.total}</Td>
+              <Td color="status.success.default">€{totals.discount.toFixed(2)}</Td>
+              <Td textAlign="right">€{totals.total.toFixed(2)}</Td>
             </Tr>
           </tbody>
         </Table>
@@ -129,10 +145,15 @@ export const OrdersTable = () => {
           justify="space-between"
           align="center"
         >
-          <Text textStyle="display.medium">Totals</Text>
-          <Flex direction="column" align="end" gap="sm">
-            <Text>{totals.meals} meals</Text>
-            <Text textStyle="display.large">€{totals.total}</Text>
+          <Flex direction="row" align="end" gap="xl">
+            <Text textStyle="display.medium">Totals</Text>
+            <GreyText>{totals.meals} meals</GreyText>
+          </Flex>
+          <Flex direction="column" align="end" gap="xs">
+            <Text textStyle="display.large">€{totals.total.toFixed(2)}</Text>
+            <Text textStyle="assistive.default" color="status.success.default">
+              €{totals.discount.toFixed(2)}
+            </Text>
           </Flex>
         </Flex>
       </Flex>
