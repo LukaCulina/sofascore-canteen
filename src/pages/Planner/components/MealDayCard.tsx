@@ -1,14 +1,7 @@
 import { Text } from "@/components/ui/Text"
 import { Box, Flex } from "@/styled-system/jsx"
-
+import type { Meal } from "@/types/meal"
 import { MealRow } from "./MealRow"
-
-interface Meal {
-  id: number
-  description: string
-  price: number
-  is_vegetarian: boolean
-}
 
 interface MealDayCardProps {
   date: string

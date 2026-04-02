@@ -2,13 +2,7 @@ import { IconVegan } from "@/components/icons"
 import { Text } from "@/components/ui/Text"
 import { css } from "@/styled-system/css"
 import { Flex } from "@/styled-system/jsx"
-
-interface Meal {
-  id: number
-  description: string
-  price: number
-  is_vegetarian: boolean
-}
+import type { Meal } from "@/types/meal"
 
 interface MealRowProps {
   meal: Meal

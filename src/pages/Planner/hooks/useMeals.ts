@@ -1,22 +1,13 @@
 import useSWR from "swr"
 import { meals } from "@/api/routes"
-
-interface Meal {
-  id: number
-  description: string
-  price: number
-  is_vegetarian: boolean
-  discount: number
-  image_url: string
-}
+import type { Meal } from "@/types/meal"
 
 interface MealsResponse {
   meals: Meal[]
 }
 
 export const useMeals = (enabled: boolean = true) => {
-  const { data, error, isLoading } = useSWR<MealsResponse>(enabled ? meals() : null
-  )
+  const { data, error, isLoading } = useSWR<MealsResponse>(enabled ? meals() : null)
 
   return {
     meals: data?.meals ?? [],
