@@ -1,13 +1,17 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
-import { P, Text } from "@/components/ui/Text"
+import { Badge, P, Text } from "@/components/ui/"
 import { Box, Flex } from "@/styled-system/jsx"
 import { GreyText } from "../styles"
 import type { ProcessedOrder } from "../types"
 import { MealCard } from "./MealCard"
 
-export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
+interface OrderCardProps {
+  order: ProcessedOrder
+}
+
+export const OrderCard = ({ order }: OrderCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
@@ -18,7 +22,7 @@ export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
       borderColor="neutrals.nLv4"
       borderRadius="lg"
       overflow="hidden"
-      bg="surface.s1"
+      bg={order.hasUnpaid ? "status.error.highlight" : "surface.s1"}
     >
       <Flex
         p="lg"
@@ -30,19 +34,21 @@ export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
         <Flex direction="column" gap="sm">
           <Flex align="center" gap="md">
             <Text textStyle="display.medium">#{order.id}</Text>
-            <GreyText>{order.user}</GreyText>
+            {order.hasUnpaid && <Badge>Not Paid</Badge>}
           </Flex>
-          <GreyText>{order.submitted}</GreyText>
-          <Flex gap="4xl">
-            <GreyText>{order.period}</GreyText>
-            <GreyText>{order.meals} meals</GreyText>
+          <Text textStyle="body.medium">{order.user}</Text>
+          <Flex direction="column" gap="sm">
+            <Flex gap="xl">
+              <GreyText>{order.period}</GreyText>
+              <GreyText>{order.meals} meals</GreyText>
+            </Flex>
+            <GreyText>{order.submitted}</GreyText>
           </Flex>
         </Flex>
-
         <Flex direction="column" align="end" gap="xs">
           <Text textStyle="display.small">€{order.total.toFixed(2)}</Text>
           <Text textStyle="assistive.default" color="status.success.default">
-            -€{order.discount.toFixed(2)}
+            €{order.discount.toFixed(2)}
           </Text>
           {isExpanded ? <IconArrowUp /> : <IconArrowDown />}
         </Flex>
@@ -63,7 +69,7 @@ export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
               </P>
               <Flex direction="column" gap="md">
                 {order.orderSelection.map((selection) => (
-                  <MealCard key={selection.id} meal={selection.meal} planDay={selection.planDay} />
+                  <MealCard key={selection.id} selection={selection} />
                 ))}
               </Flex>
             </motion.div>

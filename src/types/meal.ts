@@ -2,11 +2,11 @@ export interface Meal {
   id: number
   description: string
   price: number
-  isVegetarian: boolean
+  is_vegetarian: boolean
   discount: number
-  imageUrl: string
-  averageRating?: number
-  reviewCount: number
+  image_url: string
+  average_rating?: number
+  review_count?: number
 }
 
 export interface MealApiResponse {

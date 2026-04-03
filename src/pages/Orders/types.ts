@@ -2,9 +2,9 @@ export interface Meal {
   id: number
   price: number
   discount: number
-  imageUrl: string
+  image_url: string
   description: string
-  isVegetarian: boolean
+  is_vegetarian: boolean
 }
 
 export interface PlanDay {
@@ -17,26 +17,31 @@ export interface OrderSelection {
   id: number
   meal: Meal
   order_id?: number
-  planDay: PlanDay
-  createdAt: number
+  plan_day: PlanDay
+  created_at: number
+  unpaid: boolean
 }
 
 export interface Plan {
   id: number
-  periodStart: number
-  periodEnd: number
+  period_start: number
+  period_end: number
 }
 
 export interface RawOrder {
   id: number
-  userId: string
-  planId?: number
+  user_id: string
+  plan_id?: number
   status: string
-  submittedAt: number
-  createdAt: number
-  updatedAt?: number
+  submitted_at: number
+  created_at: number
+  updated_at?: number
   plan: Plan
-  orderSelection: OrderSelection[]
+  order_selection: OrderSelection[]
+  user: {
+    name: string
+    email: string
+  }
 }
 
 export interface ProcessedOrder {
@@ -48,4 +53,5 @@ export interface ProcessedOrder {
   discount: number
   total: number
   orderSelection: OrderSelection[]
+  hasUnpaid: boolean
 }

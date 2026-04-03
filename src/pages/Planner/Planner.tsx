@@ -1,10 +1,14 @@
 import { useState } from "react"
+import { postJson } from "@/api/http-client"
+import { plans } from "@/api/routes"
 import { IconPlanner } from "@/components/icons"
+import { Spinner } from "@/components/spinner"
 import { Text } from "@/components/ui/Text"
-import { mockMealOptions } from "@/mocks/mealOptions"
 import { Flex } from "@/styled-system/jsx"
-
 import { DateRangeSelector, MealDayCard, PlannerHeader } from "./components"
+import { PlannerFooter } from "./components/PlannerFooter"
+import { useMeals } from "./hooks/useMeals"
+import { usePlans } from "./hooks/usePlans"
 
 const MAX_DAYS = 5
 
@@ -43,15 +47,28 @@ const getDateRange = (start: string, end: string): string[] => {
   return dates
 }
 
-const allMeals = mockMealOptions.plan.planDay.flatMap((day) => day.dayMeal ?? [])
-
 export const Planner = () => {
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
   const [error, setError] = useState("")
   const [selectedMeals, setSelectedMeals] = useState<Record<string, number[]>>({})
+  const [submitError, setSubmitError] = useState("")
+  const [submitSuccess, setSubmitSuccess] = useState(false)
 
   const dateRange = startDate && endDate && !error ? getDateRange(startDate, endDate) : []
+  const { meals, isLoading, error: mealsError } = useMeals(dateRange.length > 0)
+
+  const { plans: existingPlans } = usePlans()
+
+  const hasOverlap =
+    dateRange.length > 0 &&
+    existingPlans.some((plan) => {
+      const planStart = new Date(plan.period_start * 1000)
+      const planEnd = new Date(plan.period_end * 1000)
+      const newStart = new Date(startDate)
+      const newEnd = new Date(endDate)
+      return newStart <= planEnd && newEnd >= planStart
+    })
 
   const handleStartDate = (value: string) => {
     setStartDate(value)
@@ -81,11 +98,38 @@ export const Planner = () => {
     setSelectedMeals({})
   }
 
+  const isSubmitEnabled =
+    dateRange.length > 0 &&
+    !hasOverlap &&
+    dateRange.every((date) => (selectedMeals[date] ?? []).length > 0)
+
+  const handleSubmit = async () => {
+    setSubmitError("")
+    setSubmitSuccess(false)
+
+    const body = {
+      periodStart: startDate,
+      periodEnd: endDate,
+      days: dateRange.map((date) => ({
+        date,
+        meals: (selectedMeals[date] ?? []).map((id) => ({ existingMealId: id })),
+      })),
+    }
+
+    try {
+      await postJson(plans(), body)
+      setSubmitSuccess(true)
+      handleClear()
+    } catch {
+      setSubmitError("Failed to create plan. Please try again.")
+    }
+  }
+
   return (
     <Flex direction="column" gap="xl">
       <PlannerHeader />
 
-      <Flex align="flex-start" gap="xl" direction={{ base: "column", md: "row" }}>
+      <Flex align="flex-start" gap="xl" direction={{ base: "column", lg: "row" }}>
         <DateRangeSelector
           startDate={startDate}
           endDate={endDate}
@@ -94,6 +138,9 @@ export const Planner = () => {
           onStartDateChange={handleStartDate}
           onEndDateChange={handleEndDate}
           onClear={handleClear}
+          success={submitSuccess}
+          submitError={submitError}
+          overlapError={hasOverlap ? "A plan already exists for the selected dates." : ""}
         />
 
         {/* Right — Meals */}
@@ -102,7 +149,19 @@ export const Planner = () => {
             Select meals for each day
           </Text>
 
-          {dateRange.length === 0 ? (
+          {isLoading ? (
+            <Flex align="center" justify="center" p="2xl">
+              <Text textStyle="body.medium" color="neutrals.nLv3">
+                <Spinner /> Loading meals...
+              </Text>
+            </Flex>
+          ) : mealsError ? (
+            <Flex align="center" justify="center" p="2xl">
+              <Text textStyle="body.medium" color="status.error.default">
+                Failed to load meals. Please try again.
+              </Text>
+            </Flex>
+          ) : dateRange.length === 0 ? (
             <Flex
               align="center"
               justify="center"
@@ -124,7 +183,7 @@ export const Planner = () => {
                 <MealDayCard
                   key={date}
                   date={date}
-                  meals={allMeals}
+                  meals={meals}
                   selectedMeals={selectedMeals[date] ?? []}
                   onToggleMeal={(mealId) => toggleMeal(date, mealId)}
                 />
@@ -133,6 +192,9 @@ export const Planner = () => {
           )}
         </Flex>
       </Flex>
+      {dateRange.length > 0 && !isLoading && (
+        <PlannerFooter isSubmitEnabled={isSubmitEnabled} onSubmit={handleSubmit} />
+      )}
     </Flex>
   )
 }
