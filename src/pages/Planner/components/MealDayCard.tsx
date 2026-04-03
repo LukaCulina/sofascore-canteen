@@ -1,25 +1,11 @@
 import { Text } from "@/components/ui/Text"
 import { Box, Flex } from "@/styled-system/jsx"
-
+import type { Meal } from "@/types/meal"
 import { MealRow } from "./MealRow"
-
-interface Meal {
-  id: number
-  description: string
-  price: number
-  isVegetarian: boolean
-}
-
-interface DayMeal {
-  id: number
-  meal: Meal
-  mealId: number
-  planDayId: number
-}
 
 interface MealDayCardProps {
   date: string
-  meals: DayMeal[]
+  meals: Meal[]
   selectedMeals: number[]
   onToggleMeal: (mealId: number) => void
 }
@@ -61,13 +47,13 @@ export const MealDayCard = ({ date, meals, selectedMeals, onToggleMeal }: MealDa
         </Flex>
       </Flex>
 
-      {/* Meal rows */}
-      {meals.map((item) => (
+      {/* Meals list */}
+      {meals.map((meal) => (
         <MealRow
-          key={item.meal.id}
-          meal={item.meal}
-          isSelected={selectedMeals.includes(item.meal.id)}
-          onToggle={() => onToggleMeal(item.meal.id)}
+          key={meal.id}
+          meal={meal}
+          isSelected={selectedMeals.includes(meal.id)}
+          onToggle={() => onToggleMeal(meal.id)}
         />
       ))}
     </Box>

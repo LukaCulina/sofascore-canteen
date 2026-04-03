@@ -2,13 +2,7 @@ import { IconVegan } from "@/components/icons"
 import { Text } from "@/components/ui/Text"
 import { css } from "@/styled-system/css"
 import { Flex } from "@/styled-system/jsx"
-
-interface Meal {
-  id: number
-  description: string
-  price: number
-  isVegetarian: boolean
-}
+import type { Meal } from "@/types/meal"
 
 interface MealRowProps {
   meal: Meal
@@ -26,6 +20,8 @@ export const MealRow = ({ meal, isSelected, onToggle }: MealRowProps) => {
       borderBottom="1px solid"
       borderColor="neutrals.nLv4"
       _last={{ borderBottom: "none" }}
+      cursor="pointer"
+      onClick={onToggle}
     >
       <input
         type="checkbox"
@@ -46,7 +42,7 @@ export const MealRow = ({ meal, isSelected, onToggle }: MealRowProps) => {
         <Text textStyle="body.medium" color="neutrals.nLv3">
           €{meal.price.toFixed(2)}
         </Text>
-        {meal.isVegetarian && <IconVegan fill="status.success" />}
+        {meal.is_vegetarian && <IconVegan fill="status.success.default" />}
       </Flex>
     </Flex>
   )
