@@ -14,7 +14,7 @@ export const MealCatalogPage = () => {
   return (
     <Box p="xl">
       <Flex align="center" gap="md" mb="sm">
-        <IconMealCatalog fill="neutrals.nLv1" height={32} width={32} />
+        <IconMealCatalog fill="primary.default" height={32} width={32} />
         <Text textStyle="display.extraLarge" color="neutrals.nLv1">
           Meal Catalog
         </Text>
