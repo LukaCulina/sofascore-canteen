@@ -1,8 +1,8 @@
 import { useIntl } from "react-intl"
 import { IconCircleCheckFilled } from "@/components/icons"
 import { Text } from "@/components/ui"
-import type { Order } from "@/lib/types/mealOptions"
 import { Flex } from "@/styled-system/jsx"
+import type { Order } from "@/types"
 
 interface Props {
   order: Order

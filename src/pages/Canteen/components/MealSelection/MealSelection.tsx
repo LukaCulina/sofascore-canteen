@@ -1,9 +1,9 @@
 import { type Dispatch, memo, useCallback } from "react"
-import type { PlanDay } from "@/lib/types/mealOptions"
 import { DateItem } from "@/pages/Canteen/components/MealSelection/DateItem.tsx"
 import { MealItem } from "@/pages/Canteen/components/MealSelection/MealItem"
 import type { MealSelectionAction } from "@/pages/Canteen/mealSelectionReducer.ts"
 import { Flex } from "@/styled-system/jsx"
+import type { PlanDay } from "@/types"
 
 interface MealSelectionProps {
   item: PlanDay

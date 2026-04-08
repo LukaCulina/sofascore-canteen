@@ -4,8 +4,8 @@ import { IconArrowDown, IconArrowUp } from "@/components/icons"
 import { Badge, P, Text } from "@/components/ui/"
 import { Box, Flex } from "@/styled-system/jsx"
 import { GreyText } from "../styles"
-import type { ProcessedOrder } from "../types"
 import { MealCard } from "./MealCard"
+import type { ProcessedOrder } from "./OrdersTable"
 
 interface OrderCardProps {
   order: ProcessedOrder
@@ -68,7 +68,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
                 Meal Selections:
               </P>
               <Flex direction="column" gap="md">
-                {order.orderSelection.map((selection) => (
+                {order.order_selection.map((selection) => (
                   <MealCard key={selection.id} selection={selection} />
                 ))}
               </Flex>

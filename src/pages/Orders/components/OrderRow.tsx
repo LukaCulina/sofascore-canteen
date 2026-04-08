@@ -4,8 +4,8 @@ import { IconArrowDown, IconArrowUp } from "@/components/icons"
 import { Badge, P } from "@/components/ui/"
 import { Flex } from "@/styled-system/jsx"
 import { Td, Tr } from "../styles"
-import type { ProcessedOrder } from "../types"
 import { MealCard } from "./MealCard"
+import type { ProcessedOrder } from "./OrdersTable"
 
 interface OrderRowProps {
   order: ProcessedOrder
@@ -51,7 +51,7 @@ export const OrderRow = ({ order }: OrderRowProps) => {
                   Meal Selections:
                 </P>
                 <Flex p="lg" direction="row" flexWrap="wrap" gap="lg" w="100%">
-                  {order.orderSelection.map((selection) => (
+                  {order.order_selection.map((selection) => (
                     <MealCard key={selection.id} selection={selection} />
                   ))}
                 </Flex>

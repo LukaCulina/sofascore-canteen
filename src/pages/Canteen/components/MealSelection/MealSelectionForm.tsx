@@ -2,13 +2,13 @@ import { useEffect, useReducer } from "react"
 import { order } from "@/api/routes.ts"
 import { Button } from "@/components/ui"
 import { useAuthSWRMutation } from "@/hooks/useAuthSWRMutation.ts"
-import type { Plan } from "@/lib/types/mealOptions"
 import { MealSelection } from "@/pages/Canteen/components/MealSelection/MealSelection.tsx"
 import {
   initialMealSelectionState,
   mealSelectionReducer,
 } from "@/pages/Canteen/mealSelectionReducer.ts"
 import { Flex } from "@/styled-system/jsx"
+import type { Plan } from "@/types"
 
 interface MealSelectionFormProps {
   plan: Plan

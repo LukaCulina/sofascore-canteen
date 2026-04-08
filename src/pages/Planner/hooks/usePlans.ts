@@ -1,14 +1,9 @@
 import useSWR from "swr"
 import { plans } from "@/api/routes"
-
-interface PlanDetail {
-  id: number
-  period_start: number
-  period_end: number
-}
+import type { Plan } from "@/types"
 
 export const usePlans = () => {
-  const { data, error, isLoading } = useSWR<PlanDetail[]>(plans())
+  const { data, error, isLoading } = useSWR<Plan[]>(plans())
 
   return {
     plans: data ?? [],

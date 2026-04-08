@@ -8,3 +8,11 @@ export interface Meal {
   average_rating?: number
   review_count?: number
 }
+
+export interface DayMeal {
+  meal: Meal
+}
+
+export interface Meals {
+  meals: Meal[]
+}
