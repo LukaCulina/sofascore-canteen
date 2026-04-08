@@ -12,17 +12,19 @@ export const MealCatalogPage = () => {
   const meals = data?.meals.map(transformMeal) ?? []
 
   return (
-    <Box p="xl">
-      <Flex align="center" gap="md" mb="sm">
+    <Box p="sm">
+      <Flex align="center" gap="sm" mb="sm">
         <IconMealCatalog fill="primary.default" height={32} width={32} />
         <Text textStyle="display.extraLarge" color="neutrals.nLv1">
           Meal Catalog
         </Text>
       </Flex>
 
-      <Text textStyle="body.medium" color="neutrals.nLv3" mb="xl">
-        Browse all available meals in the catalog.
-      </Text>
+      <Box mb="xl">
+        <Text textStyle="body.large" color="neutrals.nLv1">
+          Browse all available meals in the catalog.
+        </Text>
+      </Box>
 
       {isLoading && (
         <Flex justify="center" align="center" py="4xl">
@@ -32,7 +34,7 @@ export const MealCatalogPage = () => {
 
       {error && (
         <Flex justify="center" align="center" py="4xl">
-          <Text textStyle="body.medium" color="status.error.default">
+          <Text textStyle="display.medium" color="status.error.default">
             Failed to load meals
           </Text>
         </Flex>
