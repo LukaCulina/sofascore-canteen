@@ -87,15 +87,14 @@ export const MealCard = ({ meal }: { meal: Meal }) => {
               <Box
                 borderWidth="1px"
                 borderStyle="solid"
-                borderColor="rgba(201, 54, 26, 0.2)"
-                bg="rgba(201, 54, 26, 0.12)"
-                borderRadius="2xl"
+                borderColor="#fff"
+                bg="status.error.highlight"
+                borderRadius="full"
                 px="md"
                 py="xs"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
-                minH="32px"
               >
                 <Text textStyle="body.medium" color="status.error.default">
                   {discount}% off
