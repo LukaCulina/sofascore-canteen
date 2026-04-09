@@ -1,36 +1,63 @@
+import { useAuthSWR } from "@/api/hooks"
+import { meals as mealsRoute } from "@/api/routes"
 import { IconMealCatalog } from "@/components/icons"
-import { MealCard } from "@/components/ui"
+import { LoadingSpinner, MealCard } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
-import { mockMeals } from "@/mocks/meals"
 import { Box, Flex, Grid } from "@/styled-system/jsx"
-import type { Meal } from "@/types"
+import { type MealApiResponse, transformMeal } from "@/types/meal"
 
 export const MealCatalogPage = () => {
-  const meals = mockMeals as Meal[]
+  const { data, isLoading, error } = useAuthSWR<MealApiResponse>(mealsRoute())
+
+  const meals = data?.meals.map(transformMeal) ?? []
 
   return (
-    <Box p="xl">
-      {/* Header */}
-      <Flex align="center" gap="md" mb="sm">
-        <IconMealCatalog fill="neutrals.nLv1" height={32} width={32} />
+    <Box p="sm">
+      <Flex align="center" gap="sm" mb="sm">
+        <IconMealCatalog fill="primary.default" height={32} width={32} />
         <Text textStyle="display.extraLarge" color="neutrals.nLv1">
           Meal Catalog
         </Text>
       </Flex>
 
-      <Text textStyle="body.medium" color="neutrals.nLv3" mb="xl">
-        Browse all available meals in the catalog.
-      </Text>
+      <Box mb="xl">
+        <Text textStyle="body.large" color="neutrals.nLv1">
+          Browse all available meals in the catalog.
+        </Text>
+      </Box>
 
-      {/* Meal Grid */}
-      <Grid
-        gridTemplateColumns={{ base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }}
-        gap="lg"
-      >
-        {meals.map((meal) => (
-          <MealCard key={meal.id} meal={meal} />
-        ))}
-      </Grid>
+      {isLoading && (
+        <Flex justify="center" align="center" py="4xl">
+          <LoadingSpinner size="lg" />
+        </Flex>
+      )}
+
+      {error && (
+        <Flex justify="center" align="center" py="4xl">
+          <Text textStyle="display.medium" color="status.error.default">
+            Failed to load meals
+          </Text>
+        </Flex>
+      )}
+
+      {!isLoading && !error && meals.length === 0 && (
+        <Flex justify="center" align="center" py="4xl">
+          <Text textStyle="body.medium" color="neutrals.nLv3">
+            No meals available
+          </Text>
+        </Flex>
+      )}
+
+      {!isLoading && !error && meals.length > 0 && (
+        <Grid
+          gridTemplateColumns={{ base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }}
+          gap="lg"
+        >
+          {meals.map((meal) => (
+            <MealCard key={meal.id} meal={meal} />
+          ))}
+        </Grid>
+      )}
     </Box>
   )
 }
