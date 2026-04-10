@@ -4,7 +4,7 @@ import { Box, Flex } from "@/styled-system/jsx"
 import type { Meal } from "@/types"
 
 export const MealCard = ({ meal }: { meal: Meal }) => {
-  const { description, price, isVegetarian, discount, imageUrl } = meal
+  const { description, price, is_vegetarian, discount, image_url } = meal
 
   const discountedPrice = discount > 0 ? price * (1 - discount / 100) : price
 
@@ -12,9 +12,9 @@ export const MealCard = ({ meal }: { meal: Meal }) => {
     <Box bg="surface.s1" borderRadius="sm" overflow="hidden" borderColor="neutrals.nLv4">
       {/* Image */}
       <Box position="relative" h="180px" bg="neutrals.nLv4">
-        {imageUrl ? (
+        {image_url ? (
           <img
-            src={imageUrl}
+            src={image_url}
             alt={description}
             className={css({
               w: "100%",
@@ -27,7 +27,7 @@ export const MealCard = ({ meal }: { meal: Meal }) => {
         )}
 
         {/* Vegetarian Badge */}
-        {isVegetarian && (
+        {is_vegetarian && (
           <Flex
             position="absolute"
             top="sm"

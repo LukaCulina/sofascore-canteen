@@ -3,11 +3,11 @@ import { order } from "@/api/routes.ts"
 import { Spinner } from "@/components/spinner"
 import { Text } from "@/components/ui/Text"
 import { useAuthSWR } from "@/hooks/useAuthSWR.ts"
-import type { MealOptions } from "@/lib/types/mealOptions"
 import { mockMealOptions } from "@/mocks/mealOptions.ts"
 import { MealSelectionForm } from "@/pages/Canteen/components/MealSelection"
 import { ConfirmedOrder } from "@/pages/Canteen/components/Order"
 import { Flex } from "@/styled-system/jsx"
+import type { MealOptions } from "@/types"
 
 export const CanteenPage = () => {
   const { data, error, isLoading } = useAuthSWR<MealOptions>(order())

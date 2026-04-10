@@ -1,8 +1,8 @@
 import { useIntl } from "react-intl"
 import { Badge, Button, P, Text } from "@/components/ui"
 import { Box, Flex } from "@/styled-system/jsx"
+import type { OrderSelection } from "@/types"
 import { GreyText } from "../styles"
-import type { OrderSelection } from "../types"
 
 interface MealCardProps {
   selection: OrderSelection

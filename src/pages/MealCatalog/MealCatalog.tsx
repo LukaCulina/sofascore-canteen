@@ -4,12 +4,12 @@ import { IconMealCatalog } from "@/components/icons"
 import { LoadingSpinner, MealCard } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
 import { Box, Flex, Grid } from "@/styled-system/jsx"
-import { type MealApiResponse, transformMeal } from "@/types/meal"
+import type { Meals } from "@/types"
 
 export const MealCatalogPage = () => {
-  const { data, isLoading, error } = useAuthSWR<MealApiResponse>(mealsRoute())
+  const { data, isLoading, error } = useAuthSWR<Meals>(mealsRoute())
 
-  const meals = data?.meals.map(transformMeal) ?? []
+  const meals = data?.meals ?? []
 
   return (
     <Box p="sm">

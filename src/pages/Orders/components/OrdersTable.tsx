@@ -6,15 +6,25 @@ import { Spinner } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
 import { Box } from "@/styled-system/jsx/box"
 import { Flex } from "@/styled-system/jsx/flex"
+import type { Order } from "@/types"
 import { GreyText, Table, Td, Th, Tr } from "../styles"
-import type { ProcessedOrder, RawOrder } from "../types"
 import { OrderCard } from "./OrderCard"
 import { OrderRow } from "./OrderRow"
+
+export interface ProcessedOrder extends Pick<Order, "id" | "order_selection"> {
+  user: string
+  period: string
+  submitted: string
+  meals: number
+  discount: number
+  total: number
+  hasUnpaid: boolean
+}
 
 export const OrdersTable = () => {
   const intl = useIntl()
 
-  const { data, isLoading, error } = useSWR<{ orders: RawOrder[] }>(getOrders())
+  const { data, isLoading, error } = useSWR<{ orders: Order[] }>(getOrders())
 
   const formatDate = (timestamp: number) =>
     intl.formatDate(new Date(timestamp * 1000), {
@@ -38,7 +48,7 @@ export const OrdersTable = () => {
   const orders = useMemo<ProcessedOrder[]>(() => {
     if (!data?.orders) return []
 
-    return data.orders.map((order: RawOrder) => {
+    return data.orders.map((order: Order) => {
       const numMeals = order.order_selection.length
       const totalPrice = order.order_selection.reduce(
         (sum, sel) => sum + (sel.meal.price * (100 - sel.meal.discount)) / 100,
@@ -57,7 +67,7 @@ export const OrdersTable = () => {
         meals: numMeals,
         discount: Number(totalDiscount.toFixed(2)),
         total: Number(totalPrice.toFixed(2)),
-        orderSelection: order.order_selection,
+        order_selection: order.order_selection,
         hasUnpaid: order.order_selection.some((sel) => sel.unpaid),
       }
     })

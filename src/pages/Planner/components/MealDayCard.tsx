@@ -1,6 +1,6 @@
 import { Text } from "@/components/ui/Text"
 import { Box, Flex } from "@/styled-system/jsx"
-import type { Meal } from "@/types/meal"
+import type { Meal } from "@/types"
 import { MealRow } from "./MealRow"
 
 interface MealDayCardProps {

@@ -1,4 +1,4 @@
-import type { Plan } from "@/lib/types/mealOptions"
+import type { Plan } from "@/types"
 
 export interface MealSelectionState {
   selections: Record<number, number | null>
