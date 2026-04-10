@@ -64,48 +64,52 @@ export const MealCard = ({ meal }: { meal: Meal }) => {
       </Box>
 
       {/* Content */}
-      <Box p="lg">
-        <Text textStyle="body.large" color="neutrals.nLv1" display="block">
-          {description}
-        </Text>
+      <Box py="lg" px="sm">
+        <Flex align="center" justify="space-between">
+          <Flex direction="column" gap="sm">
+            <Text textStyle="body.large" color="neutrals.nLv1">
+              {description}
+            </Text>
 
-        <Flex align="center" justify="space-between" gap="sm" mt="xs">
-          {discount > 0 ? (
-            <>
-              <Flex align="center" gap="sm">
+            {discount > 0 ? (
+              <Flex align="center" gap="xs">
                 <Text
-                  textStyle="assistive.default"
+                  textStyle="display.medium"
                   color="neutrals.nLv3"
                   textDecoration="line-through"
                 >
                   €{price.toFixed(2)}
                 </Text>
-                <Text textStyle="body.medium" color="status.error.default">
+                <Text textStyle="display.medium" color="status.error.default">
                   €{discountedPrice.toFixed(2)}
                 </Text>
               </Flex>
+            ) : (
+              <Text textStyle="display.medium" color="neutrals.nLv1">
+                €{price.toFixed(2)}
+              </Text>
+            )}
+          </Flex>
+
+          {discount > 0 && (
+            <Flex align="center" justify="center">
               <Box
                 borderWidth="1px"
                 borderStyle="solid"
-                borderColor="rgba(201, 54, 26, 0.2)"
-                bg="rgba(201, 54, 26, 0.12)"
-                borderRadius="2xl"
+                borderColor="#fff"
+                bg="status.error.highlight"
+                borderRadius="full"
                 px="md"
                 py="xs"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
-                minH="32px"
               >
-                <Text textStyle="body.medium" color="status.error.default">
+                <Text textStyle="body.medium" color="status.error.default" whiteSpace="nowrap">
                   {discount}% off
                 </Text>
               </Box>
-            </>
-          ) : (
-            <Text textStyle="body.medium" color="neutrals.nLv1">
-              €{price.toFixed(2)}
-            </Text>
+            </Flex>
           )}
         </Flex>
       </Box>
