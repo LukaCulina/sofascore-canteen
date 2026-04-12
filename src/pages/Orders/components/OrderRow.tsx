@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
 import { Badge, P } from "@/components/ui/"
-import { Box, Flex } from "@/styled-system/jsx"
+import { Flex, Grid } from "@/styled-system/jsx"
 import { Td, Tr } from "../styles"
 import { MealCard } from "./MealCard"
 import type { ProcessedOrder } from "./OrdersTable"
@@ -46,11 +46,11 @@ export const OrderRow = ({ order }: { order: ProcessedOrder }) => {
                 <P textStyle="display.micro" p="lg">
                   Meal Selections:
                 </P>
-                <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" p="lg" gap="lg">
+                <Grid gridTemplateColumns="repeat(3, 1fr)" p="lg" gap="lg">
                   {order.order_selection.map((selection) => (
                     <MealCard key={selection.id} selection={selection} />
                   ))}
-                </Box>
+                </Grid>
               </motion.div>
             </Td>
           </Tr>

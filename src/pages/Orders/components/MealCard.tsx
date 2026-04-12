@@ -17,13 +17,13 @@ export const MealCard = ({ selection }: { selection: OrderSelection }) => {
 
   return (
     <Flex
+      direction="column"
+      gap="sm"
       p="lg"
+      bg={unpaid ? "status.error.highlight" : "surface.s1"}
       border="1px solid"
       borderColor={unpaid ? "status.error.default" : "neutrals.nLv4"}
       borderRadius="lg"
-      bg={unpaid ? "status.error.highlight" : "surface.s1"}
-      gap="sm"
-      direction="column"
     >
       <Flex align="center" gap="sm">
         <GreyText>{formattedMealDate}</GreyText>

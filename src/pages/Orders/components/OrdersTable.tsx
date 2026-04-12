@@ -83,8 +83,8 @@ export const OrdersTable = ({ orders }: { orders: Order[] }) => {
     <Box>
       {/* Desktop View */}
       <Box
-        overflowX="auto"
-        display={{ base: "none", lg: "block" }}
+        hideBelow="lg"
+        overflow="hidden"
         border="1px solid"
         borderColor="neutrals.nLv4"
         borderRadius="lg"
@@ -117,19 +117,19 @@ export const OrdersTable = ({ orders }: { orders: Order[] }) => {
       </Box>
 
       {/* Mobile View */}
-      <Flex direction="column" gap="sm" display={{ base: "flex", lg: "none" }}>
+      <Flex direction="column" gap="sm" hideFrom="lg">
         {processedOrders.map((order) => (
           <OrderCard key={order.id} order={order} />
         ))}
 
         <Flex
+          justify="space-between"
+          align="center"
           p="lg"
+          bg="surface.s1"
           border="1px solid"
           borderColor="neutrals.nLv4"
           borderRadius="lg"
-          bg="surface.s1"
-          justify="space-between"
-          align="center"
         >
           <Flex direction="row" align="end" gap="xl">
             <Text textStyle="display.medium">Totals</Text>

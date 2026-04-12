@@ -14,16 +14,16 @@ export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
     <Flex
       direction="column"
       gap="lg"
+      bg={order.hasUnpaid ? "status.error.highlight" : "surface.s1"}
       border="1px solid"
       borderColor="neutrals.nLv4"
       borderRadius="lg"
       overflow="hidden"
-      bg={order.hasUnpaid ? "status.error.highlight" : "surface.s1"}
     >
       <Flex
-        p="lg"
         justify="space-between"
         align="center"
+        p="lg"
         onClick={() => setIsExpanded(!isExpanded)}
         cursor="pointer"
       >
