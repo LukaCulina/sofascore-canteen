@@ -1,8 +1,5 @@
 import { useMemo } from "react"
 import { useIntl } from "react-intl"
-import useSWR from "swr"
-import { getOrders } from "@/api/routes"
-import { Spinner } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
 import { Box } from "@/styled-system/jsx/box"
 import { Flex } from "@/styled-system/jsx/flex"
@@ -21,10 +18,8 @@ export interface ProcessedOrder extends Pick<Order, "id" | "order_selection"> {
   hasUnpaid: boolean
 }
 
-export const OrdersTable = () => {
+export const OrdersTable = ({ orders }: { orders: Order[] }) => {
   const intl = useIntl()
-
-  const { data, isLoading, error } = useSWR<{ orders: Order[] }>(getOrders())
 
   const formatDate = (timestamp: number) =>
     intl.formatDate(new Date(timestamp * 1000), {
@@ -45,10 +40,8 @@ export const OrdersTable = () => {
       day: "numeric",
     })}`
 
-  const orders = useMemo<ProcessedOrder[]>(() => {
-    if (!data?.orders) return []
-
-    return data.orders.map((order: Order) => {
+  const processedOrders = useMemo<ProcessedOrder[]>(() => {
+    return orders.map((order: Order) => {
       const numMeals = order.order_selection.length
       const totalPrice = order.order_selection.reduce(
         (sum, sel) => sum + (sel.meal.price * (100 - sel.meal.discount)) / 100,
@@ -71,11 +64,11 @@ export const OrdersTable = () => {
         hasUnpaid: order.order_selection.some((sel) => sel.unpaid),
       }
     })
-  }, [data, intl.locale])
+  }, [orders, intl.locale])
 
   const totals = useMemo(
     () =>
-      orders.reduce(
+      processedOrders.reduce(
         (acc, order) => ({
           meals: acc.meals + order.meals,
           total: acc.total + order.total,
@@ -83,25 +76,8 @@ export const OrdersTable = () => {
         }),
         { meals: 0, total: 0, discount: 0 },
       ),
-    [orders],
+    [processedOrders],
   )
-
-  if (isLoading) {
-    return (
-      <Flex justify="center" align="center" direction="column" p="4xl" gap="md">
-        <Spinner />
-        <Text>Loading...</Text>
-      </Flex>
-    )
-  }
-
-  if (error) {
-    return (
-      <Text textStyle="display.medium" color="status.error.default">
-        Failed to load orders
-      </Text>
-    )
-  }
 
   return (
     <Box>
@@ -127,7 +103,7 @@ export const OrdersTable = () => {
             </Tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
+            {processedOrders.map((order) => (
               <OrderRow key={order.id} order={order} />
             ))}
             <Tr>
@@ -142,7 +118,7 @@ export const OrdersTable = () => {
 
       {/* Mobile View */}
       <Flex direction="column" gap="sm" display={{ base: "flex", lg: "none" }}>
-        {orders.map((order) => (
+        {processedOrders.map((order) => (
           <OrderCard key={order.id} order={order} />
         ))}
 

@@ -4,11 +4,7 @@ import { Box, Flex } from "@/styled-system/jsx"
 import type { OrderSelection } from "@/types"
 import { GreyText } from "../styles"
 
-interface MealCardProps {
-  selection: OrderSelection
-}
-
-export const MealCard = ({ selection }: MealCardProps) => {
+export const MealCard = ({ selection }: { selection: OrderSelection }) => {
   const intl = useIntl()
   const { meal, plan_day, unpaid } = selection
 
@@ -28,7 +24,6 @@ export const MealCard = ({ selection }: MealCardProps) => {
       bg={unpaid ? "status.error.highlight" : "surface.s1"}
       gap="sm"
       direction="column"
-      width={{ base: "100%", lg: "31%" }}
     >
       <Flex align="center" gap="sm">
         <GreyText>{formattedMealDate}</GreyText>

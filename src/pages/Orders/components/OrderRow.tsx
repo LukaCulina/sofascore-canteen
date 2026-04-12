@@ -2,16 +2,12 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
 import { Badge, P } from "@/components/ui/"
-import { Flex } from "@/styled-system/jsx"
+import { Box, Flex } from "@/styled-system/jsx"
 import { Td, Tr } from "../styles"
 import { MealCard } from "./MealCard"
 import type { ProcessedOrder } from "./OrdersTable"
 
-interface OrderRowProps {
-  order: ProcessedOrder
-}
-
-export const OrderRow = ({ order }: OrderRowProps) => {
+export const OrderRow = ({ order }: { order: ProcessedOrder }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
@@ -50,11 +46,11 @@ export const OrderRow = ({ order }: OrderRowProps) => {
                 <P textStyle="display.micro" p="lg">
                   Meal Selections:
                 </P>
-                <Flex p="lg" direction="row" flexWrap="wrap" gap="lg" w="100%">
+                <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" p="lg" gap="lg">
                   {order.order_selection.map((selection) => (
                     <MealCard key={selection.id} selection={selection} />
                   ))}
-                </Flex>
+                </Box>
               </motion.div>
             </Td>
           </Tr>

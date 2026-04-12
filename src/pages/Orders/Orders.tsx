@@ -1,9 +1,30 @@
+import useSWR from "swr"
+import { getOrders } from "@/api/routes"
 import { IconOrders, IconPen } from "@/components/icons"
-import { Button, H1, P, Text } from "@/components/ui"
+import { Button, H1, P, Spinner, Text } from "@/components/ui"
 import { Flex } from "@/styled-system/jsx"
+import type { Order } from "@/types/orders"
 import { OrdersTable } from "./components/OrdersTable"
 
 export const Orders = () => {
+  const { data, isLoading, error } = useSWR<{ orders: Order[] }>(getOrders())
+
+  if (isLoading) {
+    return (
+      <Flex h="full" direction="column" justify="center" align="center">
+        <Spinner />
+      </Flex>
+    )
+  }
+
+  if (error || !data) {
+    return (
+      <Text textStyle="display.medium" color="status.error.default">
+        Failed to load orders
+      </Text>
+    )
+  }
+
   return (
     <Flex direction="column" gap="xl">
       <Flex
@@ -32,7 +53,7 @@ export const Orders = () => {
           </Flex>
         </Button>
       </Flex>
-      <OrdersTable />
+      <OrdersTable orders={data.orders} />
     </Flex>
   )
 }

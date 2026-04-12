@@ -7,11 +7,7 @@ import { GreyText } from "../styles"
 import { MealCard } from "./MealCard"
 import type { ProcessedOrder } from "./OrdersTable"
 
-interface OrderCardProps {
-  order: ProcessedOrder
-}
-
-export const OrderCard = ({ order }: OrderCardProps) => {
+export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
