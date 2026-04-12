@@ -11,7 +11,7 @@ export const Orders = () => {
 
   if (isLoading) {
     return (
-      <Flex h="full" direction="column" justify="center" align="center">
+      <Flex justify="center" align="center" h="full">
         <Spinner />
       </Flex>
     )
@@ -19,9 +19,11 @@ export const Orders = () => {
 
   if (error || !data) {
     return (
-      <Text textStyle="display.medium" color="status.error.default">
-        Failed to load orders
-      </Text>
+      <Flex justify="center" align="center" h="full">
+        <Text textStyle="display.medium" color="status.error.default">
+          Failed to load orders
+        </Text>
+      </Flex>
     )
   }
 

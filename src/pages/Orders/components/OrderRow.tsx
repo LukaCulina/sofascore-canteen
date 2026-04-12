@@ -13,7 +13,7 @@ export const OrderRow = ({ order }: { order: ProcessedOrder }) => {
   return (
     <>
       <Tr
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={() => setIsExpanded((prev) => !prev)}
         cursor="pointer"
         bg={order.hasUnpaid ? "status.error.highlight" : "surface.s1"}
       >
