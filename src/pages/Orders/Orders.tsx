@@ -35,7 +35,7 @@ export const Orders = () => {
       >
         <Flex direction="column" gap="lg">
           <Flex direction="row" gap="sm" align="center">
-            <Flex align="center" justify="center" w="32px" h="32px">
+            <Flex align="center" justify="center" w="2xl" h="2xl">
               <IconOrders width={28} height={28} />
             </Flex>
             <H1 fontSize="28px">All Orders</H1>
@@ -44,7 +44,7 @@ export const Orders = () => {
         </Flex>
         <Button variant="outline" w={{ base: "100%", lg: "fit-content" }}>
           <Flex direction="row" gap="sm" align="center">
-            <Flex align="center" justify="center" w="32px" h="32px">
+            <Flex align="center" justify="center" w="2xl" h="2xl">
               <IconPen />
             </Flex>
             <Text textStyle="label.medium" color="primary.default">
