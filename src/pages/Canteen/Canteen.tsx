@@ -1,6 +1,6 @@
 import { useIntl } from "react-intl"
 import { order } from "@/api/routes.ts"
-import { Spinner } from "@/components/spinner"
+import { ErrorMessage, LoadingSpinner } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
 import { useAuthSWR } from "@/hooks/useAuthSWR.ts"
 import { mockMealOptions } from "@/mocks/mealOptions.ts"
@@ -17,14 +17,10 @@ export const CanteenPage = () => {
     intl.formatDate(new Date(unixTime), { month: "short", day: "numeric" })
 
   if (isLoading) {
-    return (
-      <Flex h="full" direction="column" justifyContent="center" alignItems="center">
-        <Spinner />
-      </Flex>
-    )
+    return <LoadingSpinner />
   }
 
-  if (error || !data) return <Text>Something went wrong</Text>
+  if (error || !data) return <ErrorMessage>Failed to load meal options</ErrorMessage>
 
   return (
     <Flex direction="column" gap="xl">

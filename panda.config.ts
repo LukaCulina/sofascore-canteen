@@ -216,6 +216,7 @@ export default defineConfig({
           xl: { value: "24px" },
           "2xl": { value: "32px" },
           "4xl": { value: "48px" },
+          "6xl": { value: "64px" },
         },
         radii: {
           "2xs": { value: "2px" },
@@ -234,6 +235,7 @@ export default defineConfig({
           xl: { value: "24px" },
           "2xl": { value: "32px" },
           "4xl": { value: "48px" },
+          "6xl": { value: "64px" },
         },
       },
       keyframes: {
