@@ -7,6 +7,11 @@ const dbTargetHeader = {
   "x-target-db": "pbsrb",
 }
 
+const getAuthHeaders = (): HeadersInit => {
+  const token = useAuthStore.getState().token
+  return token ? { Authorization: `Bearer ${token}` } : {}
+}
+
 /**
  * Send GET request to given URL, with provided `options`.
  */
