@@ -16,13 +16,11 @@ const getAuthHeaders = (): HeadersInit => {
  * Send GET request to given URL, with provided `options`.
  */
 export function getJson<T>(url: string, { ...options }: RequestInit = {}): Promise<T> {
-  const token = useAuthStore.getState().token
-
   return fetch(getUrl(url), {
     ...options,
     headers: {
       ...dbTargetHeader,
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...getAuthHeaders(),
       ...options.headers,
     },
   }).then((response: Response) => parseResponse<T>(response))
@@ -32,12 +30,11 @@ export function getJson<T>(url: string, { ...options }: RequestInit = {}): Promi
  * Send POST request to given URL, with provided body and options.
  */
 export const postJson = <T>(url: string, body = {}, options: RequestInit = {}): Promise<T> => {
-  const token = useAuthStore.getState().token
   const { headers, ...fetchOptions } = options
 
   const reqHeaders = {
     "Content-Type": "application/json",
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...getAuthHeaders(),
   }
 
   return fetch(getUrl(url), {
