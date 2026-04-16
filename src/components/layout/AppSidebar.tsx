@@ -19,6 +19,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { to: "/", icon: IconCanteen, label: "Canteen" },
   { to: "/planner", icon: IconPlanner, label: "Planner", roles: [Role.ADMIN, Role.CATERING] },
+  { to: "/my-plans", icon: IconPlanner, label: "My Plans", roles: [Role.CATERING] },
   { to: "/orders", icon: IconOrders, label: "My Orders", roles: [Role.EMPLOYEE, Role.CATERING] },
   {
     to: "/catering/catalog",
