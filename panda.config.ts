@@ -195,14 +195,6 @@ export default defineConfig({
             },
           },
         },
-        icons: {
-          vegetarian: {
-            value: {
-              base: "#15B168",
-              _dark: "#39B57A",
-            },
-          },
-        },
       },
     },
     extend: {
