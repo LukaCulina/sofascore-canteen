@@ -237,6 +237,11 @@ export default defineConfig({
           "4xl": { value: "48px" },
           "6xl": { value: "64px" },
         },
+        borderWidths: {
+          thin: { value: "1px" },
+          thick: { value: "2px" },
+          heavy: { value: "4px" },
+        },
       },
       keyframes: {
         rotation: {

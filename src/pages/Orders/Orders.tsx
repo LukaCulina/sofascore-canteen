@@ -1,7 +1,7 @@
 import useSWR from "swr"
 import { getOrders } from "@/api/routes"
 import { IconOrders, IconPen } from "@/components/icons"
-import { Button, ErrorMessage, H1, LoadingSpinner, P, Text } from "@/components/ui"
+import { Button, H1, LoadingSpinner, P, StatusMessage, Text } from "@/components/ui"
 import { Flex } from "@/styled-system/jsx"
 import type { Order } from "@/types/orders"
 import { OrdersTable } from "./components/OrdersTable"
@@ -26,24 +26,28 @@ export const Orders = () => {
           </Flex>
           <P textStyle="body.large">View all employee meal orders across all periods.</P>
         </Flex>
-        {data && (
-          <Button variant="outline" w={{ base: "100%", lg: "fit-content" }}>
-            <Flex direction="row" gap="sm" align="center">
-              <Flex align="center" justify="center" w="2xl" h="2xl">
-                <IconPen />
-              </Flex>
-              <Text textStyle="label.medium" color="primary.default">
-                Edit Payment Status
-              </Text>
+        <Button
+          variant="outline"
+          w={{ base: "100%", lg: "fit-content" }}
+          disabled={!data || data.orders.length === 0}
+        >
+          <Flex direction="row" gap="sm" align="center">
+            <Flex align="center" justify="center" w="2xl" h="2xl">
+              <IconPen />
             </Flex>
-          </Button>
-        )}
+            <Text textStyle="label.medium" color="primary.default">
+              Edit Payment Status
+            </Text>
+          </Flex>
+        </Button>
       </Flex>
 
       {isLoading ? (
         <LoadingSpinner />
       ) : error || !data ? (
-        <ErrorMessage>Failed to load orders</ErrorMessage>
+        <StatusMessage variant="error">Failed to load orders</StatusMessage>
+      ) : data.orders.length === 0 ? (
+        <StatusMessage variant="info">No orders found</StatusMessage>
       ) : (
         <OrdersTable orders={data.orders} />
       )}

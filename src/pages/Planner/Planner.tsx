@@ -2,7 +2,7 @@ import { useState } from "react"
 import { postJson } from "@/api/http-client"
 import { plans } from "@/api/routes"
 import { IconPlanner } from "@/components/icons"
-import { ErrorMessage, LoadingSpinner } from "@/components/ui"
+import { LoadingSpinner, StatusMessage } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
 import { Flex } from "@/styled-system/jsx"
 import { DateRangeSelector, MealDayCard, PlannerHeader } from "./components"
@@ -26,7 +26,7 @@ const getDaysBetween = (start: string, end: string) => {
 }
 
 const validateRange = (start: string, end: string) => {
-  if (!start || !end) return "" 
+  if (!start || !end) return ""
   const startMs = new Date(start).getTime()
   const endMs = new Date(end).getTime()
   if (endMs < startMs) return "End date cannot be before start date."
@@ -152,7 +152,7 @@ export const Planner = () => {
           {isLoading ? (
             <LoadingSpinner />
           ) : mealsError ? (
-            <ErrorMessage>Failed to load meals.</ErrorMessage>
+            <StatusMessage variant="error">Failed to load meals.</StatusMessage>
           ) : dateRange.length === 0 ? (
             <Flex
               align="center"
