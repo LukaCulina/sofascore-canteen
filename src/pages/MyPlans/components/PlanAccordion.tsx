@@ -1,5 +1,7 @@
 import { useState } from "react"
-import { IconArrowDown } from "@/components/icons"
+import { IconArrowDown, IconPen } from "@/components/icons"
+import { IconTrash } from "@/components/icons/IconTrash"
+import { Button } from "@/components/ui/Button"
 import { Text } from "@/components/ui/Text"
 import { MealDayCard } from "@/pages/Planner/components"
 import { Box, Flex } from "@/styled-system/jsx"
@@ -32,7 +34,6 @@ export const PlanAccordion = ({ plan }: PlanAccordionProps) => {
     <Box borderRadius="md" overflow="hidden" bg="surface.s1">
       {/* Accordion header */}
       <Flex
-        as="button"
         align="center"
         justify="space-between"
         w="full"
@@ -40,10 +41,13 @@ export const PlanAccordion = ({ plan }: PlanAccordionProps) => {
         py="lg"
         bg="transparent"
         border="none"
+        gap="lg"
         cursor="pointer"
         onClick={() => setIsOpen(!isOpen)}
+        flexWrap={{ base: "wrap", md: "nowrap" }}
       >
-        <Flex direction="column" align="flex-start" gap="xs">
+        {/* left side — Plan ID and dates */}
+        <Flex direction="column" align="flex-start" gap="xs" flex="1" minW="0">
           <Text textStyle="display.small" color="neutrals.nLv1">
             Plan #{plan.id}
           </Text>
@@ -51,9 +55,41 @@ export const PlanAccordion = ({ plan }: PlanAccordionProps) => {
             {formatDate(plan.period_start)} - {formatDate(plan.period_end)}
           </Text>
         </Flex>
-        <Box transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"} transition="transform 0.2s">
-          <IconArrowDown fill="neutrals.nLv3" />
-        </Box>
+
+        {/* Right side — buttons */}
+        <Flex align="center" gap="md">
+          {isOpen && (
+            <>
+              <Button
+                variant="outline"
+                w="auto"
+                minW={{ base: "40px", md: "auto" }}
+                px={{ base: "sm", md: "lg" }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                }}
+              >
+                <IconPen fill="primary.default" />
+                <Box display={{ base: "none", sm: "block" }}>Edit</Box>
+              </Button>
+              <Button
+                variant="danger"
+                w="auto"
+                minW={{ base: "40px", md: "auto" }}
+                px={{ base: "sm", md: "lg" }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                }}
+              >
+                <IconTrash fill="surface.s1" width="20px" height="20px" />
+                <Box display={{ base: "none", sm: "block" }}>Delete Plan</Box>
+              </Button>
+            </>
+          )}
+          <Box transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"} transition="transform 0.2s">
+            <IconArrowDown fill="neutrals.nLv3" />
+          </Box>
+        </Flex>
       </Flex>
 
       {/* Expanded content — read-only */}
