@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router"
 import { IconPlanner } from "@/components/icons"
+import { Spinner } from "@/components/spinner"
 import { Text } from "@/components/ui/Text"
 import { usePlans } from "@/pages/Planner/hooks/usePlans"
 import { css } from "@/styled-system/css"
@@ -29,9 +30,7 @@ export const MyPlans = () => {
       {/* Loading */}
       {isLoading && (
         <Flex align="center" justify="center" p="2xl">
-          <Text textStyle="body.medium" color="neutrals.nLv3">
-            Loading plans...
-          </Text>
+          <Spinner />
         </Flex>
       )}
 
