@@ -8,9 +8,10 @@ interface MealRowProps {
   meal: Meal
   isSelected: boolean
   onToggle: () => void
+  disabled?: boolean
 }
 
-export const MealRow = ({ meal, isSelected, onToggle }: MealRowProps) => {
+export const MealRow = ({ meal, isSelected, onToggle, disabled }: MealRowProps) => {
   return (
     <Flex
       align="center"
@@ -20,18 +21,19 @@ export const MealRow = ({ meal, isSelected, onToggle }: MealRowProps) => {
       borderBottom="1px solid"
       borderColor="neutrals.nLv4"
       _last={{ borderBottom: "none" }}
-      cursor="pointer"
-      onClick={onToggle}
+      cursor={disabled ? "default" : "pointer"}
+      onClick={disabled ? undefined : onToggle}
     >
       <input
         type="checkbox"
         checked={isSelected}
         onChange={onToggle}
+        disabled={disabled}
         className={css({
           w: "17px",
           h: "17px",
-          accentColor: "primary.default",
-          cursor: "pointer",
+          accentColor: disabled ? "neutrals.nLv3" : "primary.default",
+          cursor: disabled ? "not-allowed" : "pointer",
           flexShrink: 0,
         })}
       />

@@ -7,17 +7,30 @@ interface MealDayCardProps {
   date: string
   meals: Meal[]
   selectedMeals: number[]
-  onToggleMeal: (mealId: number) => void
+  onToggleMeal?: (mealId: number) => void
+  disabled?: boolean
+  backgroundColor?: string
+  showBorder?: boolean
+  dayTextStyle?: string
 }
 
-export const MealDayCard = ({ date, meals, selectedMeals, onToggleMeal }: MealDayCardProps) => {
+export const MealDayCard = ({
+  date,
+  meals,
+  selectedMeals,
+  onToggleMeal,
+  disabled,
+  backgroundColor,
+  showBorder = true,
+  dayTextStyle,
+}: MealDayCardProps) => {
   return (
     <Box
-      border="1px solid"
+      border={showBorder === false ? undefined : "1px solid"}
       borderColor="neutrals.nLv4"
       borderRadius="md"
       overflow="hidden"
-      backgroundColor="surface.s1"
+      backgroundColor={backgroundColor ?? "surface.s1"}
     >
       {/* Day header */}
       <Flex
@@ -29,15 +42,15 @@ export const MealDayCard = ({ date, meals, selectedMeals, onToggleMeal }: MealDa
         borderColor="neutrals.nLv4"
       >
         <Box bg="surface.s2" borderRadius="sm" p="sm" textAlign="center">
-          <Text textStyle="display.small" color="neutrals.nLv1">
+          <Text textStyle={dayTextStyle ?? "display.small"} color="neutrals.nLv1">
             {new Date(date).toLocaleDateString("en-US", { weekday: "short" }).toUpperCase()}
           </Text>
         </Box>
         <Flex direction="column">
-          <Text textStyle="display.small" color="neutrals.nLv1">
+          <Text textStyle={dayTextStyle ?? "display.small"} color="neutrals.nLv1">
             {new Date(date).toLocaleDateString("en-US", { weekday: "long" })}
           </Text>
-          <Text textStyle="assistive.default" color="neutrals.nLv3">
+          <Text textStyle={dayTextStyle ?? "assistive.default"} color="neutrals.nLv3">
             {new Date(date).toLocaleDateString("en-US", {
               month: "long",
               day: "numeric",
@@ -53,7 +66,8 @@ export const MealDayCard = ({ date, meals, selectedMeals, onToggleMeal }: MealDa
           key={meal.id}
           meal={meal}
           isSelected={selectedMeals.includes(meal.id)}
-          onToggle={() => onToggleMeal(meal.id)}
+          onToggle={() => onToggleMeal?.(meal.id)}
+          disabled={disabled}
         />
       ))}
     </Box>
