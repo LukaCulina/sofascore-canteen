@@ -1,4 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router"
+import { MyPlans } from "@/pages/MyPlans/MyPlans"
 import { Role, useAuthStore } from "@/stores/auth"
 
 export const Route = createFileRoute("/_app/my-plans")({
@@ -8,7 +9,7 @@ export const Route = createFileRoute("/_app/my-plans")({
       throw redirect({ to: "/" })
     }
   },
-  component: () => <div>My Plans - placeholder</div>,
+  component: () => <MyPlans />,
   head: () => ({
     meta: [{ title: "My Plans :: Canteen" }],
   }),
