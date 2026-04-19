@@ -4,9 +4,15 @@ import { Box, Flex } from "@/styled-system/jsx"
 import type { OrderSelection } from "@/types"
 import { GreyText } from "../styles"
 
-export const MealCard = ({ selection }: { selection: OrderSelection }) => {
+interface MealCardProps {
+  selection: OrderSelection
+  unpaid: boolean
+}
+
+export const MealCard = ({ selection, unpaid }: MealCardProps) => {
   const intl = useIntl()
-  const { meal, plan_day, unpaid } = selection
+  
+  const { meal, plan_day } = selection
 
   const finalPrice = (meal.price * (100 - meal.discount)) / 100
   const formattedMealDate = intl.formatDate(new Date(plan_day.day * 1000), {

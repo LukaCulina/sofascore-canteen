@@ -3,18 +3,45 @@ import { useState } from "react"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
 import { Badge, P, Text } from "@/components/ui/"
 import { Box, Flex } from "@/styled-system/jsx"
-import { GreyText } from "../styles"
+import { Checkbox, GreyText } from "../styles"
 import { MealCard } from "./MealCard"
 import type { ProcessedOrder } from "./OrdersTable"
 
-export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
+interface OrderCardProps {
+  order: ProcessedOrder
+  isEditing?: boolean
+  changes: Record<number, boolean>
+  setChanges: React.Dispatch<React.SetStateAction<Record<number, boolean>>>
+}
+
+export const OrderCard = ({ order, isEditing, changes, setChanges }: OrderCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
+
+  const isUnpaid = order.order_selection.some((s) => changes[s.id] ?? s.unpaid)
+
+  const toggleAll = (next: boolean) => {
+    setChanges?.((prev) => {
+      const updated = { ...prev }
+      order.order_selection.forEach((s) => {
+        updated[s.id] = next
+      })
+      return updated
+    })
+  }
+
+  const handleCardClick = () => {
+    if (isEditing) {
+      toggleAll(!isUnpaid)
+    } else {
+      setIsExpanded((prev) => !prev)
+    }
+  }
 
   return (
     <Flex
       direction="column"
       gap="lg"
-      bg={order.hasUnpaid ? "status.error.highlight" : "surface.s1"}
+      bg={isUnpaid ? "status.error.highlight" : "surface.s1"}
       border="1px solid"
       borderColor="neutrals.nLv4"
       borderRadius="lg"
@@ -24,13 +51,13 @@ export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
         justify="space-between"
         align="center"
         p="lg"
-        onClick={() => setIsExpanded((prev) => !prev)}
+        onClick={handleCardClick}
         cursor="pointer"
       >
         <Flex direction="column" gap="sm">
           <Flex align="center" gap="md">
             <Text textStyle="display.medium">#{order.id}</Text>
-            {order.hasUnpaid && <Badge>Not Paid</Badge>}
+            {isUnpaid && <Badge>Not Paid</Badge>}
           </Flex>
           <Text textStyle="body.medium">{order.user}</Text>
           <Flex direction="column" gap="sm">
@@ -46,10 +73,15 @@ export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
           <Text textStyle="assistive.default" color="status.success.default">
             €{order.discount.toFixed(2)}
           </Text>
-          {isExpanded ? <IconArrowUp /> : <IconArrowDown />}
+          {isEditing ? (
+            <Checkbox type="checkbox" checked={isUnpaid} readOnly />
+          ) : isExpanded ? (
+            <IconArrowUp />
+          ) : (
+            <IconArrowDown />
+          )}
         </Flex>
       </Flex>
-
       <AnimatePresence>
         {isExpanded && (
           <Box p="md">
@@ -65,7 +97,11 @@ export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
               </P>
               <Flex direction="column" gap="md">
                 {order.order_selection.map((selection) => (
-                  <MealCard key={selection.id} selection={selection} />
+                  <MealCard
+                    key={selection.id}
+                    selection={selection}
+                    unpaid={changes[selection.id] ?? selection.unpaid}
+                  />
                 ))}
               </Flex>
             </motion.div>
