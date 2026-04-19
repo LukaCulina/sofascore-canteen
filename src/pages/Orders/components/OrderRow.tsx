@@ -3,25 +3,69 @@ import { useState } from "react"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
 import { Badge, P } from "@/components/ui/"
 import { Flex, Grid } from "@/styled-system/jsx"
-import { Td, Tr } from "../styles"
+import { Checkbox, Td, Tr } from "../styles"
 import { MealCard } from "./MealCard"
 import type { ProcessedOrder } from "./OrdersTable"
 
-export const OrderRow = ({ order }: { order: ProcessedOrder }) => {
+interface OrderRowProps {
+  order: ProcessedOrder
+  isEditing: boolean
+  changes: Record<number, boolean>
+  setChanges: React.Dispatch<React.SetStateAction<Record<number, boolean>>>
+}
+
+export const OrderRow = ({ order, isEditing, changes, setChanges }: OrderRowProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
+
+  const isUnpaid = order.order_selection.some((s) => changes[s.id] ?? s.unpaid)
+
+  const toggleAll = (next: boolean) => {
+    setChanges((prev) => {
+      const updated = { ...prev }
+
+      order.order_selection.forEach((s) => {
+        updated[s.id] = next
+      })
+
+      return updated
+    })
+  }
+
+  const handleRowClick = () => {
+    if (!isEditing) {
+      setIsExpanded((prev) => !prev)
+    } else {
+      toggleAll(!isUnpaid)
+    }
+  }
 
   return (
     <>
       <Tr
-        onClick={() => setIsExpanded((prev) => !prev)}
+        onClick={handleRowClick}
         cursor="pointer"
-        bg={order.hasUnpaid ? "status.error.highlight" : "surface.s1"}
+        bg={isUnpaid ? "status.error.highlight" : "surface.s1"}
       >
-        <Td w="72px">{isExpanded ? <IconArrowUp /> : <IconArrowDown />}</Td>
+        <Td w="72px">
+          {isEditing ? (
+            <Flex align="center" justify="center" h="xl" w="xl">
+              <Checkbox
+                type="checkbox"
+                checked={isUnpaid}
+                onChange={(e) => toggleAll(e.target.checked)}
+                onClick={(e) => e.stopPropagation()}
+              />
+            </Flex>
+          ) : isExpanded ? (
+            <IconArrowUp />
+          ) : (
+            <IconArrowDown />
+          )}
+        </Td>
         <Td>
           <Flex justify="space-between" align="center" gap="sm">
             #{order.id}
-            {order.hasUnpaid && <Badge>Not Paid</Badge>}
+            {isUnpaid && <Badge>Not Paid</Badge>}
           </Flex>
         </Td>
         <Td>{order.user}</Td>
@@ -48,7 +92,11 @@ export const OrderRow = ({ order }: { order: ProcessedOrder }) => {
                 </P>
                 <Grid gridTemplateColumns="repeat(3, 1fr)" p="lg" gap="lg">
                   {order.order_selection.map((selection) => (
-                    <MealCard key={selection.id} selection={selection} />
+                    <MealCard
+                      key={selection.id}
+                      selection={selection}
+                      unpaid={changes[selection.id] ?? selection.unpaid}
+                    />
                   ))}
                 </Grid>
               </motion.div>

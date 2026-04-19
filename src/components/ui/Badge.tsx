@@ -10,5 +10,6 @@ export const Badge = styled("span", {
     px: "sm",
     py: "xs",
     w: "fit-content",
+    textAlign: "center",
   },
 })
