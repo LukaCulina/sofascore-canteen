@@ -112,7 +112,7 @@ export const Orders = () => {
 
       {isLoading ? (
         <Flex justify="center" align="center" py="6xl">
-          <Spinner />
+          <Spinner role="status" />
         </Flex>
       ) : error || !data ? (
         <Flex justify="center" align="center" py="6xl">

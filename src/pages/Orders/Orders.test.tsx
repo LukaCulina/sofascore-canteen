@@ -85,7 +85,7 @@ describe("Orders", () => {
 
       renderWithProviders(<Orders />)
 
-      expect(screen.getByTestId("loading-spinner")).toBeInTheDocument()
+      expect(screen.getByRole("status")).toBeInTheDocument()
     })
 
     it("shows error if fetch fails", () => {
