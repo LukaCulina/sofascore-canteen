@@ -1,8 +1,8 @@
-import { useAuthSWR } from "@/api/hooks"
 import { meals as mealsRoute } from "@/api/routes"
 import { IconMealCatalog } from "@/components/icons"
 import { MealCard, Spinner, StatusMessage } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
+import { useAuthSWR } from "@/hooks/useAuthSWR"
 import { Box, Flex, Grid } from "@/styled-system/jsx"
 import type { Meals } from "@/types"
 
