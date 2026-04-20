@@ -28,21 +28,25 @@ export const CanteenPage = () => {
   const { data, error, isLoading, mutate } = useAuthSWR<MealOptions>(order())
   const [isEditingOrder, setIsEditingOrder] = useState(false)
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false)
+  const [actionError, setActionError] = useState<string | null>(null)
+  const [editSelectionsSnapshot, setEditSelectionsSnapshot] = useState<
+    Record<number, number | null> | undefined
+  >(undefined)
   const intl = useIntl()
 
   const initialSelections = useInitialOrderSelections(data)
 
-  const { trigger: createOrder, isMutating: isCreating, error: createError } = useAuthSWRMutation<
+  const { trigger: createOrder, isMutating: isCreating } = useAuthSWRMutation<
     SaveOrderPayload,
     SaveOrderResponse
   >(order(), "POST")
 
-  const { trigger: updateOrder, isMutating: isUpdating, error: updateError } = useAuthSWRMutation<
+  const { trigger: updateOrder, isMutating: isUpdating } = useAuthSWRMutation<
     SaveOrderPayload,
     SaveOrderResponse
   >(order(), "PUT")
 
-  const { trigger: cancelOrder, isMutating: isDeleting, error: deleteError } = useAuthSWRMutation<
+  const { trigger: cancelOrder, isMutating: isDeleting } = useAuthSWRMutation<
     undefined,
     { success: boolean; message: string }
   >(data?.order ? orderByPlanId(data.plan.id) : null, "DELETE")
@@ -52,16 +56,19 @@ export const CanteenPage = () => {
 
   const closeEditMode = () => {
     setIsEditingOrder(false)
+    setEditSelectionsSnapshot(undefined)
   }
 
   const openEditMode = () => {
+    setActionError(null)
+    setEditSelectionsSnapshot(initialSelections)
     setIsEditingOrder(true)
   }
 
   const handleSubmit = async (selections: Record<number, number | null>) => {
-    if (!data?.plan) {
-      return
-    }
+    if (!data?.plan) return
+
+    setActionError(null)
 
     const payload: SaveOrderPayload = {
       planId: data.plan.id,
@@ -69,15 +76,19 @@ export const CanteenPage = () => {
       selections,
     }
 
-    if (isEditingOrder) {
-      await updateOrder(payload)
-      await mutate()
-      closeEditMode()
-      return
-    }
+    try {
+      if (isEditingOrder) {
+        await updateOrder(payload)
+        await mutate()
+        closeEditMode()
+        return
+      }
 
-    await createOrder(payload)
-    await mutate()
+      await createOrder(payload)
+      await mutate()
+    } catch {
+      setActionError("Something went wrong when submitting new order. Please try again.")
+    }
   }
 
   const handleCancelOrder = async () => {
@@ -86,13 +97,17 @@ export const CanteenPage = () => {
       return
     }
 
-    await cancelOrder(undefined)
-    await mutate()
-    setIsCancelDialogOpen(false)
-    closeEditMode()
-  }
+    setActionError(null)
 
-  const mutationError = createError ?? updateError ?? deleteError
+    try {
+      await cancelOrder()
+      await mutate()
+      setIsCancelDialogOpen(false)
+      closeEditMode()
+    } catch {
+      setActionError("Something went wrong with cancellation. Please try again.")
+    }
+  }
 
   if (isLoading) {
     return (
@@ -113,24 +128,28 @@ export const CanteenPage = () => {
     <Flex direction="column" gap="xl">
       <Flex direction="column" gap="lg">
         <Text textStyle="display.extraLarge">
-          Week of {formatTitleDate(data.plan.period_start)} - {formatTitleDate(data.plan.period_end)}
+          Week of {formatTitleDate(data.plan.period_start)} -{" "}
+          {formatTitleDate(data.plan.period_end)}
         </Text>
         <Text textStyle="body.large">Choose your meals for the upcoming work week.</Text>
       </Flex>
 
-      {mutationError ? <StatusMessage variant="error">Something went wrong. Please try again.</StatusMessage> : null}
+      {actionError ? <StatusMessage variant="error">{actionError}</StatusMessage> : null}
 
       {data.order && !isEditingOrder ? (
         <SummaryCard
           order={data.order}
           onEdit={openEditMode}
-          onCancelOrder={() => setIsCancelDialogOpen(true)}
+          onCancelOrder={() => {
+            setActionError(null)
+            setIsCancelDialogOpen(true)
+          }}
           isDeleting={isDeleting}
         />
       ) : (
         <MealSelectionForm
           plan={data.plan}
-          initialSelections={isEditingOrder ? initialSelections : undefined}
+          initialSelections={isEditingOrder ? editSelectionsSnapshot : undefined}
           onSubmit={handleSubmit}
           isSubmitting={isCreating || isUpdating}
           submitLabel={isEditingOrder ? "Save changes" : "Submit"}
