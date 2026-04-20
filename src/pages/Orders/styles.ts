@@ -5,8 +5,6 @@ export const Table = styled("table", {
     width: "100%",
     tableLayout: "fixed",
     borderCollapse: "collapse",
-    overflow: "hidden",
-    boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.1)",
   },
 })
 

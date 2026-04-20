@@ -7,28 +7,24 @@ import { GreyText } from "../styles"
 import { MealCard } from "./MealCard"
 import type { ProcessedOrder } from "./OrdersTable"
 
-interface OrderCardProps {
-  order: ProcessedOrder
-}
-
-export const OrderCard = ({ order }: OrderCardProps) => {
+export const OrderCard = ({ order }: { order: ProcessedOrder }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
     <Flex
       direction="column"
       gap="lg"
+      bg={order.hasUnpaid ? "status.error.highlight" : "surface.s1"}
       border="1px solid"
       borderColor="neutrals.nLv4"
       borderRadius="lg"
       overflow="hidden"
-      bg={order.hasUnpaid ? "status.error.highlight" : "surface.s1"}
     >
       <Flex
-        p="lg"
         justify="space-between"
         align="center"
-        onClick={() => setIsExpanded(!isExpanded)}
+        p="lg"
+        onClick={() => setIsExpanded((prev) => !prev)}
         cursor="pointer"
       >
         <Flex direction="column" gap="sm">
