@@ -25,7 +25,7 @@ const DialogRoot = ({ children }: PropsWithChildren) => {
 
 const DialogHeader = ({ children }: PropsWithChildren) => {
   return (
-    <Flex px="lg" py="xl" borderBottomWidth="1px" borderBottomColor="neutrals.nLv4">
+    <Flex px="lg" py="xl" borderBottomWidth="thin" borderBottomColor="neutrals.nLv4">
       {children}
     </Flex>
   )
@@ -41,7 +41,7 @@ const DialogContent = ({ children }: PropsWithChildren) => {
 
 const DialogFooter = ({ children }: PropsWithChildren) => {
   return (
-    <Box p="lg" borderTopWidth="1px" borderTopColor="neutrals.nLv4">
+    <Box p="lg" borderTopWidth="thin" borderTopColor="neutrals.nLv4">
       {children}
     </Box>
   )
