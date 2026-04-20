@@ -1,6 +1,6 @@
 import { useIntl } from "react-intl"
 import { order } from "@/api/routes.ts"
-import { Spinner } from "@/components/spinner"
+import { Spinner, StatusMessage } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
 import { useAuthSWR } from "@/hooks/useAuthSWR.ts"
 import { mockMealOptions } from "@/mocks/mealOptions.ts"
@@ -18,13 +18,18 @@ export const CanteenPage = () => {
 
   if (isLoading) {
     return (
-      <Flex h="full" direction="column" justifyContent="center" alignItems="center">
+      <Flex justify="center" align="center" py="6xl">
         <Spinner />
       </Flex>
     )
   }
 
-  if (error || !data) return <Text>Something went wrong</Text>
+  if (error || !data)
+    return (
+      <Flex justify="center" align="center" py="6xl">
+        <StatusMessage variant="error">Failed to load meal options</StatusMessage>
+      </Flex>
+    )
 
   return (
     <Flex direction="column" gap="xl">
