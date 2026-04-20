@@ -22,11 +22,9 @@ export const OrderRow = ({ order, isEditing, changes, setChanges }: OrderRowProp
   const toggleAll = (next: boolean) => {
     setChanges((prev) => {
       const updated = { ...prev }
-
       order.order_selection.forEach((s) => {
         updated[s.id] = next
       })
-
       return updated
     })
   }

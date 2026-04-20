@@ -9,7 +9,7 @@ import type { ProcessedOrder } from "./OrdersTable"
 
 interface OrderCardProps {
   order: ProcessedOrder
-  isEditing?: boolean
+  isEditing: boolean
   changes: Record<number, boolean>
   setChanges: React.Dispatch<React.SetStateAction<Record<number, boolean>>>
 }
@@ -20,7 +20,7 @@ export const OrderCard = ({ order, isEditing, changes, setChanges }: OrderCardPr
   const isUnpaid = order.order_selection.some((s) => changes[s.id] ?? s.unpaid)
 
   const toggleAll = (next: boolean) => {
-    setChanges?.((prev) => {
+    setChanges((prev) => {
       const updated = { ...prev }
       order.order_selection.forEach((s) => {
         updated[s.id] = next
@@ -30,10 +30,10 @@ export const OrderCard = ({ order, isEditing, changes, setChanges }: OrderCardPr
   }
 
   const handleCardClick = () => {
-    if (isEditing) {
-      toggleAll(!isUnpaid)
-    } else {
+    if (!isEditing) {
       setIsExpanded((prev) => !prev)
+    } else {
+      toggleAll(!isUnpaid)
     }
   }
 
