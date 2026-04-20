@@ -43,6 +43,44 @@ export const postJson = <T>(url: string, body = {}, options: RequestInit = {}): 
   }).then((rawResponse) => parseResponse<T>(rawResponse))
 }
 
+/**
+ * Send PUT request to given URL, with provided body and options.
+ */
+export const putJson = <T>(url: string, body = {}, options: RequestInit = {}): Promise<T> => {
+  const token = useAuthStore.getState().token
+  const { headers, ...fetchOptions } = options
+
+  const reqHeaders = {
+    "Content-Type": "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  }
+
+  return fetch(getUrl(url), {
+    method: "PUT",
+    ...fetchOptions,
+    body: JSON.stringify(body),
+    headers: { ...dbTargetHeader, ...headers, ...reqHeaders },
+  }).then((rawResponse) => parseResponse<T>(rawResponse))
+}
+
+/**
+ * Send DELETE request to given URL, with provided options.
+ */
+export const deleteJson = <T>(url: string, options: RequestInit = {}): Promise<T> => {
+  const token = useAuthStore.getState().token
+  const { headers, ...fetchOptions } = options
+
+  const reqHeaders = {
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  }
+
+  return fetch(getUrl(url), {
+    method: "DELETE",
+    ...fetchOptions,
+    headers: { ...dbTargetHeader, ...headers, ...reqHeaders },
+  }).then((rawResponse) => parseResponse<T>(rawResponse))
+}
+
 export function parseResponse<T>(response: Response): Promise<T> {
   return new Promise((resolve, reject) => {
     const emptyResponse = {} as T

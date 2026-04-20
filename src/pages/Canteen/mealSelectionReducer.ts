@@ -5,7 +5,10 @@ export interface MealSelectionState {
 }
 
 export type MealSelectionAction =
-  | { type: "INIT"; payload: Plan }
+  | {
+      type: "INIT"
+      payload: { plan: Plan; prefilledSelections?: Record<number, number | null> }
+    }
   | { type: "SET_SELECTION"; payload: { planDayId: number; mealId: number | null } }
 
 export const mealSelectionReducer = (
@@ -15,8 +18,8 @@ export const mealSelectionReducer = (
   switch (action.type) {
     case "INIT": {
       const base: Record<number, number | null> = {}
-      for (const day of action.payload.plan_day) {
-        base[day.id] = null
+      for (const day of action.payload.plan.plan_day) {
+        base[day.id] = action.payload.prefilledSelections?.[day.id] ?? null
       }
       return { selections: base }
     }

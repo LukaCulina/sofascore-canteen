@@ -1,13 +1,26 @@
 import useSWRMutation from "swr/mutation"
-import { postJson } from "@/api/http-client.ts"
+import { deleteJson, postJson, putJson } from "@/api/http-client.ts"
 import { useAuthStore } from "@/stores/auth.ts"
 
-export function useAuthSWRMutation<TBody extends object, TResponse>(url: string) {
+type MutationMethod = "POST" | "PUT" | "DELETE"
+
+export function useAuthSWRMutation<TBody = undefined, TResponse = unknown>(
+  url: string | null,
+  method: MutationMethod = "POST",
+) {
   const { token } = useAuthStore()
 
-  return useSWRMutation(url, (url, { arg }: { arg: TBody }) =>
-    postJson<TResponse>(url, arg, {
-      headers: { Authorization: `Bearer ${token}` },
-    }),
+  return useSWRMutation(url ?? null, (url, { arg }: { arg: TBody }) =>
+    method === "PUT"
+      ? putJson<TResponse>(url, arg ?? {}, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      : method === "DELETE"
+        ? deleteJson<TResponse>(url, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+        : postJson<TResponse>(url, arg ?? {}, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
   )
 }
