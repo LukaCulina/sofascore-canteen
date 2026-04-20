@@ -2,7 +2,7 @@ import { useState } from "react"
 import { postJson } from "@/api/http-client"
 import { plans } from "@/api/routes"
 import { IconPlanner } from "@/components/icons"
-import { LoadingSpinner, StatusMessage } from "@/components/ui"
+import { Spinner, StatusMessage } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
 import { Flex } from "@/styled-system/jsx"
 import { DateRangeSelector, MealDayCard, PlannerHeader } from "./components"
@@ -150,9 +150,13 @@ export const Planner = () => {
           </Text>
 
           {isLoading ? (
-            <LoadingSpinner />
+            <Flex justify="center" align="center" py="6xl">
+              <Spinner />
+            </Flex>
           ) : mealsError ? (
-            <StatusMessage variant="error">Failed to load meals.</StatusMessage>
+            <Flex justify="center" align="center" py="6xl">
+              <StatusMessage variant="error">Failed to load meals.</StatusMessage>
+            </Flex>
           ) : dateRange.length === 0 ? (
             <Flex
               align="center"

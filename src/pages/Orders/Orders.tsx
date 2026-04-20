@@ -1,7 +1,7 @@
 import useSWR from "swr"
 import { getOrders } from "@/api/routes"
 import { IconOrders, IconPen } from "@/components/icons"
-import { Button, H1, LoadingSpinner, P, StatusMessage, Text } from "@/components/ui"
+import { Button, H1, P, Spinner, StatusMessage, Text } from "@/components/ui"
 import { Flex } from "@/styled-system/jsx"
 import type { Order } from "@/types/orders"
 import { OrdersTable } from "./components/OrdersTable"
@@ -43,11 +43,17 @@ export const Orders = () => {
       </Flex>
 
       {isLoading ? (
-        <LoadingSpinner />
+        <Flex justify="center" align="center" py="6xl">
+          <Spinner />
+        </Flex>
       ) : error || !data ? (
-        <StatusMessage variant="error">Failed to load orders</StatusMessage>
+        <Flex justify="center" align="center" py="6xl">
+          <StatusMessage variant="error">Failed to load orders</StatusMessage>
+        </Flex>
       ) : data.orders.length === 0 ? (
-        <StatusMessage variant="info">No orders found</StatusMessage>
+        <Flex justify="center" align="center" py="6xl">
+          <StatusMessage variant="info">No orders found</StatusMessage>
+        </Flex>
       ) : (
         <OrdersTable orders={data.orders} />
       )}

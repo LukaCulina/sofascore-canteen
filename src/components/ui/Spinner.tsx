@@ -1,9 +1,4 @@
-import { Flex, styled } from "@/styled-system/jsx"
-
-type LoadingSpinnerProps = {
-  size?: "sm" | "md" | "lg"
-  fullPage?: boolean
-}
+import { styled } from "@/styled-system/jsx"
 
 export const Spinner = styled("div", {
   base: {
@@ -24,15 +19,3 @@ export const Spinner = styled("div", {
     size: "lg",
   },
 })
-
-export const LoadingSpinner = ({ size = "lg", fullPage = true }: LoadingSpinnerProps) => {
-  const spinner = <Spinner size={size} />
-
-  if (!fullPage) return spinner
-
-  return (
-    <Flex justify="center" align="center" py="6xl">
-      {spinner}
-    </Flex>
-  )
-}
