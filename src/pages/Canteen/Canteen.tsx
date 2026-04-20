@@ -1,4 +1,4 @@
-import { useState, useTransition } from "react"
+import { useState } from "react"
 import { useIntl } from "react-intl"
 import { order, orderByPlanId } from "@/api/routes.ts"
 import { Spinner, StatusMessage } from "@/components/ui"
@@ -28,7 +28,6 @@ export const CanteenPage = () => {
   const { data, error, isLoading, mutate } = useAuthSWR<MealOptions>(order())
   const [isEditingOrder, setIsEditingOrder] = useState(false)
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false)
-  const [isEditTransitionPending, startEditTransition] = useTransition()
   const intl = useIntl()
 
   const initialSelections = useInitialOrderSelections(data)
@@ -52,15 +51,11 @@ export const CanteenPage = () => {
     intl.formatDate(new Date(unixTime * 1000), { month: "short", day: "numeric" })
 
   const closeEditMode = () => {
-    startEditTransition(() => {
-      setIsEditingOrder(false)
-    })
+    setIsEditingOrder(false)
   }
 
   const openEditMode = () => {
-    startEditTransition(() => {
-      setIsEditingOrder(true)
-    })
+    setIsEditingOrder(true)
   }
 
   const handleSubmit = async (selections: Record<number, number | null>) => {
@@ -130,14 +125,14 @@ export const CanteenPage = () => {
           order={data.order}
           onEdit={openEditMode}
           onCancelOrder={() => setIsCancelDialogOpen(true)}
-          isDeleting={isDeleting || isEditTransitionPending}
+          isDeleting={isDeleting}
         />
       ) : (
         <MealSelectionForm
           plan={data.plan}
           initialSelections={isEditingOrder ? initialSelections : undefined}
           onSubmit={handleSubmit}
-          isSubmitting={isCreating || isUpdating || isEditTransitionPending}
+          isSubmitting={isCreating || isUpdating}
           submitLabel={isEditingOrder ? "Save changes" : "Submit"}
           onCancel={isEditingOrder ? closeEditMode : undefined}
         />
