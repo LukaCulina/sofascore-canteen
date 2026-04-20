@@ -26,7 +26,7 @@ export const Spinner = styled("div", {
 })
 
 export const LoadingSpinner = ({ size = "lg", fullPage = true }: LoadingSpinnerProps) => {
-  const spinner = <Spinner size={size} />
+  const spinner = <Spinner size={size} data-testid="loading-spinner"/>
 
   if (!fullPage) return spinner
 

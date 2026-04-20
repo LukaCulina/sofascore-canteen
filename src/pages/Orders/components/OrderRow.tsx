@@ -42,6 +42,7 @@ export const OrderRow = ({ order, isEditing, changes, setChanges }: OrderRowProp
   return (
     <>
       <Tr
+        data-testid={`order-row-${order.id}`}
         onClick={handleRowClick}
         cursor="pointer"
         bg={isUnpaid ? "status.error.highlight" : "surface.s1"}
