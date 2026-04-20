@@ -17,10 +17,12 @@ export const Orders = () => {
 
   const [isEditing, setIsEditing] = useState(false)
   const [changes, setChanges] = useState<Record<number, boolean>>({})
+  const [isSaving, setIsSaving] = useState(false)
   const [saveError, setSaveError] = useState(false)
 
   const handleSave = async () => {
     setSaveError(false)
+    setIsSaving(true)
 
     try {
       const updates = Object.entries(changes).map(([id, unpaid]) => ({
@@ -35,6 +37,8 @@ export const Orders = () => {
       mutate()
     } catch {
       setSaveError(true)
+    } finally {
+      setIsSaving(false)
     }
   }
 
@@ -72,7 +76,7 @@ export const Orders = () => {
                 variant="primary"
                 w={{ base: "100%", lg: "fit-content" }}
                 onClick={handleSave}
-                disabled={Object.keys(changes).length === 0}
+                disabled={Object.keys(changes).length === 0 || isSaving}
               >
                 Save Changes
               </Button>
