@@ -49,12 +49,11 @@ export const postJson = <T>(url: string, body = {}, options: RequestInit = {}): 
  * Send PUT request to given URL, with provided body and options.
  */
 export const putJson = <T>(url: string, body = {}, options: RequestInit = {}): Promise<T> => {
-  const token = useAuthStore.getState().token
   const { headers, ...fetchOptions } = options
 
   const reqHeaders = {
     "Content-Type": "application/json",
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...getAuthHeaders(),
   }
 
   return fetch(getUrl(url), {
@@ -69,11 +68,10 @@ export const putJson = <T>(url: string, body = {}, options: RequestInit = {}): P
  * Send DELETE request to given URL, with provided options.
  */
 export const deleteJson = <T>(url: string, options: RequestInit = {}): Promise<T> => {
-  const token = useAuthStore.getState().token
   const { headers, ...fetchOptions } = options
 
   const reqHeaders = {
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...getAuthHeaders(),
   }
 
   return fetch(getUrl(url), {

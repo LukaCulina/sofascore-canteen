@@ -1,14 +1,16 @@
 import { useState } from "react"
 import { useIntl } from "react-intl"
+import useSWR from "swr"
+import useSWRMutation from "swr/mutation"
+import { deleteJson, getJson, postJson, putJson } from "@/api/http-client.ts"
 import { order, orderByPlanId } from "@/api/routes.ts"
 import { Spinner, StatusMessage } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
-import { useAuthSWR } from "@/hooks/useAuthSWR.ts"
-import { useAuthSWRMutation } from "@/hooks/useAuthSWRMutation.ts"
 import { CancelOrderDialog } from "@/pages/Canteen/components/CancelOrderDialog.tsx"
 import { MealSelectionForm } from "@/pages/Canteen/components/MealSelection"
 import { SummaryCard } from "@/pages/Canteen/components/SummaryCard"
 import { useInitialOrderSelections } from "@/pages/Canteen/hooks/useInitialOrderSelections.ts"
+import { useAuthStore } from "@/stores/auth"
 import { Flex } from "@/styled-system/jsx"
 import type { MealOptions } from "@/types"
 
@@ -24,8 +26,18 @@ interface SaveOrderResponse {
   message: string
 }
 
+interface DeleteOrderResponse {
+  success: boolean
+  message: string
+}
+
 export const CanteenPage = () => {
-  const { data, error, isLoading, mutate } = useAuthSWR<MealOptions>(order())
+  const { token } = useAuthStore()
+  const { data, error, isLoading, mutate } = useSWR<MealOptions>(
+    token ? order() : null,
+    (url: string) => getJson<MealOptions>(url),
+  )
+
   const [isEditingOrder, setIsEditingOrder] = useState(false)
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false)
   const [actionError, setActionError] = useState<string | null>(null)
@@ -36,20 +48,20 @@ export const CanteenPage = () => {
 
   const initialSelections = useInitialOrderSelections(data)
 
-  const { trigger: createOrder, isMutating: isCreating } = useAuthSWRMutation<
-    SaveOrderPayload,
-    SaveOrderResponse
-  >(order(), "POST")
+  const { trigger: createOrder, isMutating: isCreating } = useSWRMutation(
+    token ? order() : null,
+    (url: string, { arg }: { arg: SaveOrderPayload }) => postJson<SaveOrderResponse>(url, arg),
+  )
 
-  const { trigger: updateOrder, isMutating: isUpdating } = useAuthSWRMutation<
-    SaveOrderPayload,
-    SaveOrderResponse
-  >(order(), "PUT")
+  const { trigger: updateOrder, isMutating: isUpdating } = useSWRMutation(
+    token ? order() : null,
+    (url: string, { arg }: { arg: SaveOrderPayload }) => putJson<SaveOrderResponse>(url, arg),
+  )
 
-  const { trigger: cancelOrder, isMutating: isDeleting } = useAuthSWRMutation<
-    undefined,
-    { success: boolean; message: string }
-  >(data?.order ? orderByPlanId(data.plan.id) : null, "DELETE")
+  const { trigger: cancelOrder, isMutating: isDeleting } = useSWRMutation(
+    token && data?.order ? orderByPlanId(data.plan.id) : null,
+    (url: string) => deleteJson<DeleteOrderResponse>(url),
+  )
 
   const formatTitleDate = (unixTime: number) =>
     intl.formatDate(new Date(unixTime * 1000), { month: "short", day: "numeric" })
@@ -87,7 +99,7 @@ export const CanteenPage = () => {
       await createOrder(payload)
       await mutate()
     } catch {
-      setActionError("Something went wrong when submitting new order. Please try again.")
+      setActionError("Something went wrong. Please try again.")
     }
   }
 
@@ -105,7 +117,7 @@ export const CanteenPage = () => {
       setIsCancelDialogOpen(false)
       closeEditMode()
     } catch {
-      setActionError("Something went wrong with cancellation. Please try again.")
+      setActionError("Something went wrong. Please try again.")
     }
   }
 
@@ -128,7 +140,7 @@ export const CanteenPage = () => {
     <Flex direction="column" gap="xl">
       <Flex direction="column" gap="lg">
         <Text textStyle="display.extraLarge">
-          Week of {formatTitleDate(data.plan.period_start)} -{" "}
+          Week of {formatTitleDate(data.plan.period_start)} - {" "}
           {formatTitleDate(data.plan.period_end)}
         </Text>
         <Text textStyle="body.large">Choose your meals for the upcoming work week.</Text>
