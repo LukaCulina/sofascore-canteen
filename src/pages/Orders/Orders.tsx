@@ -1,47 +1,30 @@
-import { useState } from "react"
-import useSWR from "swr"
-import { postJson } from "@/api/http-client"
-import { adminOrders, myOrders, updatePaymentStatus } from "@/api/routes"
+import { adminOrders, myOrders } from "@/api/routes"
 import { IconOrders, IconPen } from "@/components/icons"
 import { Button, H1, P, Spinner, StatusMessage, Text } from "@/components/ui"
+import { useAuthSWR } from "@/hooks/useAuthSWR"
 import { Role, useAuthStore } from "@/stores/auth"
 import { Flex } from "@/styled-system/jsx"
 import type { Order } from "@/types/orders"
 import { OrdersTable } from "./components/OrdersTable"
+import { usePaymentEdit } from "./hooks/usePaymentEdit"
 
 export const Orders = () => {
   const user = useAuthStore((s) => s.user)
   const isAdmin = user?.role === Role.ADMIN
 
   const url = isAdmin ? adminOrders() : myOrders()
-  const { data, isLoading, error, mutate } = useSWR<{ orders: Order[] }>(url)
+  const { data, isLoading, error, mutate } = useAuthSWR<{ orders: Order[] }>(url)
 
-  const [isEditing, setIsEditing] = useState(false)
-  const [changes, setChanges] = useState<Record<number, boolean>>({})
-  const [isSaving, setIsSaving] = useState(false)
-  const [saveError, setSaveError] = useState(false)
-
-  const handleSave = async () => {
-    setSaveError(false)
-    setIsSaving(true)
-
-    try {
-      const updates = Object.entries(changes).map(([id, unpaid]) => ({
-        id: Number(id),
-        unpaid,
-      }))
-
-      await postJson(updatePaymentStatus(), { updates })
-
-      setIsEditing(false)
-      setChanges({})
-      mutate()
-    } catch {
-      setSaveError(true)
-    } finally {
-      setIsSaving(false)
-    }
-  }
+  const {
+    isEditing,
+    changes,
+    setChanges,
+    isMutating,
+    saveError,
+    handleEdit,
+    handleSave,
+    handleCancel,
+  } = usePaymentEdit(mutate)
 
   return (
     <Flex direction="column" gap="xl">
@@ -66,31 +49,28 @@ export const Orders = () => {
             gap="md"
             direction={{ base: "column", lg: "row" }}
           >
-            {saveError && (
-              <Flex align="center" justify="center">
-                <P color="status.error.default">Failed to update payment status</P>
-              </Flex>
-            )}
-
             {isEditing && (
-              <Button
-                variant="primary"
-                w={{ base: "100%", lg: "fit-content" }}
-                onClick={handleSave}
-                disabled={Object.keys(changes).length === 0 || isSaving}
-              >
-                Save Changes
-              </Button>
+              <>
+                {saveError && (
+                  <Flex align="center" justify="center">
+                    <P color="status.error.default">Failed to update payment status</P>
+                  </Flex>
+                )}
+                <Button
+                  variant="primary"
+                  w={{ base: "100%", lg: "fit-content" }}
+                  onClick={handleSave}
+                  disabled={Object.keys(changes).length === 0 || isMutating}
+                >
+                  Save Changes
+                </Button>
+              </>
             )}
             <Button
               variant="outline"
               w={{ base: "100%", lg: "fit-content" }}
               disabled={!data || data.orders.length === 0}
-              onClick={() => {
-                setIsEditing((prev) => !prev)
-                setChanges({})
-                setSaveError(false)
-              }}
+              onClick={isEditing ? handleCancel : handleEdit}
             >
               {isEditing ? (
                 <Text textStyle="label.medium" color="primary.default">
