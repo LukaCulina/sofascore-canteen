@@ -1,7 +1,7 @@
 import { useState } from "react"
 import useSWR from "swr"
 import { postJson } from "@/api/http-client"
-import { getOrders, updatePaymentStatus } from "@/api/routes"
+import { adminOrders, myOrders, updatePaymentStatus } from "@/api/routes"
 import { IconOrders, IconPen } from "@/components/icons"
 import { Button, H1, P, Spinner, StatusMessage, Text } from "@/components/ui"
 import { Role, useAuthStore } from "@/stores/auth"
@@ -10,10 +10,11 @@ import type { Order } from "@/types/orders"
 import { OrdersTable } from "./components/OrdersTable"
 
 export const Orders = () => {
-  const { data, isLoading, error, mutate } = useSWR<{ orders: Order[] }>(getOrders())
   const user = useAuthStore((s) => s.user)
-
   const isAdmin = user?.role === Role.ADMIN
+
+  const url = isAdmin ? adminOrders() : myOrders()
+  const { data, isLoading, error, mutate } = useSWR<{ orders: Order[] }>(url)
 
   const [isEditing, setIsEditing] = useState(false)
   const [changes, setChanges] = useState<Record<number, boolean>>({})
