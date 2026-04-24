@@ -17,6 +17,7 @@ export const usePaymentEdit = (mutate: KeyedMutator<{ orders: Order[] }>) => {
     trigger,
     isMutating,
     error: saveError,
+    reset,
   } = useAuthSWRMutation<{ updates: PaymentStatusUpdate[] }, void>(updatePaymentStatus())
 
   const handleEdit = () => setIsEditing(true)
@@ -33,14 +34,13 @@ export const usePaymentEdit = (mutate: KeyedMutator<{ orders: Order[] }>) => {
       mutate()
       setIsEditing(false)
       setChanges({})
-    } catch {
-      //error is handled by SWR
-    }
+    } catch {}
   }
 
   const handleCancel = () => {
     setIsEditing(false)
     setChanges({})
+    reset()
   }
 
   return {
