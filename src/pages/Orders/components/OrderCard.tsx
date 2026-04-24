@@ -74,7 +74,11 @@ export const OrderCard = ({ order, isEditing, changes, setChanges }: OrderCardPr
             €{order.discount.toFixed(2)}
           </Text>
           {isEditing ? (
-            <Checkbox type="checkbox" checked={isUnpaid} readOnly />
+            <Checkbox
+              type="checkbox"
+              checked={isUnpaid}
+              onChange={(e) => toggleAll(e.target.checked)}
+            />
           ) : isExpanded ? (
             <IconArrowUp />
           ) : (

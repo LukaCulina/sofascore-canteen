@@ -59,7 +59,7 @@ export const OrdersTable = ({ orders, isEditing, changes, setChanges }: OrdersTa
 
       return {
         id: order.id,
-        user: order.user?.name ?? `${order.user_id}`,
+        user: order.user?.name ?? String(order.user_id),
         period: formatPeriod(order.plan.period_start, order.plan.period_end),
         submitted: formatDate(order.submitted_at),
         meals: numMeals,
@@ -96,7 +96,7 @@ export const OrdersTable = ({ orders, isEditing, changes, setChanges }: OrdersTa
         <Table>
           <thead>
             <Tr>
-              <Th w="72px"></Th>
+              <Th w="72px" aria-label="Actions"></Th>
               <Th>Order ID</Th>
               <Th>User</Th>
               <Th>Period</Th>
