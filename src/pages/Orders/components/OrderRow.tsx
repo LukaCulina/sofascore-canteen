@@ -52,7 +52,6 @@ export const OrderRow = ({ order, isEditing, changes, setChanges }: OrderRowProp
                 type="checkbox"
                 checked={isUnpaid}
                 onChange={(e) => toggleAll(e.target.checked)}
-                onClick={(e) => e.stopPropagation()}
               />
             </Flex>
           ) : isExpanded ? (
