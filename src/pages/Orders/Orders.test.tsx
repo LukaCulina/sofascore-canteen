@@ -244,6 +244,8 @@ describe("Orders", () => {
 
       await user.click(screen.getByText("Cancel"))
 
+      await user.click(screen.getByText("Edit Payment Status"))
+
       expect(screen.queryByText("Failed to update payment status")).not.toBeInTheDocument()
     })
   })
