@@ -5,7 +5,7 @@ interface IconCancelProps extends IconProps {
   fill?: ColorToken
 }
 
-export const CancelIcon = ({ fill = "surface.s1", ...props }: IconCancelProps) => {
+export const IconCancel = ({ fill = "surface.s1", ...props }: IconCancelProps) => {
   return (
     <svg
       width="9"
@@ -22,3 +22,4 @@ export const CancelIcon = ({ fill = "surface.s1", ...props }: IconCancelProps) =
     </svg>
   )
 }
+

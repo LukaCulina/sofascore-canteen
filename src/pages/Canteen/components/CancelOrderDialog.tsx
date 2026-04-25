@@ -21,7 +21,7 @@ export function CancelOrderDialog({
   }
 
   return (
-    <Dialog.Root>
+    <Dialog.Root onClose={isSubmitting ? () => {} : onCancel}>
       <Dialog.Header>
         <Dialog.Title>Cancel order</Dialog.Title>
       </Dialog.Header>

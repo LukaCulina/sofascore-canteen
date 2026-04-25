@@ -1,6 +1,6 @@
-export { CancelIcon } from "./CancelIcon"
 export { IconArrowDown } from "./IconArrowDown"
 export { IconArrowUp } from "./IconArrowUp"
+export { IconCancel } from "./IconCancel"
 export { IconCanteen } from "./IconCanteen"
 export { IconCircleCheckFilled } from "./IconCircleCheckFilled"
 export { IconEdit } from "./IconEdit"

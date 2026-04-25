@@ -1,9 +1,20 @@
-import type { PropsWithChildren } from "react"
+import { type PropsWithChildren, useEffect } from "react"
 import { Text } from "@/components/ui"
 import Portal from "@/components/ui/Portal"
 import { Box, Flex } from "@/styled-system/jsx"
 
-const DialogRoot = ({ children }: PropsWithChildren) => {
+interface DialogRootProps extends PropsWithChildren {
+  onClose: () => void
+}
+
+const DialogRoot = ({ children, onClose }: DialogRootProps) => {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose()
+    }
+    document.addEventListener("keydown", onKey)
+    return () => document.removeEventListener("keydown", onKey)
+  }, [onClose])
   return (
     <Portal>
       <Box
@@ -14,6 +25,9 @@ const DialogRoot = ({ children }: PropsWithChildren) => {
         alignItems="center"
         justifyContent="center"
         p="lg"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) onClose()
+        }}
       >
         <Flex direction="column" bg="surface.s1" rounded="lg" w="full" maxW="420px">
           {children}

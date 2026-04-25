@@ -1,5 +1,5 @@
 import { useIntl } from "react-intl"
-import { CancelIcon } from "@/components/icons/CancelIcon"
+import { IconCancel } from "@/components/icons/IconCancel"
 import { IconCircleCheckFilled } from "@/components/icons/IconCircleCheckFilled"
 import { IconEdit } from "@/components/icons/IconEdit"
 import { Button, Spinner, Text } from "@/components/ui"
@@ -65,7 +65,7 @@ export function SummaryCard({ order, onEdit, onCancelOrder, isDeleting = false }
               </Flex>
             ) : (
               <>
-                <CancelIcon />
+                <IconCancel />
                 Cancel order
               </>
             )}

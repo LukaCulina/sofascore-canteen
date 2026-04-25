@@ -8,6 +8,7 @@ const Portal = ({ id = "portals", children }: React.PropsWithChildren<PortalProp
   const element = document.getElementById(id)
 
   if (!element) {
+    console.warn(`Portal target element with id "${id}" was not found.`)
     return null
   }
 

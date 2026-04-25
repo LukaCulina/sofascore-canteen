@@ -43,7 +43,7 @@ export const Button = styled("button", {
       error: {
         bg: "status.error.default",
         color: "surface.s1",
-        _hover: { opacity: 0.9 },
+        _hover: { bg: "status.error.hover" },
         _disabled: {
           bg: "neutrals.nLv3",
         },

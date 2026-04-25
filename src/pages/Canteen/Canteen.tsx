@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useIntl } from "react-intl"
 import useSWR from "swr"
 import useSWRMutation from "swr/mutation"
-import { deleteJson, getJson, postJson, putJson } from "@/api/http-client.ts"
+import { getJson, requestJson } from "@/api/http-client.ts"
 import { order, orderByPlanId } from "@/api/routes.ts"
 import { Spinner, StatusMessage } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
@@ -50,17 +50,19 @@ export const CanteenPage = () => {
 
   const { trigger: createOrder, isMutating: isCreating } = useSWRMutation(
     token ? order() : null,
-    (url: string, { arg }: { arg: SaveOrderPayload }) => postJson<SaveOrderResponse>(url, arg),
+    (url: string, { arg }: { arg: SaveOrderPayload }) =>
+      requestJson<SaveOrderResponse>("POST", url, arg),
   )
 
   const { trigger: updateOrder, isMutating: isUpdating } = useSWRMutation(
     token ? order() : null,
-    (url: string, { arg }: { arg: SaveOrderPayload }) => putJson<SaveOrderResponse>(url, arg),
+    (url: string, { arg }: { arg: SaveOrderPayload }) =>
+      requestJson<SaveOrderResponse>("PUT", url, arg),
   )
 
   const { trigger: cancelOrder, isMutating: isDeleting } = useSWRMutation(
     token && data?.order ? orderByPlanId(data.plan.id) : null,
-    (url: string) => deleteJson<DeleteOrderResponse>(url),
+    (url: string) => requestJson<DeleteOrderResponse>("DELETE", url),
   )
 
   const formatTitleDate = (unixTime: number) =>
@@ -140,8 +142,7 @@ export const CanteenPage = () => {
     <Flex direction="column" gap="xl">
       <Flex direction="column" gap="lg">
         <Text textStyle="display.extraLarge">
-          Week of {formatTitleDate(data.plan.period_start)} - {" "}
-          {formatTitleDate(data.plan.period_end)}
+          {`Week of ${formatTitleDate(data.plan.period_start)} - ${formatTitleDate(data.plan.period_end)}`}
         </Text>
         <Text textStyle="body.large">Choose your meals for the upcoming work week.</Text>
       </Flex>
