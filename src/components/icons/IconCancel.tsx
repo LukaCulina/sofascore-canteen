@@ -22,4 +22,3 @@ export const IconCancel = ({ fill = "surface.s1", ...props }: IconCancelProps) =
     </svg>
   )
 }
-

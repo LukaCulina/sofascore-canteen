@@ -21,4 +21,3 @@ export const useInitialOrderSelections = (data?: MealOptions) => {
     }, {})
   }, [data])
 }
-

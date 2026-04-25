@@ -16,4 +16,3 @@ const Portal = ({ id = "portals", children }: React.PropsWithChildren<PortalProp
 }
 
 export default Portal
-
