@@ -24,7 +24,7 @@ export const Orders = () => {
     handleEdit,
     handleSave,
     handleCancel,
-  } = usePaymentEdit(mutate)
+  } = usePaymentEdit(data?.orders, mutate)
 
   return (
     <Flex direction="column" gap="xl">

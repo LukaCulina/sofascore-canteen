@@ -9,7 +9,10 @@ interface PaymentStatusUpdate {
   unpaid: boolean
 }
 
-export const usePaymentEdit = (mutate: KeyedMutator<{ orders: Order[] }>) => {
+export const usePaymentEdit = (
+  orders: Order[] | undefined,
+  mutate: KeyedMutator<{ orders: Order[] }>,
+) => {
   const [isEditing, setIsEditing] = useState(false)
   const [changes, setChanges] = useState<Record<number, boolean>>({})
 
@@ -23,18 +26,32 @@ export const usePaymentEdit = (mutate: KeyedMutator<{ orders: Order[] }>) => {
   const handleEdit = () => setIsEditing(true)
 
   const handleSave = async () => {
+    const originalUnpaid = new Map<number, boolean>()
+
+    orders?.forEach((order) => {
+      order.order_selection.forEach((s) => {
+        originalUnpaid.set(s.id, s.unpaid)
+      })
+    })
+
+    const updates = Object.entries(changes)
+      .filter(([id, unpaid]) => originalUnpaid.get(Number(id)) !== unpaid)
+      .map(([id, unpaid]) => ({ id: Number(id), unpaid }))
+
+    if (updates.length === 0) {
+      setIsEditing(false)
+      setChanges({})
+      return
+    }
+
     try {
-      const updates = Object.entries(changes).map(([id, unpaid]) => ({
-        id: Number(id),
-        unpaid,
-      }))
-
       await trigger({ updates })
-
       mutate()
       setIsEditing(false)
       setChanges({})
-    } catch {}
+    } catch {
+      // error state is handled by saveError
+    }
   }
 
   const handleCancel = () => {
@@ -45,7 +62,6 @@ export const usePaymentEdit = (mutate: KeyedMutator<{ orders: Order[] }>) => {
 
   return {
     isEditing,
-    setIsEditing,
     changes,
     setChanges,
     isMutating,
