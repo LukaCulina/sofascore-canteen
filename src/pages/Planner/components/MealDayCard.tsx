@@ -4,7 +4,7 @@ import type { Meal } from "@/types"
 import { MealRow } from "./MealRow"
 
 interface MealDayCardProps {
-  date: string
+  date: Date
   meals: Meal[]
   selectedMeals: number[]
   onToggleMeal?: (mealId: number) => void
@@ -36,15 +36,15 @@ export const MealDayCard = ({
       <Flex align="center" gap="lg" p="lg" borderBottom="1px solid" borderColor="neutrals.nLv4">
         <Box bg="surface.s2" borderRadius="sm" p="sm" textAlign="center">
           <Text textStyle={dayTextStyle ?? "display.small"} color="neutrals.nLv1">
-            {new Date(date).toLocaleDateString("en-US", { weekday: "short" }).toUpperCase()}
+            {date.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase()}
           </Text>
         </Box>
         <Flex direction="column">
           <Text textStyle={dayTextStyle ?? "display.small"} color="neutrals.nLv1">
-            {new Date(date).toLocaleDateString("en-US", { weekday: "long" })}
+            {date.toLocaleDateString("en-US", { weekday: "long" })}
           </Text>
           <Text textStyle={dayTextStyle ?? "assistive.default"} color="neutrals.nLv3">
-            {new Date(date).toLocaleDateString("en-US", {
+            {date.toLocaleDateString("en-US", {
               month: "long",
               day: "numeric",
               year: "numeric",

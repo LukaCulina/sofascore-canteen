@@ -38,7 +38,7 @@ export const Button = styled("button", {
       danger: {
         bg: "status.error.default",
         color: "surface.s1",
-        _hover: { opacity: 0.9 },
+        _hover: { bg: "status.error.highlight" },
       },
     },
   },

@@ -182,7 +182,7 @@ export const Planner = () => {
               {dateRange.map((date) => (
                 <MealDayCard
                   key={date}
-                  date={date}
+                  date={new Date(date)}
                   meals={meals}
                   selectedMeals={selectedMeals[date] ?? []}
                   onToggleMeal={(mealId) => toggleMeal(date, mealId)}

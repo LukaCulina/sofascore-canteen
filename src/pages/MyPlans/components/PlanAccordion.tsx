@@ -1,6 +1,5 @@
 import { useState } from "react"
-import { IconArrowDown, IconPen } from "@/components/icons"
-import { IconTrash } from "@/components/icons/IconTrash"
+import { IconArrowDown, IconPen, IconTrash } from "@/components/icons"
 import { Button } from "@/components/ui/Button"
 import { Text } from "@/components/ui/Text"
 import { MealDayCard } from "@/pages/Planner/components"
@@ -19,27 +18,15 @@ const formatDate = (timestamp: number) => {
   })
 }
 
-const tsToDayDate = (timestamp: number) => {
-  const d = new Date(timestamp * 1000)
-  const y = d.getFullYear()
-  const m = String(d.getMonth() + 1).padStart(2, "0")
-  const day = String(d.getDate()).padStart(2, "0")
-  return `${y}-${m}-${day}`
-}
-
 export const PlanAccordion = ({ plan }: PlanAccordionProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <Box borderRadius="md" overflow="hidden" bg="surface.s1">
-      {/* Accordion header */}
       <Flex
         align="center"
         justify="space-between"
-        w="full"
         p="lg"
-        bg="transparent"
-        border="none"
         gap="lg"
         cursor="pointer"
         onClick={() => setIsOpen(!isOpen)}
@@ -55,43 +42,49 @@ export const PlanAccordion = ({ plan }: PlanAccordionProps) => {
           </Text>
         </Flex>
 
-        {/* Right side — buttons */}
         <Flex align="center" gap="md">
-          {isOpen && (
-            <>
-              <Button
-                variant="outline"
-                w="auto"
-                minW={{ base: "40px", md: "auto" }}
-                px={{ base: "sm", md: "lg" }}
-                onClick={(e) => {
-                  e.stopPropagation()
-                }}
-              >
-                <IconPen fill="primary.default" />
-                <Box display={{ base: "none", sm: "block" }}>Edit</Box>
-              </Button>
-              <Button
-                variant="danger"
-                w="auto"
-                minW={{ base: "40px", md: "auto" }}
-                px={{ base: "sm", md: "lg" }}
-                onClick={(e) => {
-                  e.stopPropagation()
-                }}
-              >
-                <IconTrash fill="surface.s1" width="20px" height="20px" />
-                <Box display={{ base: "none", sm: "block" }}>Delete Plan</Box>
-              </Button>
-            </>
-          )}
+          <Flex
+            align="center"
+            gap="md"
+            visibility={isOpen ? "visible" : "hidden"}
+            opacity={isOpen ? 1 : 0}
+            pointerEvents={isOpen ? "auto" : "none"}
+            transition="opacity 0.2s"
+            aria-hidden={!isOpen}
+          >
+            <Button
+              variant="outline"
+              w="auto"
+              minW={{ base: "40px", md: "auto" }}
+              px={{ base: "sm", md: "lg" }}
+              tabIndex={isOpen ? 0 : -1}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            >
+              <IconPen fill="primary.default" />
+              <Box display={{ base: "none", sm: "block" }}>Edit</Box>
+            </Button>
+            <Button
+              variant="danger"
+              w="auto"
+              minW={{ base: "40px", md: "auto" }}
+              px={{ base: "sm", md: "lg" }}
+              tabIndex={isOpen ? 0 : -1}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            >
+              <IconTrash fill="surface.s1" width="20px" height="20px" />
+              <Box display={{ base: "none", sm: "block" }}>Delete Plan</Box>
+            </Button>
+          </Flex>
           <Box transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"} transition="transform 0.2s">
             <IconArrowDown fill="neutrals.nLv3" />
           </Box>
         </Flex>
       </Flex>
 
-      {/* Expanded content — read-only */}
       <Box
         display="grid"
         gridTemplateRows={isOpen ? "1fr" : "0fr"}
@@ -103,7 +96,7 @@ export const PlanAccordion = ({ plan }: PlanAccordionProps) => {
               {plan.plan_day.map((day) => (
                 <MealDayCard
                   key={day.id}
-                  date={tsToDayDate(day.day)}
+                  date={new Date(day.day * 1000)}
                   meals={day.day_meal.map((dm) => dm.meal)}
                   selectedMeals={day.day_meal.map((dm) => dm.meal.id)}
                   disabled
