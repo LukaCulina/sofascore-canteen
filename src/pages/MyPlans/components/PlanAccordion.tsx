@@ -88,7 +88,7 @@ export const PlanAccordion = ({ plan }: PlanAccordionProps) => {
       <Box
         display="grid"
         gridTemplateRows={isOpen ? "1fr" : "0fr"}
-        transition="grid-template-rows 0.6s ease"
+        transition="grid-template-rows 0.3s ease"
       >
         <Box overflow="hidden">
           <Box p="lg">
