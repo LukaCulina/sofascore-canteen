@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router"
+import { useMemo } from "react"
 import { IconPlanner } from "@/components/icons"
 import { Spinner } from "@/components/spinner"
 import { Text } from "@/components/ui/Text"
@@ -10,7 +11,7 @@ import { PlanAccordion } from "./components/PlanAccordion"
 export const MyPlans = () => {
   const { plans, isLoading } = usePlans()
 
-  const sorted = [...plans].sort((a, b) => b.period_start - a.period_start)
+  const sorted = useMemo(() => [...plans].sort((a, b) => b.period_start - a.period_start), [plans])
 
   return (
     <Flex direction="column" gap="xl">
