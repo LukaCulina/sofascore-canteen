@@ -1,7 +1,7 @@
 import { IconVegan } from "@/components/icons"
 import { Text } from "@/components/ui/Text"
 import { css } from "@/styled-system/css"
-import { Flex } from "@/styled-system/jsx"
+import { Box, Flex } from "@/styled-system/jsx"
 import type { Meal } from "@/types"
 
 interface MealRowProps {
@@ -24,19 +24,24 @@ export const MealRow = ({ meal, isSelected, onToggle, disabled }: MealRowProps) 
       cursor={disabled ? "default" : "pointer"}
       onClick={disabled ? undefined : onToggle}
     >
-      <input
-        type="checkbox"
-        checked={isSelected}
-        onChange={onToggle}
-        disabled={disabled}
-        className={css({
-          w: "17px",
-          h: "17px",
-          accentColor: disabled ? "neutrals.nLv3" : "primary.default",
-          cursor: disabled ? "not-allowed" : "pointer",
-          flexShrink: 0,
-        })}
-      />
+      {disabled ? (
+        isSelected ? (
+          <Box w="8px" h="8px" borderRadius="full" bg="primary.default" flexShrink={0} />
+        ) : null
+      ) : (
+        <input
+          type="checkbox"
+          checked={isSelected}
+          onChange={onToggle}
+          className={css({
+            w: "17px",
+            h: "17px",
+            accentColor: "primary.default",
+            cursor: "pointer",
+            flexShrink: 0,
+          })}
+        />
+      )}
       <Flex align="center" gap="sm" flex="1">
         <Text textStyle="body.medium" color="neutrals.nLv1">
           {meal.description}
