@@ -40,6 +40,14 @@ export const Button = styled("button", {
           _hover: { bg: "transparent" },
         },
       },
+      error: {
+        bg: "status.error.default",
+        color: "surface.s1",
+        _hover: { bg: "status.error.hover" },
+        _disabled: {
+          bg: "neutrals.nLv3",
+        },
+      },
     },
   },
   defaultVariants: {
