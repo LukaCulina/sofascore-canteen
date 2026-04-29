@@ -68,7 +68,9 @@ const mockSWR = (overrides: Partial<SWRResponse<{ orders: Order[] }>> = {}) =>
     isLoading: false,
     data: { orders: mockOrders },
     error: undefined,
-    mutate: vi.fn(),
+    mutate: vi.fn().mockImplementation(async (fn) => {
+      if (typeof fn === "function") return fn()
+    }),
     ...overrides,
   } as unknown as SWRResponse)
 
@@ -188,7 +190,9 @@ describe("Orders", () => {
   describe("saving changes", () => {
     it("successful save calls API and resets state", async () => {
       const user = userEvent.setup()
-      const mutate = vi.fn()
+      const mutate = vi.fn().mockImplementation(async (fn) => {
+        if (typeof fn === "function") return fn()
+      })
       mockSWR({ mutate })
 
       vi.mocked(httpClient.postJson).mockResolvedValueOnce({ success: true })

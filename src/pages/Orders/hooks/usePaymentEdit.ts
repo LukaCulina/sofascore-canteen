@@ -2,7 +2,7 @@ import { useState } from "react"
 import type { KeyedMutator } from "swr"
 import { updatePaymentStatus } from "@/api/routes"
 import { useAuthSWRMutation } from "@/hooks/useAuthSWRMutation"
-import type { Order } from "@/types"
+import type { Order, OrderSelection } from "@/types"
 
 interface PaymentStatusUpdate {
   id: number
@@ -44,9 +44,23 @@ export const usePaymentEdit = (
       return
     }
 
+    const optimisticData = {
+      orders: orders!.map((order) => ({
+        ...order,
+        order_selection: order.order_selection.map(
+          (s): OrderSelection => (s.id in changes ? { ...s, unpaid: changes[s.id] } : s),
+        ),
+      })),
+    }
+
     try {
-      await trigger({ updates })
-      mutate()
+      await mutate(
+        async () => {
+          await trigger({ updates })
+          return optimisticData
+        },
+        { optimisticData, rollbackOnError: true, revalidate: false },
+      )
       setIsEditing(false)
       setChanges({})
     } catch {
