@@ -1,13 +1,14 @@
 import { useNavigate } from "@tanstack/react-router"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { meals as mealsRoute } from "@/api/routes"
 import { IconMealCatalog, IconPlus } from "@/components/icons"
 import { Button, MealCard, Spinner, StatusMessage } from "@/components/ui"
-import { Text } from "@/components/ui/Text"
+import { H1, P } from "@/components/ui/Text"
 import { useAuthSWR } from "@/hooks/useAuthSWR"
 import { Box, Flex, Grid } from "@/styled-system/jsx"
 import type { Meals } from "@/types"
 import { AddMealDialog, AddMealFormProvider } from "./components"
+import { MealFilters } from "./MealFilters"
 
 export const MealCatalogPage = () => {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
@@ -20,26 +21,43 @@ export const MealCatalogPage = () => {
     setIsAddDialogOpen(false)
   }
 
+  const [search, setSearch] = useState("")
+  const [filters, setFilters] = useState({ vegetarian: false, nonVegetarian: false })
+
+  const filteredMeals = useMemo(() => {
+    let result = meals
+
+    if (search) {
+      result = result.filter((meal) =>
+        meal.description.toLowerCase().includes(search.toLowerCase()),
+      )
+    }
+
+    if (filters.vegetarian && !filters.nonVegetarian) {
+      result = result.filter((meal) => meal.is_vegetarian)
+    } else if (filters.nonVegetarian && !filters.vegetarian) {
+      result = result.filter((meal) => !meal.is_vegetarian)
+    }
+    return result
+  }, [meals, search, filters])
+
   return (
-    <Box p="sm">
+    <Flex direction="column" gap="xl">
       <Flex
         direction={{ base: "column", lg: "row" }}
         justify={{ base: "flex-start", lg: "space-between" }}
         align={{ base: "stretch", lg: "center" }}
         gap="lg"
-        mb="xl"
       >
         <Flex direction="column" gap="sm">
           <Flex align="center" gap="sm">
-            <IconMealCatalog fill="primary.default" height={32} width={32} />
-            <Text textStyle="display.extraLarge" color="neutrals.nLv1">
-              Meal Catalog
-            </Text>
+            <Flex align="center" justify="center" w="2xl" h="2xl">
+              <IconMealCatalog width={32} height={32} />
+            </Flex>
+            <H1 fontSize="28px">Meal Catalog</H1>
           </Flex>
 
-          <Text textStyle="body.large" color="neutrals.nLv1">
-            Browse all available meals in the catalog.
-          </Text>
+          <P textStyle="body.large">Browse all available meals in the catalog.</P>
         </Flex>
 
         <Button
@@ -53,6 +71,8 @@ export const MealCatalogPage = () => {
         </Button>
       </Flex>
 
+      <MealFilters filters={filters} onSearchChange={setSearch} onFiltersChange={setFilters} />
+
       {isLoading ? (
         <Flex justify="center" align="center" py="6xl">
           <Spinner />
@@ -65,12 +85,16 @@ export const MealCatalogPage = () => {
         <Flex justify="center" align="center" py="6xl">
           <StatusMessage variant="info">No meals available</StatusMessage>
         </Flex>
+      ) : filteredMeals.length === 0 ? (
+        <Flex justify="center" align="center" py="6xl">
+          <StatusMessage variant="info">No meals match your search</StatusMessage>
+        </Flex>
       ) : (
         <Grid
           gridTemplateColumns={{ base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }}
           gap="lg"
         >
-          {meals.map((meal) => (
+          {filteredMeals.map((meal) => (
             <Box
               key={meal.id}
               cursor="pointer"
@@ -81,12 +105,11 @@ export const MealCatalogPage = () => {
           ))}
         </Grid>
       )}
-
       {isAddDialogOpen ? (
         <AddMealFormProvider onClose={closeAddMealDialog} onMealCreated={() => mutate()}>
           <AddMealDialog onClose={closeAddMealDialog} />
         </AddMealFormProvider>
       ) : null}
-    </Box>
+    </Flex>
   )
 }

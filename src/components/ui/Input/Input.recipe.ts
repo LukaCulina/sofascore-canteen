@@ -111,6 +111,14 @@ export const inputRecipe = sva({
           backgroundColor: "surface.s2",
         },
       },
+      plain: {
+        wrapper: {
+          backgroundColor: "surface.s1",
+          gap: "lg",
+          px: "lg",
+          py: "sm",
+        },
+      },
     },
   },
   defaultVariants: {
