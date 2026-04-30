@@ -1,7 +1,9 @@
 import { useState } from "react"
 import type { KeyedMutator } from "swr"
+import useSWRMutation from "swr/mutation"
+import { requestJson } from "@/api/http-client"
 import { updatePaymentStatus } from "@/api/routes"
-import { useAuthSWRMutation } from "@/hooks/useAuthSWRMutation"
+import { useAuthStore } from "@/stores/auth"
 import type { Order, OrderSelection } from "@/types"
 
 interface PaymentStatusUpdate {
@@ -15,13 +17,18 @@ export const usePaymentEdit = (
 ) => {
   const [isEditing, setIsEditing] = useState(false)
   const [changes, setChanges] = useState<Record<number, boolean>>({})
+  const { token } = useAuthStore()
 
   const {
     trigger,
     isMutating,
     error: saveError,
     reset,
-  } = useAuthSWRMutation<{ updates: PaymentStatusUpdate[] }, void>(updatePaymentStatus())
+  } = useSWRMutation(
+    token ? updatePaymentStatus() : null,
+    (url: string, { arg }: { arg: { updates: PaymentStatusUpdate[] } }) =>
+      requestJson<void>("POST", url, arg),
+  )
 
   const handleEdit = () => setIsEditing(true)
 

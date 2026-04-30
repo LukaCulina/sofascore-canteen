@@ -1,7 +1,8 @@
+import useSWR from "swr"
+import { getJson } from "@/api/http-client"
 import { adminOrders, myOrders } from "@/api/routes"
 import { IconOrders, IconPen } from "@/components/icons"
 import { Button, H1, P, Spinner, StatusMessage, Text } from "@/components/ui"
-import { useAuthSWR } from "@/hooks/useAuthSWR"
 import { Role, useAuthStore } from "@/stores/auth"
 import { Flex } from "@/styled-system/jsx"
 import type { Order } from "@/types/orders"
@@ -10,10 +11,16 @@ import { usePaymentEdit } from "./hooks/usePaymentEdit"
 
 export const Orders = () => {
   const user = useAuthStore((s) => s.user)
+
   const isAdmin = user?.role === Role.ADMIN
 
   const url = isAdmin ? adminOrders() : myOrders()
-  const { data, isLoading, error, mutate } = useAuthSWR<{ orders: Order[] }>(url)
+  const { token } = useAuthStore()
+  
+  const { data, isLoading, error, mutate } = useSWR<{ orders: Order[] }>(
+    token ? url : null,
+    (url: string) => getJson<{ orders: Order[] }>(url),
+  )
 
   const {
     isEditing,
