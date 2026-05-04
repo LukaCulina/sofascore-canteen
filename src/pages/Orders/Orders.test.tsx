@@ -12,7 +12,7 @@ vi.mock("swr", () => ({
 }))
 
 vi.mock("@/api/http-client", () => ({
-  postJson: vi.fn(),
+  requestJson: vi.fn(),
 }))
 
 vi.mock("@tanstack/react-router", () => ({
@@ -68,9 +68,7 @@ const mockSWR = (overrides: Partial<SWRResponse<{ orders: Order[] }>> = {}) =>
     isLoading: false,
     data: { orders: mockOrders },
     error: undefined,
-    mutate: vi.fn().mockImplementation(async (fn) => {
-      if (typeof fn === "function") return fn()
-    }),
+    mutate: vi.fn().mockResolvedValue(undefined),
     ...overrides,
   } as unknown as SWRResponse)
 
@@ -172,7 +170,7 @@ describe("Orders", () => {
     it("Save is disabled while request is in progress", async () => {
       const user = userEvent.setup()
       mockSWR()
-      vi.mocked(httpClient.postJson).mockReturnValueOnce(new Promise(() => {}))
+      vi.mocked(httpClient.requestJson).mockImplementation(() => new Promise(() => {}))
       setAdmin()
 
       renderWithProviders(<Orders />)
@@ -181,21 +179,20 @@ describe("Orders", () => {
       await user.click(screen.getByTestId("order-row-1"))
       await user.click(screen.getByText("Save Changes"))
 
-      await waitFor(() => {
-        expect(screen.getByText("Save Changes").closest("button")).toBeDisabled()
-      })
+      const saveButton = screen.getByRole("button", { name: /saving/i })
+
+      expect(saveButton).toBeDisabled()
+      expect(screen.getByText(/saving/i)).toBeInTheDocument()
     })
   })
 
   describe("saving changes", () => {
     it("successful save calls API and resets state", async () => {
       const user = userEvent.setup()
-      const mutate = vi.fn().mockImplementation(async (fn) => {
-        if (typeof fn === "function") return fn()
-      })
+      const mutate = vi.fn().mockResolvedValue(undefined)
       mockSWR({ mutate })
 
-      vi.mocked(httpClient.postJson).mockResolvedValueOnce({ success: true })
+      vi.mocked(httpClient.requestJson).mockResolvedValueOnce({ success: true })
       setAdmin()
 
       renderWithProviders(<Orders />)
@@ -205,7 +202,7 @@ describe("Orders", () => {
       await user.click(screen.getByText("Save Changes"))
 
       await waitFor(() => {
-        expect(httpClient.postJson).toHaveBeenCalledWith(expect.any(String), {
+        expect(httpClient.requestJson).toHaveBeenCalledWith("POST", expect.any(String), {
           updates: [{ id: 10, unpaid: true }],
         })
         expect(mutate).toHaveBeenCalled()
@@ -216,7 +213,7 @@ describe("Orders", () => {
     it("failed save shows error message", async () => {
       const user = userEvent.setup()
       mockSWR()
-      vi.mocked(httpClient.postJson).mockRejectedValueOnce(new Error("fail"))
+      vi.mocked(httpClient.requestJson).mockRejectedValueOnce(new Error("fail"))
       setAdmin()
 
       renderWithProviders(<Orders />)
@@ -233,7 +230,7 @@ describe("Orders", () => {
     it("Cancel clears save error", async () => {
       const user = userEvent.setup()
       mockSWR()
-      vi.mocked(httpClient.postJson).mockRejectedValueOnce(new Error("fail"))
+      vi.mocked(httpClient.requestJson).mockRejectedValueOnce(new Error("fail"))
       setAdmin()
 
       renderWithProviders(<Orders />)
