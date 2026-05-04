@@ -16,7 +16,7 @@ export const Orders = () => {
 
   const url = isAdmin ? adminOrders() : myOrders()
   const { token } = useAuthStore()
-  
+
   const { data, isLoading, error, mutate } = useSWR<{ orders: Order[] }>(
     token ? url : null,
     (url: string) => getJson<{ orders: Order[] }>(url),
@@ -26,7 +26,7 @@ export const Orders = () => {
     isEditing,
     changes,
     setChanges,
-    isMutating,
+    isSaving,
     saveError,
     handleEdit,
     handleSave,
@@ -67,16 +67,22 @@ export const Orders = () => {
                   variant="primary"
                   w={{ base: "100%", lg: "fit-content" }}
                   onClick={handleSave}
-                  disabled={Object.keys(changes).length === 0 || isMutating}
+                  disabled={Object.keys(changes).length === 0 || isSaving}
                 >
-                  Save Changes
+                  {isSaving ? (
+                    <Flex align="center" gap="sm">
+                      <Spinner size="md" /> Saving...
+                    </Flex>
+                  ) : (
+                    "Save Changes"
+                  )}
                 </Button>
               </>
             )}
             <Button
               variant="outline"
               w={{ base: "100%", lg: "fit-content" }}
-              disabled={!data || data.orders.length === 0}
+              disabled={!data || data.orders.length === 0 || isSaving}
               onClick={isEditing ? handleCancel : handleEdit}
             >
               {isEditing ? (

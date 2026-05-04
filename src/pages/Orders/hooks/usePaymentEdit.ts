@@ -4,7 +4,7 @@ import useSWRMutation from "swr/mutation"
 import { requestJson } from "@/api/http-client"
 import { updatePaymentStatus } from "@/api/routes"
 import { useAuthStore } from "@/stores/auth"
-import type { Order, OrderSelection } from "@/types"
+import type { Order } from "@/types"
 
 interface PaymentStatusUpdate {
   id: number
@@ -17,11 +17,12 @@ export const usePaymentEdit = (
 ) => {
   const [isEditing, setIsEditing] = useState(false)
   const [changes, setChanges] = useState<Record<number, boolean>>({})
+  const [isSaving, setIsSaving] = useState(false)
+
   const { token } = useAuthStore()
 
   const {
     trigger,
-    isMutating,
     error: saveError,
     reset,
   } = useSWRMutation(
@@ -45,33 +46,22 @@ export const usePaymentEdit = (
       .filter(([id, unpaid]) => originalUnpaid.get(Number(id)) !== unpaid)
       .map(([id, unpaid]) => ({ id: Number(id), unpaid }))
 
-    if (updates.length === 0) {
+    if (!orders || updates.length === 0) {
       setIsEditing(false)
       setChanges({})
       return
     }
 
-    const optimisticData = {
-      orders: orders!.map((order) => ({
-        ...order,
-        order_selection: order.order_selection.map(
-          (s): OrderSelection => (s.id in changes ? { ...s, unpaid: changes[s.id] } : s),
-        ),
-      })),
-    }
-
+    setIsSaving(true)
     try {
-      await mutate(
-        async () => {
-          await trigger({ updates })
-          return optimisticData
-        },
-        { optimisticData, rollbackOnError: true, revalidate: false },
-      )
+      await trigger({ updates })
+      await mutate()
       setIsEditing(false)
       setChanges({})
     } catch {
       // error state is handled by saveError
+    } finally {
+      setIsSaving(false)
     }
   }
 
@@ -85,7 +75,7 @@ export const usePaymentEdit = (
     isEditing,
     changes,
     setChanges,
-    isMutating,
+    isSaving,
     saveError,
     handleEdit,
     handleSave,
