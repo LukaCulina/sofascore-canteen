@@ -5,7 +5,10 @@ interface IconCheckboxFilledProps extends IconProps {
   fill?: ColorToken
 }
 
-export const IconCheckboxFilled = ({ fill = "primary.default", ...props }: IconCheckboxFilledProps) => {
+export const IconCheckboxFilled = ({
+  fill = "primary.default",
+  ...props
+}: IconCheckboxFilledProps) => {
   return (
     <svg
       width="17"
@@ -23,4 +26,3 @@ export const IconCheckboxFilled = ({ fill = "primary.default", ...props }: IconC
     </svg>
   )
 }
-
