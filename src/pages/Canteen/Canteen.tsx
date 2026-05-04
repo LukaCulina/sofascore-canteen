@@ -1,9 +1,8 @@
 import { useState } from "react"
 import { useIntl } from "react-intl"
 import useSWR from "swr"
-import useSWRMutation from "swr/mutation"
-import { getJson, requestJson } from "@/api/http-client.ts"
-import { order, orderByPlanId } from "@/api/routes.ts"
+import { getJson } from "@/api/http-client.ts"
+import { order } from "@/api/routes.ts"
 import { Spinner, StatusMessage } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
 import { CancelOrderDialog } from "@/pages/Canteen/components/CancelOrderDialog.tsx"
@@ -13,23 +12,8 @@ import { useInitialOrderSelections } from "@/pages/Canteen/hooks/useInitialOrder
 import { useAuthStore } from "@/stores/auth"
 import { Flex } from "@/styled-system/jsx"
 import type { MealOptions } from "@/types"
-
-interface SaveOrderPayload {
-  planId: number
-  isDraft: boolean
-  selections: Record<number, number | null>
-}
-
-interface SaveOrderResponse {
-  success: boolean
-  orderId: number
-  message: string
-}
-
-interface DeleteOrderResponse {
-  success: boolean
-  message: string
-}
+import { useOrderActions } from "./hooks/useOrderActions"
+import { useTransfer } from "./hooks/useTransfer"
 
 export const CanteenPage = () => {
   const { token } = useAuthStore()
@@ -46,24 +30,30 @@ export const CanteenPage = () => {
   >(undefined)
   const intl = useIntl()
 
-  const initialSelections = useInitialOrderSelections(data)
+  const {
+    isEditingOrder,
+    isCancelDialogOpen,
+    setIsCancelDialogOpen,
+    actionError,
+    editSelectionsSnapshot,
+    isCreating,
+    isUpdating,
+    isDeleting,
+    openEditMode,
+    closeEditMode,
+    handleSubmit,
+    handleCancelOrder,
+  } = useOrderActions(token, data, mutate)
 
-  const { trigger: createOrder, isMutating: isCreating } = useSWRMutation(
-    token ? order() : null,
-    (url: string, { arg }: { arg: SaveOrderPayload }) =>
-      requestJson<SaveOrderResponse>("POST", url, arg),
-  )
-
-  const { trigger: updateOrder, isMutating: isUpdating } = useSWRMutation(
-    token ? order() : null,
-    (url: string, { arg }: { arg: SaveOrderPayload }) =>
-      requestJson<SaveOrderResponse>("PUT", url, arg),
-  )
-
-  const { trigger: cancelOrder, isMutating: isDeleting } = useSWRMutation(
-    token && data?.order ? orderByPlanId(data.plan.id) : null,
-    (url: string) => requestJson<DeleteOrderResponse>("DELETE", url),
-  )
+  const {
+    transferSelectionId,
+    setTransferSelectionId,
+    users,
+    isLoadingUsers,
+    isTransferring,
+    transferError,
+    handleTransfer,
+  } = useTransfer(token, mutate)
 
   const formatTitleDate = (unixTime: number) =>
     intl.formatDate(new Date(unixTime * 1000), { month: "short", day: "numeric" })
