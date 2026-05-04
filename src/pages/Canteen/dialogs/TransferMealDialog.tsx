@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Dialog } from "@/components/dialog"
-import { Spinner, Text } from "@/components/ui"
+import { Select, Spinner, Text } from "@/components/ui"
 import { Button } from "@/components/ui/Button"
 import { Flex } from "@/styled-system/jsx"
 import type { User } from "@/types"
@@ -43,16 +43,11 @@ export function TransferMealDialog({
               <Spinner size="sm" />
             </Flex>
           ) : (
-            <select
+            <Select
+              id="user-select"
               value={selectedUserId}
               onChange={(e) => setSelectedUserId(e.target.value)}
               disabled={isTransferring}
-              style={{
-                width: "100%",
-                padding: "8px 12px",
-                borderRadius: "6px",
-                border: "1px solid #ccc",
-              }}
             >
               <option value="" disabled>
                 Select an employee...
@@ -62,7 +57,7 @@ export function TransferMealDialog({
                   {user.name} {user.surname}
                 </option>
               ))}
-            </select>
+            </Select>
           )}
 
           {error ? (
