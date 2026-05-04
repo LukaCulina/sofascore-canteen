@@ -88,13 +88,14 @@ export function SummaryCard({
         return (
           <Flex
             key={selection.id}
+            direction={{ base: "column", md: "row" }}
             justifyContent="space-between"
             alignItems="center"
-            gap="xs"
+            gap="sm"
             p="lg"
           >
-            <Flex direction="column" gap="xs">
-              <Flex gap="xs">
+            <Flex direction="column" gap="xs" alignItems={{ base: "center", md: "start" }}>
+              <Flex gap={{ base: "sm", md: "xs" }}>
                 <Text textStyle="display.small">{formatFullDay(selection.plan_day.day)}</Text>
                 <Text textStyle="assistive.default" color="neutrals.nLv3">
                   {formatShortDate(selection.plan_day.day)}
@@ -113,7 +114,7 @@ export function SummaryCard({
                 variant="outline"
                 onClick={() => onTransferMeal(selection.id)}
                 disabled={isDeleting}
-                w="fit-content"
+                w={{ base: "100%", md: "fit-content" }}
               >
                 <Text textStyle="assistive.default" color="primary.default">
                   Transfer meal
