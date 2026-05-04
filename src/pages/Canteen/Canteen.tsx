@@ -5,14 +5,12 @@ import { order } from "@/api/routes.ts"
 import { Spinner, StatusMessage } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
 import { MealSelectionForm } from "@/pages/Canteen/components/MealSelection"
-import { SummaryCard } from "@/pages/Canteen/components/SummaryCard"
-import { CancelOrderDialog } from "@/pages/Canteen/dialogs/CancelOrderDialog"
 import { useAuthStore } from "@/stores/auth"
 import { Flex } from "@/styled-system/jsx"
 import type { MealOptions } from "@/types"
-import { TransferMealDialog } from "./dialogs/TransferMealDialog"
-import { useOrderActions } from "./hooks/useOrderActions"
-import { useTransfer } from "./hooks/useTransfer"
+import { SummaryCard } from "./components/SummaryCard"
+import { CancelOrderDialog, TransferMealDialog } from "./dialogs"
+import { useOrderActions, useTransfer } from "./hooks"
 
 export const CanteenPage = () => {
   const { token } = useAuthStore()

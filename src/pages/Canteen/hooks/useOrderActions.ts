@@ -2,8 +2,8 @@ import { useState } from "react"
 import useSWRMutation from "swr/mutation"
 import { requestJson } from "@/api/http-client.ts"
 import { order, orderByPlanId } from "@/api/routes.ts"
-import { useInitialOrderSelections } from "@/pages/Canteen/hooks/useInitialOrderSelections.ts"
 import type { MealOptions } from "@/types"
+import { useInitialOrderSelections } from "./useInitialOrderSelections.ts"
 
 interface SaveOrderPayload {
   planId: number
