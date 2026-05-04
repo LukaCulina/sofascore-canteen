@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion"
-import { useState } from "react"
-import { IconArrowDown, IconClear, IconSearch } from "@/components/icons"
+import { debounce } from "lodash"
+import { useEffect, useMemo, useState } from "react"
+import { IconArrowDown, IconArrowUp, IconClear, IconSearch } from "@/components/icons"
 import { Input, Text } from "@/components/ui"
-import { css } from "@/styled-system/css/css"
 import { Box, Flex } from "@/styled-system/jsx"
 import { Checkbox, Label } from "./styles"
 
@@ -12,31 +12,57 @@ interface FiltersState {
 }
 
 interface MealFiltersProps {
+  filters: FiltersState
   onSearchChange: (value: string) => void
   onFiltersChange: (dietary: FiltersState) => void
 }
 
-export const MealFilters = ({ onSearchChange, onFiltersChange }: MealFiltersProps) => {
+export const MealFilters = ({ filters, onSearchChange, onFiltersChange }: MealFiltersProps) => {
   const [inputValue, setInputValue] = useState("")
-  const [filters, setFilters] = useState({ vegetarian: false, nonVegetarian: false })
   const [isOpen, setIsOpen] = useState(false)
-  ////debounce((value: string)))
+
+  const debouncedSearch = useMemo(
+    () =>
+      debounce(
+        (value: string) => {
+          onSearchChange(value)
+        },
+        150,
+        { maxWait: 1000 },
+      ),
+    [onSearchChange],
+  )
+
+  useEffect(() => {
+    return () => debouncedSearch.cancel()
+  }, [debouncedSearch])
 
   const handleInput = (value: string) => {
     setInputValue(value)
-    onSearchChange(value)
+    debouncedSearch(value)
   }
 
   const handleFilters = (key: keyof FiltersState) => {
     const updated = { ...filters, [key]: !filters[key] }
-    setFilters(updated)
     onFiltersChange(updated)
   }
 
   const handleClear = () => {
     setInputValue("")
+    debouncedSearch.cancel()
     onSearchChange("")
   }
+
+  useEffect(() => {
+    if (!isOpen) return
+    const handler = (e: MouseEvent) => {
+      if (!(e.target as Element).closest("[data-dropdown]")) {
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handler)
+    return () => document.removeEventListener("mousedown", handler)
+  }, [isOpen])
 
   return (
     <Flex align="center" gap="xl">
@@ -55,18 +81,25 @@ export const MealFilters = ({ onSearchChange, onFiltersChange }: MealFiltersProp
         endAdornment={
           inputValue ? (
             <button type="button" onClick={handleClear}>
-              <Flex align="center" justify="center" w="xl" h="xl">
+              <Flex align="center" justify="center" w="xl" h="xl" cursor="pointer">
                 <IconClear />
               </Flex>
             </button>
           ) : undefined
         }
       />
-      <Box flexShrink="0" bg="surface.s1" p="md" borderRadius="sm" position="relative">
-        <button type="button" onClick={() => setIsOpen(!isOpen)}>
-          <Flex alignItems="center" gap="sm">
+      <Box
+        position="relative"
+        flexShrink="0"
+        bg="surface.s1"
+        p="md"
+        borderRadius="sm"
+        data-dropdown
+      >
+        <button type="button" onClick={() => setIsOpen((prev) => !prev)}>
+          <Flex alignItems="center" gap="sm" cursor="pointer">
             <Text textStyle="body.large">Type</Text>
-            <IconArrowDown />
+            {isOpen ? <IconArrowUp /> : <IconArrowDown />}
           </Flex>
         </button>
         <AnimatePresence>
@@ -78,15 +111,7 @@ export const MealFilters = ({ onSearchChange, onFiltersChange }: MealFiltersProp
               transition={{ duration: 0.15 }}
               style={{ position: "absolute", top: "100%", right: 0, zIndex: 10 }}
             >
-              <Box
-                position="absolute"
-                right="0"
-                mt="sm"
-                bg="surface.s1"
-                borderRadius="sm"
-                p="md"
-                minW="170px"
-              >
+              <Box mt="sm" bg="surface.s1" borderRadius="sm" p="md" minW="170px">
                 <Flex direction="column" gap="sm">
                   <Label>
                     <Checkbox
