@@ -44,6 +44,7 @@ export const CanteenPage = () => {
     isTransferring,
     transferError,
     handleTransfer,
+    handleCancel,
   } = useTransfer(token, mutate)
 
   const formatTitleDate = (unixTime: number) =>
@@ -111,7 +112,7 @@ export const CanteenPage = () => {
         isTransferring={isTransferring}
         error={transferError}
         onConfirm={handleTransfer}
-        onCancel={() => setTransferSelectionId(null)}
+        onCancel={handleCancel}
       />
     </Flex>
   )

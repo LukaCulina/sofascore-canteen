@@ -17,6 +17,7 @@ export function useTransfer(token: string | null, mutate: () => Promise<unknown>
     trigger: transferMeal,
     isMutating: isTransferring,
     error: transferError,
+    reset,
   } = useSWRMutation(
     token ? transfer() : null,
     (url: string, { arg }: { arg: { order_selection_id: number; to_user_id: string } }) =>
@@ -35,6 +36,11 @@ export function useTransfer(token: string | null, mutate: () => Promise<unknown>
     }
   }
 
+  const handleCancel = () => {
+    reset()
+    setTransferSelectionId(null)
+  }
+
   return {
     transferSelectionId,
     setTransferSelectionId,
@@ -43,5 +49,6 @@ export function useTransfer(token: string | null, mutate: () => Promise<unknown>
     isTransferring,
     transferError: !!transferError,
     handleTransfer,
+    handleCancel,
   }
 }
