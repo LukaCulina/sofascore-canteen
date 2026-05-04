@@ -144,9 +144,9 @@ export const CanteenPage = () => {
           order={data.order}
           onEdit={openEditMode}
           onCancelOrder={() => {
-            setActionError(null)
             setIsCancelDialogOpen(true)
           }}
+          onTransferMeal={setTransferSelectionId}
           isDeleting={isDeleting}
         />
       ) : (
