@@ -105,6 +105,12 @@ export function useOrderActions(
     }
   }
 
+  const lockedDays = new Set(
+    data?.order?.order_selection
+      .filter((selection) => selection.transfer != null)
+      .map((selection) => selection.plan_day.id) ?? [],
+  )
+
   return {
     isEditingOrder,
     isCancelDialogOpen,
@@ -118,5 +124,6 @@ export function useOrderActions(
     closeEditMode,
     handleSubmit,
     handleCancelOrder,
+    lockedDays,
   }
 }

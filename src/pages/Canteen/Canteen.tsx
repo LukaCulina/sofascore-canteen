@@ -34,6 +34,7 @@ export const CanteenPage = () => {
     closeEditMode,
     handleSubmit,
     handleCancelOrder,
+    lockedDays,
   } = useOrderActions(token, data, mutate)
 
   const {
@@ -94,6 +95,7 @@ export const CanteenPage = () => {
           isSubmitting={isCreating || isUpdating}
           submitLabel={isEditingOrder ? "Save changes" : "Submit"}
           onCancel={isEditingOrder ? closeEditMode : undefined}
+          lockedDays={isEditingOrder ? lockedDays : undefined}
         />
       )}
 

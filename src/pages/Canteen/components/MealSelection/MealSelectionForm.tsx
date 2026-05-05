@@ -15,6 +15,7 @@ interface MealSelectionFormProps {
   isSubmitting?: boolean
   onCancel?: () => void
   onSubmit: (selections: Record<number, number | null>) => void | Promise<void>
+  lockedDays?: Set<number>
 }
 
 export function MealSelectionForm({
@@ -24,6 +25,7 @@ export function MealSelectionForm({
   isSubmitting = false,
   onCancel,
   onSubmit,
+  lockedDays,
 }: Readonly<MealSelectionFormProps>) {
   const [state, dispatch] = useReducer(mealSelectionReducer, initialMealSelectionState)
 
@@ -45,6 +47,7 @@ export function MealSelectionForm({
             item={day}
             selectedMealId={state.selections[day.id] ?? null}
             dispatch={dispatch}
+            isLocked={lockedDays?.has(day.id) ?? false}
           />
         ))}
       </Flex>
