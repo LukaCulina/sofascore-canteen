@@ -65,10 +65,16 @@ export const MealFilters = ({ filters, onSearchChange, onFiltersChange }: MealFi
   }, [isOpen])
 
   return (
-    <Flex align="center" gap="xl">
+    <Flex
+      position="relative"
+      direction={{ base: "column", md: "row" }}
+      align="center"
+      gap={{ base: "md", md: "xl" }}
+    >
       <Input
         variant="plain"
         flex="1"
+        w={{ base: "100%", md: "auto" }}
         name="meal-search"
         placeholder="Search meals by name"
         value={inputValue}
@@ -91,8 +97,9 @@ export const MealFilters = ({ filters, onSearchChange, onFiltersChange }: MealFi
       <Box
         position="relative"
         flexShrink="0"
-        bg="surface.s1"
+        w={{ base: "100%", md: "auto" }}
         p="md"
+        bg="surface.s1"
         borderRadius="sm"
         data-dropdown
       >
@@ -102,39 +109,57 @@ export const MealFilters = ({ filters, onSearchChange, onFiltersChange }: MealFi
             {isOpen ? <IconArrowUp /> : <IconArrowDown />}
           </Flex>
         </button>
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.15 }}
-              style={{ position: "absolute", top: "100%", right: 0, zIndex: 10 }}
-            >
-              <Box mt="sm" bg="surface.s1" borderRadius="sm" p="md" minW="170px">
-                <Flex direction="column" gap="sm">
-                  <Label>
-                    <Checkbox
-                      type="checkbox"
-                      checked={filters.vegetarian}
-                      onChange={() => handleFilters("vegetarian")}
-                    />
-                    Vegetarian
-                  </Label>
-                  <Label>
-                    <Checkbox
-                      type="checkbox"
-                      checked={filters.nonVegetarian}
-                      onChange={() => handleFilters("nonVegetarian")}
-                    />
-                    Non-Vegetarian
-                  </Label>
-                </Flex>
-              </Box>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </Box>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.15 }}
+            style={{
+              position: "absolute",
+              top: "100%",
+              left: 0,
+              right: 0,
+              zIndex: 10,
+            }}
+            data-dropdown
+          >
+            <Box
+              w={{ base: "100%", md: "170px" }}
+              mt="sm"
+              ml={{ base: 0, md: "auto" }}
+              p="md"
+              bg="surface.s1"
+              borderRadius="sm"
+              borderWidth="thin"
+              borderColor="neutrals.nLv4"
+              boxShadow="md"
+            >
+              <Flex direction="column" gap="sm">
+                <Label>
+                  <Checkbox
+                    type="checkbox"
+                    checked={filters.vegetarian}
+                    onChange={() => handleFilters("vegetarian")}
+                  />
+                  Vegetarian
+                </Label>
+
+                <Label>
+                  <Checkbox
+                    type="checkbox"
+                    checked={filters.nonVegetarian}
+                    onChange={() => handleFilters("nonVegetarian")}
+                  />
+                  Non-Vegetarian
+                </Label>
+              </Flex>
+            </Box>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Flex>
   )
 }
