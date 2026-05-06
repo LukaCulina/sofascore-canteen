@@ -6,3 +6,4 @@ export const adminOrders = () => `/admin-orders`
 export const order = () => `/user-order`
 export const updatePaymentStatus = () => `/update-payment-status`
 export const orderByPlanId = (planId: number) => `/user-order?planId=${planId}`
+export const planById = (id: number) => `/plans/${id}`

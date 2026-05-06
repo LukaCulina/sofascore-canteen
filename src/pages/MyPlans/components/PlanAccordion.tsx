@@ -1,4 +1,7 @@
 import { useState } from "react"
+import { requestJson } from "@/api/http-client"
+import { planById } from "@/api/routes"
+import { Dialog } from "@/components/dialog"
 import { IconArrowDown, IconPen, IconTrash } from "@/components/icons"
 import { Button } from "@/components/ui/Button"
 import { Text } from "@/components/ui/Text"
@@ -8,6 +11,7 @@ import type { Plan } from "@/types"
 
 interface PlanAccordionProps {
   plan: Plan
+  onMutate: () => void
 }
 
 const formatDate = (timestamp: number) => {
@@ -18,9 +22,26 @@ const formatDate = (timestamp: number) => {
   })
 }
 
-export const PlanAccordion = ({ plan }: PlanAccordionProps) => {
+export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const isFuturePlan = plan.period_start * 1000 > Date.now()
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
+
+  const handleDelete = async () => {
+    setIsDeleting(true)
+    setDeleteError(null)
+    try {
+      await requestJson("DELETE", planById(plan.id))
+      onMutate()
+    } catch {
+      setDeleteError("Failed to delete plan. Please try again.")
+    } finally {
+      setIsDeleting(false)
+      setShowConfirm(false)
+    }
+  }
 
   return (
     <Box borderRadius="md" overflow="hidden" bg="surface.s1">
@@ -75,6 +96,7 @@ export const PlanAccordion = ({ plan }: PlanAccordionProps) => {
                 tabIndex={isOpen ? 0 : -1}
                 onClick={(e) => {
                   e.stopPropagation()
+                  setShowConfirm(true)
                 }}
               >
                 <IconTrash fill="surface.s1" width="20px" height="20px" />
@@ -112,6 +134,38 @@ export const PlanAccordion = ({ plan }: PlanAccordionProps) => {
           </Box>
         </Box>
       </Box>
+      {showConfirm && (
+        <Dialog.Root onClose={() => setShowConfirm(false)}>
+          <Dialog.Header>
+            <Dialog.Title>Delete Plan</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Content>
+            <Text textStyle="body.medium" color="neutrals.nLv1">
+              Are you sure you want to delete this plan? This action cannot be undone.
+            </Text>
+            {deleteError && (
+              <Text
+                textStyle="assistive.default"
+                color="status.error.default"
+                display="block"
+                mt="md"
+              >
+                {deleteError}
+              </Text>
+            )}
+          </Dialog.Content>
+          <Dialog.Footer>
+            <Flex gap="md">
+              <Button variant="outline" onClick={() => setShowConfirm(false)} disabled={isDeleting}>
+                Cancel
+              </Button>
+              <Button variant="danger" onClick={handleDelete} disabled={isDeleting}>
+                {isDeleting ? "Deleting..." : "Yes, delete"}
+              </Button>
+            </Flex>
+          </Dialog.Footer>
+        </Dialog.Root>
+      )}
     </Box>
   )
 }

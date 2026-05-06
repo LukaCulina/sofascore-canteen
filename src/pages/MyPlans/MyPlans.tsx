@@ -9,7 +9,7 @@ import { Flex } from "@/styled-system/jsx"
 import { PlanAccordion } from "./components/PlanAccordion"
 
 export const MyPlans = () => {
-  const { plans, isLoading } = usePlans()
+  const { plans, isLoading, mutate } = usePlans()
 
   const sorted = useMemo(() => [...plans].sort((a, b) => b.period_start - a.period_start), [plans])
 
@@ -69,7 +69,7 @@ export const MyPlans = () => {
       {!isLoading && sorted.length > 0 && (
         <Flex direction="column" gap="lg">
           {sorted.map((plan) => (
-            <PlanAccordion key={plan.id} plan={plan} />
+            <PlanAccordion key={plan.id} plan={plan} onMutate={mutate} />
           ))}
         </Flex>
       )}
