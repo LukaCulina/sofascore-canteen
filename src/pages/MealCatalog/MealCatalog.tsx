@@ -1,8 +1,8 @@
-import { useAuthSWR } from "@/api/hooks"
 import { meals as mealsRoute } from "@/api/routes"
 import { IconMealCatalog } from "@/components/icons"
-import { LoadingSpinner, MealCard } from "@/components/ui"
+import { MealCard, Spinner, StatusMessage } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
+import { useAuthSWR } from "@/hooks/useAuthSWR"
 import { Box, Flex, Grid } from "@/styled-system/jsx"
 import type { Meals } from "@/types"
 
@@ -26,29 +26,19 @@ export const MealCatalogPage = () => {
         </Text>
       </Box>
 
-      {isLoading && (
-        <Flex justify="center" align="center" py="4xl">
-          <LoadingSpinner size="lg" />
+      {isLoading ? (
+        <Flex justify="center" align="center" py="6xl">
+          <Spinner />
         </Flex>
-      )}
-
-      {error && (
-        <Flex justify="center" align="center" py="4xl">
-          <Text textStyle="display.medium" color="status.error.default">
-            Failed to load meals
-          </Text>
+      ) : error ? (
+        <Flex justify="center" align="center" py="6xl">
+          <StatusMessage variant="error">Failed to load meals</StatusMessage>
         </Flex>
-      )}
-
-      {!isLoading && !error && meals.length === 0 && (
-        <Flex justify="center" align="center" py="4xl">
-          <Text textStyle="body.medium" color="neutrals.nLv3">
-            No meals available
-          </Text>
+      ) : meals.length === 0 ? (
+        <Flex justify="center" align="center" py="6xl">
+          <StatusMessage variant="info">No meals available</StatusMessage>
         </Flex>
-      )}
-
-      {!isLoading && !error && meals.length > 0 && (
+      ) : (
         <Grid
           gridTemplateColumns={{ base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }}
           gap="lg"

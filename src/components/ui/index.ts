@@ -1,7 +1,7 @@
 export { Badge } from "./Badge"
 export { Button } from "./Button"
 export { Input } from "./Input"
-export { LoadingSpinner } from "./LoadingSpinner/LoadingSpinner"
 export { MealCard } from "./MealCard"
 export { Spinner } from "./Spinner"
+export { StatusMessage } from "./StatusMessage"
 export * from "./Text"

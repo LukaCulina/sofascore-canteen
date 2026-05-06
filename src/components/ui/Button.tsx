@@ -34,6 +34,19 @@ export const Button = styled("button", {
         borderColor: "primary.highlight",
         color: "primary.default",
         _hover: { bg: "primary.highlight" },
+        _disabled: {
+          opacity: 0.5,
+          cursor: "not-allowed",
+          _hover: { bg: "transparent" },
+        },
+      },
+      error: {
+        bg: "status.error.default",
+        color: "surface.s1",
+        _hover: { bg: "status.error.hover" },
+        _disabled: {
+          bg: "neutrals.nLv3",
+        },
       },
       danger: {
         bg: "status.error.default",

@@ -1,7 +1,5 @@
 import { useEffect, useReducer } from "react"
-import { order } from "@/api/routes.ts"
-import { Button } from "@/components/ui"
-import { useAuthSWRMutation } from "@/hooks/useAuthSWRMutation.ts"
+import { Button, Spinner } from "@/components/ui"
 import { MealSelection } from "@/pages/Canteen/components/MealSelection/MealSelection.tsx"
 import {
   initialMealSelectionState,
@@ -12,29 +10,32 @@ import type { Plan } from "@/types"
 
 interface MealSelectionFormProps {
   plan: Plan
+  initialSelections?: Record<number, number | null>
+  submitLabel?: string
+  isSubmitting?: boolean
+  onCancel?: () => void
+  onSubmit: (selections: Record<number, number | null>) => void | Promise<void>
 }
 
-export function MealSelectionForm({ plan }: Readonly<MealSelectionFormProps>) {
+export function MealSelectionForm({
+  plan,
+  initialSelections,
+  submitLabel = "Submit",
+  isSubmitting = false,
+  onCancel,
+  onSubmit,
+}: Readonly<MealSelectionFormProps>) {
   const [state, dispatch] = useReducer(mealSelectionReducer, initialMealSelectionState)
-  const { trigger, isMutating, error } = useAuthSWRMutation<
-    { planId: number; isDraft: boolean; selections: Record<string, number | null> },
-    { success: boolean; orderId: number; message: string }
-  >(order())
 
   useEffect(() => {
-    dispatch({ type: "INIT", payload: plan })
-  }, [plan])
-
-  if (error) {
-    // alert until toast component is implemented
-    alert("Something went wrong, please try again later")
-  }
+    dispatch({ type: "INIT", payload: { plan, prefilledSelections: initialSelections } })
+  }, [plan, initialSelections])
 
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault()
-        trigger({ planId: plan.id, isDraft: false, selections: state.selections })
+        await onSubmit(state.selections)
       }}
     >
       <Flex direction="column" gap="xl" mb="xl">
@@ -47,9 +48,29 @@ export function MealSelectionForm({ plan }: Readonly<MealSelectionFormProps>) {
           />
         ))}
       </Flex>
-      <Button disabled={isMutating} type="submit">
-        Submit
-      </Button>
+      <Flex gap="md" justifyContent="flex-end">
+        {onCancel ? (
+          <Button
+            variant="outline"
+            onClick={onCancel}
+            disabled={isSubmitting}
+            type="button"
+            minW="fit-content"
+          >
+            Cancel
+          </Button>
+        ) : null}
+        <Button disabled={isSubmitting} type="submit" minW="fit-content">
+          {isSubmitting ? (
+            <Flex alignItems="center" gap="sm">
+              <Spinner size="sm" />
+              Saving...
+            </Flex>
+          ) : (
+            submitLabel
+          )}
+        </Button>
+      </Flex>
     </form>
   )
 }

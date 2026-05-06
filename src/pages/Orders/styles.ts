@@ -5,13 +5,12 @@ export const Table = styled("table", {
     width: "100%",
     tableLayout: "fixed",
     borderCollapse: "collapse",
-    overflow: "hidden",
-    boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.1)",
   },
 })
 
 export const Tr = styled("tr", {
   base: {
+    h: "4xl",
     borderBottom: "1px solid",
     borderColor: "neutrals.nLv4",
   },
@@ -19,19 +18,19 @@ export const Tr = styled("tr", {
 
 export const Th = styled("th", {
   base: {
-    textStyle: "assistive.default",
-    color: "neutrals.nLv3",
     px: "lg",
     py: "md",
+    textStyle: "assistive.default",
+    color: "neutrals.nLv3",
     textAlign: "left",
   },
 })
 
 export const Td = styled("td", {
   base: {
-    textStyle: "body.small",
     px: "lg",
     py: "md",
+    textStyle: "body.small",
   },
 })
 
@@ -39,5 +38,14 @@ export const GreyText = styled("span", {
   base: {
     textStyle: "assistive.default",
     color: "neutrals.nLv3",
+  },
+})
+
+export const Checkbox = styled("input", {
+  base: {
+    h: "lg",
+    w: "lg",
+    accentColor: "primary.default",
+    cursor: "pointer",
   },
 })

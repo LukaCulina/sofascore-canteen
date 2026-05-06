@@ -23,8 +23,8 @@ export const MealSelection = memo(function MealSelection({
   )
 
   return (
-    <Flex direction="column" rounded="lg" divideY={1} divideColor="neutrals.nLv4">
-      <DateItem date={new Date(item.day)} />
+    <Flex direction="column" rounded="lg" divideY="thin" divideColor="neutrals.nLv4">
+      <DateItem date={new Date(item.day * 1000)} />
       {item.day_meal.map((meal) => (
         <MealItem
           key={meal.meal.id}

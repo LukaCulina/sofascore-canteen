@@ -5,7 +5,7 @@ interface IconVeganProps extends IconProps {
   fill?: ColorToken
 }
 
-export const IconVegan = ({ fill = "primary.default", ...props }: IconVeganProps) => {
+export const IconVegan = ({ fill = "status.success.default", ...props }: IconVeganProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

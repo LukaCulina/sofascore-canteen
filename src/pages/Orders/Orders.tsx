@@ -1,9 +1,38 @@
+import useSWR from "swr"
+import { getJson } from "@/api/http-client"
+import { adminOrders, myOrders } from "@/api/routes"
 import { IconOrders, IconPen } from "@/components/icons"
-import { Button, H1, P, Text } from "@/components/ui"
+import { Button, H1, P, Spinner, StatusMessage, Text } from "@/components/ui"
+import { Role, useAuthStore } from "@/stores/auth"
 import { Flex } from "@/styled-system/jsx"
+import type { Order } from "@/types/orders"
 import { OrdersTable } from "./components/OrdersTable"
+import { usePaymentEdit } from "./hooks/usePaymentEdit"
 
 export const Orders = () => {
+  const user = useAuthStore((s) => s.user)
+
+  const isAdmin = user?.role === Role.ADMIN
+
+  const url = isAdmin ? adminOrders() : myOrders()
+  const { token } = useAuthStore()
+
+  const { data, isLoading, error, mutate } = useSWR<{ orders: Order[] }>(
+    token ? url : null,
+    (url: string) => getJson<{ orders: Order[] }>(url),
+  )
+
+  const {
+    isEditing,
+    changes,
+    setChanges,
+    isSaving,
+    saveError,
+    handleEdit,
+    handleSave,
+    handleCancel,
+  } = usePaymentEdit(data?.orders, mutate)
+
   return (
     <Flex direction="column" gap="xl">
       <Flex
@@ -13,26 +42,88 @@ export const Orders = () => {
         gap={{ base: "lg", lg: "4xl" }}
       >
         <Flex direction="column" gap="lg">
-          <Flex direction="row" gap="sm" align="center">
-            <Flex align="center" justify="center" w="32px" h="32px">
+          <Flex align="center" gap="sm">
+            <Flex align="center" justify="center" w="2xl" h="2xl">
               <IconOrders width={28} height={28} />
             </Flex>
             <H1 fontSize="28px">All Orders</H1>
           </Flex>
           <P textStyle="body.large">View all employee meal orders across all periods.</P>
         </Flex>
-        <Button variant="outline" w={{ base: "100%", lg: "fit-content" }}>
-          <Flex direction="row" gap="sm" align="center">
-            <Flex align="center" justify="center" w="32px" h="32px">
-              <IconPen />
-            </Flex>
-            <Text textStyle="label.medium" color="primary.default">
-              Edit Payment Status
-            </Text>
+        {isAdmin && (
+          <Flex
+            w={{ base: "100%", lg: "fit-content" }}
+            gap="md"
+            direction={{ base: "column", lg: "row" }}
+          >
+            {isEditing && (
+              <>
+                {saveError && (
+                  <Flex align="center" justify="center">
+                    <P color="status.error.default">Failed to update payment status</P>
+                  </Flex>
+                )}
+                <Button
+                  variant="primary"
+                  w={{ base: "100%", lg: "fit-content" }}
+                  onClick={handleSave}
+                  disabled={Object.keys(changes).length === 0 || isSaving}
+                >
+                  {isSaving ? (
+                    <Flex align="center" gap="sm">
+                      <Spinner size="md" /> Saving...
+                    </Flex>
+                  ) : (
+                    "Save Changes"
+                  )}
+                </Button>
+              </>
+            )}
+            <Button
+              variant="outline"
+              w={{ base: "100%", lg: "fit-content" }}
+              disabled={!data || data.orders.length === 0 || isSaving}
+              onClick={isEditing ? handleCancel : handleEdit}
+            >
+              {isEditing ? (
+                <Text textStyle="label.medium" color="primary.default">
+                  Cancel
+                </Text>
+              ) : (
+                <Flex direction="row" gap="sm" align="center">
+                  <Flex align="center" justify="center" w="2xl" h="2xl">
+                    <IconPen />
+                  </Flex>
+                  <Text textStyle="label.medium" color="primary.default">
+                    Edit Payment Status
+                  </Text>
+                </Flex>
+              )}
+            </Button>
           </Flex>
-        </Button>
+        )}
       </Flex>
-      <OrdersTable />
+
+      {isLoading ? (
+        <Flex justify="center" align="center" py="6xl">
+          <Spinner role="status" />
+        </Flex>
+      ) : error || !data ? (
+        <Flex justify="center" align="center" py="6xl">
+          <StatusMessage variant="error">Failed to load orders</StatusMessage>
+        </Flex>
+      ) : data.orders.length === 0 ? (
+        <Flex justify="center" align="center" py="6xl">
+          <StatusMessage variant="info">No orders found</StatusMessage>
+        </Flex>
+      ) : (
+        <OrdersTable
+          orders={data.orders}
+          isEditing={isEditing}
+          changes={changes}
+          setChanges={setChanges}
+        />
+      )}
     </Flex>
   )
 }

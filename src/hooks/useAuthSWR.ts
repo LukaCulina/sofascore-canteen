@@ -1,13 +1,8 @@
 import useSWR from "swr"
-import { getJson } from "@/api/http-client.ts"
-import { useAuthStore } from "@/stores/auth.ts"
+import { useAuthStore } from "@/stores/auth"
 
 export function useAuthSWR<T>(url: string) {
   const { token } = useAuthStore()
 
-  return useSWR<T>(token ? url : null, (url: string) =>
-    getJson<T>(url, {
-      headers: { Authorization: `Bearer ${token}` },
-    }),
-  )
+  return useSWR<T>(token ? url : null)
 }

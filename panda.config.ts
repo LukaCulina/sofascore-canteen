@@ -195,14 +195,6 @@ export default defineConfig({
             },
           },
         },
-        icons: {
-          vegetarian: {
-            value: {
-              base: "#15B168",
-              _dark: "#39B57A",
-            },
-          },
-        },
       },
     },
     extend: {
@@ -216,6 +208,7 @@ export default defineConfig({
           xl: { value: "24px" },
           "2xl": { value: "32px" },
           "4xl": { value: "48px" },
+          "6xl": { value: "64px" },
         },
         radii: {
           "2xs": { value: "2px" },
@@ -232,7 +225,14 @@ export default defineConfig({
           md: { value: "12px" },
           lg: { value: "16px" },
           xl: { value: "24px" },
+          "2xl": { value: "32px" },
           "4xl": { value: "48px" },
+          "6xl": { value: "64px" },
+        },
+        borderWidths: {
+          thin: { value: "1px" },
+          thick: { value: "2px" },
+          heavy: { value: "4px" },
         },
       },
       keyframes: {

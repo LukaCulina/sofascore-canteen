@@ -27,6 +27,7 @@ const navItems: NavItem[] = [
     label: "Meal Catalog",
     roles: [Role.CATERING, Role.ADMIN],
   },
+  { to: "/orders", icon: IconOrders, label: "My Orders", roles: [Role.EMPLOYEE, Role.CATERING] },
 ] as const
 
 interface AppSidebarProps {
@@ -91,7 +92,9 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
                 >
                   {({ isActive }) => (
                     <Flex align="center" justify="center" gap="sm">
-                      <Icon fill={isActive ? "primary.default" : "neutrals.nLv1"} />
+                      <Flex align="center" justify="center" w="xl" h="xl">
+                        <Icon fill={isActive ? "primary.default" : "neutrals.nLv1"} />
+                      </Flex>
                       <Text
                         textStyle="display.small"
                         color={isActive ? "primary.default" : "neutrals.nLv1"}
@@ -112,7 +115,7 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
                   css({ bg: "transparent", border: "none", width: "100%" }),
                 )}
               >
-                <Flex align="center" justify="center" w="24px" h="24px">
+                <Flex align="center" justify="center" w="xl" h="xl">
                   <IconLogout />
                 </Flex>
                 Log out

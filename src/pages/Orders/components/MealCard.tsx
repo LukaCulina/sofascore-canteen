@@ -6,11 +6,13 @@ import { GreyText } from "../styles"
 
 interface MealCardProps {
   selection: OrderSelection
+  unpaid: boolean
 }
 
-export const MealCard = ({ selection }: MealCardProps) => {
+export const MealCard = ({ selection, unpaid }: MealCardProps) => {
   const intl = useIntl()
-  const { meal, plan_day, unpaid } = selection
+  
+  const { meal, plan_day } = selection
 
   const finalPrice = (meal.price * (100 - meal.discount)) / 100
   const formattedMealDate = intl.formatDate(new Date(plan_day.day * 1000), {
@@ -21,14 +23,13 @@ export const MealCard = ({ selection }: MealCardProps) => {
 
   return (
     <Flex
+      direction="column"
+      gap="sm"
       p="lg"
+      bg={unpaid ? "status.error.highlight" : "surface.s1"}
       border="1px solid"
       borderColor={unpaid ? "status.error.default" : "neutrals.nLv4"}
       borderRadius="lg"
-      bg={unpaid ? "status.error.highlight" : "surface.s1"}
-      gap="sm"
-      direction="column"
-      width={{ base: "100%", lg: "31%" }}
     >
       <Flex align="center" gap="sm">
         <GreyText>{formattedMealDate}</GreyText>

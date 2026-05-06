@@ -6,7 +6,7 @@ interface IconVeganMealSelectorFilledProps extends IconProps {
 }
 
 export const IconVeganMealSelector = ({
-  fill = "icons.vegetarian",
+  fill = "status.success.default",
   ...props
 }: IconVeganMealSelectorFilledProps) => {
   return (

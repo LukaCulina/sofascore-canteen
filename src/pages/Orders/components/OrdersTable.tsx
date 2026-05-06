@@ -1,11 +1,7 @@
 import { useMemo } from "react"
 import { useIntl } from "react-intl"
-import useSWR from "swr"
-import { getOrders } from "@/api/routes"
-import { Spinner } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
-import { Box } from "@/styled-system/jsx/box"
-import { Flex } from "@/styled-system/jsx/flex"
+import { Box, Flex } from "@/styled-system/jsx"
 import type { Order } from "@/types"
 import { GreyText, Table, Td, Th, Tr } from "../styles"
 import { OrderCard } from "./OrderCard"
@@ -18,13 +14,17 @@ export interface ProcessedOrder extends Pick<Order, "id" | "order_selection"> {
   meals: number
   discount: number
   total: number
-  hasUnpaid: boolean
 }
 
-export const OrdersTable = () => {
-  const intl = useIntl()
+interface OrdersTableProps {
+  orders: Order[]
+  isEditing: boolean
+  changes: Record<number, boolean>
+  setChanges: React.Dispatch<React.SetStateAction<Record<number, boolean>>>
+}
 
-  const { data, isLoading, error } = useSWR<{ orders: Order[] }>(getOrders())
+export const OrdersTable = ({ orders, isEditing, changes, setChanges }: OrdersTableProps) => {
+  const intl = useIntl()
 
   const formatDate = (timestamp: number) =>
     intl.formatDate(new Date(timestamp * 1000), {
@@ -45,10 +45,8 @@ export const OrdersTable = () => {
       day: "numeric",
     })}`
 
-  const orders = useMemo<ProcessedOrder[]>(() => {
-    if (!data?.orders) return []
-
-    return data.orders.map((order: Order) => {
+  const processedOrders = useMemo<ProcessedOrder[]>(() => {
+    return orders.map((order: Order) => {
       const numMeals = order.order_selection.length
       const totalPrice = order.order_selection.reduce(
         (sum, sel) => sum + (sel.meal.price * (100 - sel.meal.discount)) / 100,
@@ -61,21 +59,20 @@ export const OrdersTable = () => {
 
       return {
         id: order.id,
-        user: order.user?.name ?? `${order.user_id}`,
+        user: order.user?.name ?? String(order.user_id),
         period: formatPeriod(order.plan.period_start, order.plan.period_end),
         submitted: formatDate(order.submitted_at),
         meals: numMeals,
         discount: Number(totalDiscount.toFixed(2)),
         total: Number(totalPrice.toFixed(2)),
         order_selection: order.order_selection,
-        hasUnpaid: order.order_selection.some((sel) => sel.unpaid),
       }
     })
-  }, [data, intl.locale])
+  }, [orders, intl.locale])
 
   const totals = useMemo(
     () =>
-      orders.reduce(
+      processedOrders.reduce(
         (acc, order) => ({
           meals: acc.meals + order.meals,
           total: acc.total + order.total,
@@ -83,32 +80,15 @@ export const OrdersTable = () => {
         }),
         { meals: 0, total: 0, discount: 0 },
       ),
-    [orders],
+    [processedOrders],
   )
-
-  if (isLoading) {
-    return (
-      <Flex justify="center" align="center" direction="column" p="4xl" gap="md">
-        <Spinner />
-        <Text>Loading...</Text>
-      </Flex>
-    )
-  }
-
-  if (error) {
-    return (
-      <Text textStyle="display.medium" color="status.error.default">
-        Failed to load orders
-      </Text>
-    )
-  }
 
   return (
     <Box>
       {/* Desktop View */}
       <Box
-        overflowX="auto"
-        display={{ base: "none", lg: "block" }}
+        hideBelow="lg"
+        overflow="hidden"
         border="1px solid"
         borderColor="neutrals.nLv4"
         borderRadius="lg"
@@ -116,7 +96,7 @@ export const OrdersTable = () => {
         <Table>
           <thead>
             <Tr>
-              <Th w="72px"></Th>
+              <Th w="72px" aria-label="Actions"></Th>
               <Th>Order ID</Th>
               <Th>User</Th>
               <Th>Period</Th>
@@ -127,8 +107,14 @@ export const OrdersTable = () => {
             </Tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
-              <OrderRow key={order.id} order={order} />
+            {processedOrders.map((order) => (
+              <OrderRow
+                key={order.id}
+                order={order}
+                isEditing={isEditing}
+                changes={changes}
+                setChanges={setChanges}
+              />
             ))}
             <Tr>
               <Td colSpan={5}>Totals</Td>
@@ -141,19 +127,25 @@ export const OrdersTable = () => {
       </Box>
 
       {/* Mobile View */}
-      <Flex direction="column" gap="sm" display={{ base: "flex", lg: "none" }}>
-        {orders.map((order) => (
-          <OrderCard key={order.id} order={order} />
+      <Flex direction="column" gap="sm" hideFrom="lg">
+        {processedOrders.map((order) => (
+          <OrderCard
+            key={order.id}
+            order={order}
+            isEditing={isEditing}
+            changes={changes}
+            setChanges={setChanges}
+          />
         ))}
 
         <Flex
+          justify="space-between"
+          align="center"
           p="lg"
+          bg="surface.s1"
           border="1px solid"
           borderColor="neutrals.nLv4"
           borderRadius="lg"
-          bg="surface.s1"
-          justify="space-between"
-          align="center"
         >
           <Flex direction="row" align="end" gap="xl">
             <Text textStyle="display.medium">Totals</Text>
