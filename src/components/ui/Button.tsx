@@ -48,6 +48,11 @@ export const Button = styled("button", {
           bg: "neutrals.nLv3",
         },
       },
+      danger: {
+        bg: "status.error.default",
+        color: "surface.s1",
+        _hover: { bg: "status.error.highlight" },
+      },
     },
   },
   defaultVariants: {

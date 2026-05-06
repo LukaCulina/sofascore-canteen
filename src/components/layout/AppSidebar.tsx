@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router"
-import { IconMealCatalog, IconSofascore } from "@/components/icons"
+import { IconMealCatalog, IconPlans, IconSofascore } from "@/components/icons"
 import { Text } from "@/components/ui/Text"
 import { Role, useAuthStore } from "@/stores/auth"
 import { css, cx } from "@/styled-system/css"
@@ -19,6 +19,8 @@ interface NavItem {
 const navItems: NavItem[] = [
   { to: "/", icon: IconCanteen, label: "Canteen" },
   { to: "/planner", icon: IconPlanner, label: "Planner", roles: [Role.ADMIN, Role.CATERING] },
+  { to: "/my-plans", icon: IconPlans, label: "My Plans", roles: [Role.CATERING] },
+  { to: "/orders", icon: IconOrders, label: "My Orders", roles: [Role.EMPLOYEE, Role.CATERING] },
   {
     to: "/catering/catalog",
     icon: IconMealCatalog,
