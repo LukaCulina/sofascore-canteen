@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router"
 import { useMemo } from "react"
 import { IconPlanner } from "@/components/icons"
-import { Spinner } from "@/components/spinner"
+import { Spinner } from "@/components/ui/Spinner"
 import { Text } from "@/components/ui/Text"
 import { usePlans } from "@/pages/Planner/hooks/usePlans"
 import { css } from "@/styled-system/css"
