@@ -20,6 +20,7 @@ const formatDate = (timestamp: number) => {
 
 export const PlanAccordion = ({ plan }: PlanAccordionProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const isFuturePlan = plan.period_start * 1000 > Date.now()
 
   return (
     <Box borderRadius="md" overflow="hidden" bg="surface.s1">
@@ -43,42 +44,44 @@ export const PlanAccordion = ({ plan }: PlanAccordionProps) => {
         </Flex>
 
         <Flex align="center" gap="md">
-          <Flex
-            align="center"
-            gap="md"
-            visibility={isOpen ? "visible" : "hidden"}
-            opacity={isOpen ? 1 : 0}
-            pointerEvents={isOpen ? "auto" : "none"}
-            transition="opacity 0.2s"
-            aria-hidden={!isOpen}
-          >
-            <Button
-              variant="outline"
-              w="auto"
-              minW={{ base: "40px", md: "auto" }}
-              px={{ base: "sm", md: "lg" }}
-              tabIndex={isOpen ? 0 : -1}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
+          {isFuturePlan && (
+            <Flex
+              align="center"
+              gap="md"
+              visibility={isOpen ? "visible" : "hidden"}
+              opacity={isOpen ? 1 : 0}
+              pointerEvents={isOpen ? "auto" : "none"}
+              transition="opacity 0.2s"
+              aria-hidden={!isOpen}
             >
-              <IconPen fill="primary.default" />
-              <Box display={{ base: "none", sm: "block" }}>Edit</Box>
-            </Button>
-            <Button
-              variant="danger"
-              w="auto"
-              minW={{ base: "40px", md: "auto" }}
-              px={{ base: "sm", md: "lg" }}
-              tabIndex={isOpen ? 0 : -1}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            >
-              <IconTrash fill="surface.s1" width="20px" height="20px" />
-              <Box display={{ base: "none", sm: "block" }}>Delete Plan</Box>
-            </Button>
-          </Flex>
+              <Button
+                variant="outline"
+                w="auto"
+                minW={{ base: "40px", md: "auto" }}
+                px={{ base: "sm", md: "lg" }}
+                tabIndex={isOpen ? 0 : -1}
+                onClick={(e) => {
+                  e.stopPropagation()
+                }}
+              >
+                <IconPen fill="primary.default" />
+                <Box display={{ base: "none", sm: "block" }}>Edit</Box>
+              </Button>
+              <Button
+                variant="danger"
+                w="auto"
+                minW={{ base: "40px", md: "auto" }}
+                px={{ base: "sm", md: "lg" }}
+                tabIndex={isOpen ? 0 : -1}
+                onClick={(e) => {
+                  e.stopPropagation()
+                }}
+              >
+                <IconTrash fill="surface.s1" width="20px" height="20px" />
+                <Box display={{ base: "none", sm: "block" }}>Delete Plan</Box>
+              </Button>
+            </Flex>
+          )}
           <Box transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"} transition="transform 0.2s">
             <IconArrowDown fill="neutrals.nLv3" />
           </Box>
