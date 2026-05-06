@@ -27,7 +27,6 @@ const navItems: NavItem[] = [
     label: "Meal Catalog",
     roles: [Role.CATERING, Role.ADMIN],
   },
-  { to: "/orders", icon: IconOrders, label: "My Orders", roles: [Role.EMPLOYEE, Role.CATERING] },
 ] as const
 
 interface AppSidebarProps {
