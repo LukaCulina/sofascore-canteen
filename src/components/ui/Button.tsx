@@ -53,6 +53,12 @@ export const Button = styled("button", {
         color: "surface.s1",
         _hover: { bg: "status.error.highlight" },
       },
+      ghost: {
+        textStyle: "body.medium",
+        _hover: {
+          bg: "surface.s2",
+        },
+      },
     },
   },
   defaultVariants: {
