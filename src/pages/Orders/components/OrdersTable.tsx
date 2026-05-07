@@ -14,10 +14,16 @@ export interface ProcessedOrder extends Pick<Order, "id" | "order_selection"> {
   meals: number
   discount: number
   total: number
-  hasUnpaid: boolean
 }
 
-export const OrdersTable = ({ orders }: { orders: Order[] }) => {
+interface OrdersTableProps {
+  orders: Order[]
+  isEditing: boolean
+  changes: Record<number, boolean>
+  setChanges: React.Dispatch<React.SetStateAction<Record<number, boolean>>>
+}
+
+export const OrdersTable = ({ orders, isEditing, changes, setChanges }: OrdersTableProps) => {
   const intl = useIntl()
 
   const formatDate = (timestamp: number) =>
@@ -53,14 +59,13 @@ export const OrdersTable = ({ orders }: { orders: Order[] }) => {
 
       return {
         id: order.id,
-        user: order.user?.name ?? `${order.user_id}`,
+        user: order.user?.name ?? String(order.user_id),
         period: formatPeriod(order.plan.period_start, order.plan.period_end),
         submitted: formatDate(order.submitted_at),
         meals: numMeals,
         discount: Number(totalDiscount.toFixed(2)),
         total: Number(totalPrice.toFixed(2)),
         order_selection: order.order_selection,
-        hasUnpaid: order.order_selection.some((sel) => sel.unpaid),
       }
     })
   }, [orders, intl.locale])
@@ -91,7 +96,7 @@ export const OrdersTable = ({ orders }: { orders: Order[] }) => {
         <Table>
           <thead>
             <Tr>
-              <Th w="72px"></Th>
+              <Th w="72px" aria-label="Actions"></Th>
               <Th>Order ID</Th>
               <Th>User</Th>
               <Th>Period</Th>
@@ -103,7 +108,13 @@ export const OrdersTable = ({ orders }: { orders: Order[] }) => {
           </thead>
           <tbody>
             {processedOrders.map((order) => (
-              <OrderRow key={order.id} order={order} />
+              <OrderRow
+                key={order.id}
+                order={order}
+                isEditing={isEditing}
+                changes={changes}
+                setChanges={setChanges}
+              />
             ))}
             <Tr>
               <Td colSpan={5}>Totals</Td>
@@ -118,7 +129,13 @@ export const OrdersTable = ({ orders }: { orders: Order[] }) => {
       {/* Mobile View */}
       <Flex direction="column" gap="sm" hideFrom="lg">
         {processedOrders.map((order) => (
-          <OrderCard key={order.id} order={order} />
+          <OrderCard
+            key={order.id}
+            order={order}
+            isEditing={isEditing}
+            changes={changes}
+            setChanges={setChanges}
+          />
         ))}
 
         <Flex

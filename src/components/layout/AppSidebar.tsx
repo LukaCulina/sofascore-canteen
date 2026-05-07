@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router"
-import { IconMealCatalog, IconSofascore } from "@/components/icons"
+import { IconMealCatalog, IconPlans, IconSofascore } from "@/components/icons"
 import { Text } from "@/components/ui/Text"
 import { Role, useAuthStore } from "@/stores/auth"
 import { css, cx } from "@/styled-system/css"
@@ -19,6 +19,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { to: "/", icon: IconCanteen, label: "Canteen" },
   { to: "/planner", icon: IconPlanner, label: "Planner", roles: [Role.ADMIN, Role.CATERING] },
+  { to: "/my-plans", icon: IconPlans, label: "My Plans", roles: [Role.CATERING] },
   { to: "/orders", icon: IconOrders, label: "My Orders", roles: [Role.EMPLOYEE, Role.CATERING] },
   {
     to: "/catering/catalog",
@@ -90,7 +91,9 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
                 >
                   {({ isActive }) => (
                     <Flex align="center" justify="center" gap="sm">
-                      <Icon fill={isActive ? "primary.default" : "neutrals.nLv1"} />
+                      <Flex align="center" justify="center" w="xl" h="xl">
+                        <Icon fill={isActive ? "primary.default" : "neutrals.nLv1"} />
+                      </Flex>
                       <Text
                         textStyle="display.small"
                         color={isActive ? "primary.default" : "neutrals.nLv1"}
@@ -111,7 +114,7 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
                   css({ bg: "transparent", border: "none", width: "100%" }),
                 )}
               >
-                <Flex align="center" justify="center" w="24px" h="24px">
+                <Flex align="center" justify="center" w="xl" h="xl">
                   <IconLogout />
                 </Flex>
                 Log out
