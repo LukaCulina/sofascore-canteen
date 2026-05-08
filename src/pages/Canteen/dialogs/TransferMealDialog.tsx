@@ -1,7 +1,8 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Dialog } from "@/components/dialog"
-import { Select, Spinner, Text } from "@/components/ui"
+import { Spinner, StatusMessage, Text } from "@/components/ui"
 import { Button } from "@/components/ui/Button"
+import { SearchBar } from "@/components/ui/SearchBar"
 import { Flex } from "@/styled-system/jsx"
 import type { User } from "@/types"
 
@@ -24,7 +25,16 @@ export function TransferMealDialog({
   onConfirm,
   onCancel,
 }: Readonly<TransferMealDialogProps>) {
-  const [selectedUserId, setSelectedUserId] = useState("")
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+
+  const items = useMemo(
+    () =>
+      users.map((user) => ({
+        id: user.id,
+        label: `${user.name} ${user.surname}`,
+      })),
+    [users],
+  )
 
   if (!isOpen) return null
 
@@ -43,41 +53,40 @@ export function TransferMealDialog({
               <Spinner size="sm" />
             </Flex>
           ) : (
-            <Select
-              id="user-select"
-              value={selectedUserId}
-              onChange={(e) => setSelectedUserId(e.target.value)}
-              disabled={isTransferring}
-            >
-              <option value="" disabled>
-                Select an employee...
-              </option>
-              {users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.name} {user.surname}
-                </option>
-              ))}
-            </Select>
+            <SearchBar
+              items={items}
+              value={
+                selectedUser
+                  ? {
+                      id: selectedUser.id,
+                      label: `${selectedUser.name} ${selectedUser.surname}`,
+                    }
+                  : null
+              }
+              placeholder="Search employees"
+              onChange={(item) => {
+                const user = users.find((u) => u.id === item?.id)
+                setSelectedUser(user || null)
+              }}
+            />
           )}
 
           {error ? (
-            <Text textStyle="assistive.default" color="status.error.default">
-              Something went wrong. Please try again.
-            </Text>
+            <StatusMessage variant="error"> Something went wrong. Please try again.</StatusMessage>
           ) : null}
         </Flex>
       </Dialog.Content>
 
       <Dialog.Footer>
-        <Flex gap="md" justifyContent="flex-end">
+        <Flex justifyContent="flex-end" gap="md">
           <Button variant="outline" onClick={onCancel} disabled={isTransferring}>
             Cancel
           </Button>
 
           <Button
             variant="primary"
-            onClick={() => onConfirm(selectedUserId)}
-            disabled={!selectedUserId || isTransferring}
+            onClick={() => selectedUser && onConfirm(selectedUser.id)}
+            disabled={!selectedUser || isTransferring}
           >
             {isTransferring ? (
               <Flex gap="sm" alignItems="center">
