@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router"
 import { meals as mealsRoute } from "@/api/routes"
 import { IconMealCatalog } from "@/components/icons"
 import { MealCard, Spinner, StatusMessage } from "@/components/ui"
@@ -7,6 +8,7 @@ import { Box, Flex, Grid } from "@/styled-system/jsx"
 import type { Meals } from "@/types"
 
 export const MealCatalogPage = () => {
+  const navigate = useNavigate()
   const { data, isLoading, error } = useAuthSWR<Meals>(mealsRoute())
 
   const meals = data?.meals ?? []
@@ -44,7 +46,13 @@ export const MealCatalogPage = () => {
           gap="lg"
         >
           {meals.map((meal) => (
-            <MealCard key={meal.id} meal={meal} />
+            <Box
+              key={meal.id}
+              cursor="pointer"
+              onClick={() => navigate({ to: "/meals/$id", params: { id: String(meal.id) } })}
+            >
+              <MealCard meal={meal} />
+            </Box>
           ))}
         </Grid>
       )}
