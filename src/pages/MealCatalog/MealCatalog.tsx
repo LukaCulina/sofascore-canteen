@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
 import { meals as mealsRoute } from "@/api/routes"
 import { IconMealCatalog, IconPlus } from "@/components/icons"
@@ -10,6 +11,7 @@ import { AddMealDialog, AddMealFormProvider } from "./components"
 
 export const MealCatalogPage = () => {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
+  const navigate = useNavigate()
   const { data, isLoading, error, mutate } = useAuthSWR<Meals>(mealsRoute())
 
   const meals = data?.meals ?? []
@@ -69,7 +71,13 @@ export const MealCatalogPage = () => {
           gap="lg"
         >
           {meals.map((meal) => (
-            <MealCard key={meal.id} meal={meal} />
+            <Box
+              key={meal.id}
+              cursor="pointer"
+              onClick={() => navigate({ to: "/meals/$id", params: { id: String(meal.id) } })}
+            >
+              <MealCard meal={meal} />
+            </Box>
           ))}
         </Grid>
       )}

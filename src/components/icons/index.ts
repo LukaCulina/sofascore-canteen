@@ -1,4 +1,5 @@
 export { IconArrowDown } from "./IconArrowDown"
+export { IconArrowLeft } from "./IconArrowLeft"
 export { IconArrowUp } from "./IconArrowUp"
 export { IconCancel } from "./IconCancel"
 export { IconCanteen } from "./IconCanteen"

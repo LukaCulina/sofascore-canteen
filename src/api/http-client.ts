@@ -69,6 +69,20 @@ export const postJson = <T>(url: string, body = {}, options: RequestInit = {}): 
   }).then((rawResponse) => parseResponse<T>(rawResponse))
 }
 
+export const putJson = <T>(url: string, body = {}, options: RequestInit = {}): Promise<T> => {
+  const { headers, ...fetchOptions } = options
+  const reqHeaders = {
+    "Content-Type": "application/json",
+    ...getAuthHeaders(),
+  }
+  return fetch(getUrl(url), {
+    method: "PUT",
+    ...fetchOptions,
+    body: JSON.stringify(body),
+    headers: { ...dbTargetHeader, ...headers, ...reqHeaders },
+  }).then((rawResponse) => parseResponse<T>(rawResponse))
+}
+
 export function parseResponse<T>(response: Response): Promise<T> {
   return new Promise((resolve, reject) => {
     const emptyResponse = {} as T
