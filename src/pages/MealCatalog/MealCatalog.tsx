@@ -1,10 +1,12 @@
 import { useNavigate } from "@tanstack/react-router"
 import { useMemo, useState } from "react"
+import useSWR from "swr"
+import { getJson } from "@/api/http-client"
 import { meals as mealsRoute } from "@/api/routes"
 import { IconMealCatalog, IconPlus } from "@/components/icons"
 import { Button, MealCard, Spinner, StatusMessage } from "@/components/ui"
 import { H1, P } from "@/components/ui/Text"
-import { useAuthSWR } from "@/hooks/useAuthSWR"
+import { useAuthStore } from "@/stores/auth"
 import { Box, Flex, Grid } from "@/styled-system/jsx"
 import type { Meals } from "@/types"
 import { AddMealDialog, AddMealFormProvider } from "./components"
@@ -13,7 +15,10 @@ import { MealFilters } from "./MealFilters"
 export const MealCatalogPage = () => {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const navigate = useNavigate()
-  const { data, isLoading, error, mutate } = useAuthSWR<Meals>(mealsRoute())
+  const { token } = useAuthStore()
+  const { data, isLoading, error } = useSWR<Meals>(token ? mealsRoute() : null, (url: string) =>
+    getJson<Meals>(url),
+  )
 
   const meals = data?.meals ?? []
 

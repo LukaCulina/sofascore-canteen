@@ -1,13 +1,14 @@
 import { Link, useNavigate, useParams } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
-import { putJson } from "@/api/http-client"
+import useSWR from "swr"
+import { getJson, putJson } from "@/api/http-client"
 import { meal as mealRoute } from "@/api/routes"
 import { IconArrowLeft } from "@/components/icons/IconArrowLeft"
 import { Spinner, StatusMessage } from "@/components/ui"
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
 import { Text } from "@/components/ui/Text"
-import { useAuthSWR } from "@/hooks/useAuthSWR"
+import { useAuthStore } from "@/stores/auth"
 import { css } from "@/styled-system/css"
 import { Box, Flex } from "@/styled-system/jsx"
 import type { Meal } from "@/types"
@@ -25,8 +26,12 @@ export const MealDetailsPage = () => {
   const { id } = useParams({ strict: false }) as { id: string }
   const navigate = useNavigate()
   const mealId = Number(id)
+  const { token } = useAuthStore()
 
-  const { data, isLoading, error } = useAuthSWR<{ meal: Meal }>(mealRoute(mealId))
+  const { data, isLoading, error } = useSWR<{ meal: Meal }>(
+    token ? mealRoute(mealId) : null,
+    (url: string) => getJson<{ meal: Meal }>(url),
+  )
   const mealData = data?.meal
 
   const [form, setForm] = useState<MealForm>(emptyForm)
