@@ -1,7 +1,11 @@
-import { token } from "@/styled-system/tokens"
+import { type ColorToken, token } from "@/styled-system/tokens"
 import type { IconProps } from "./interface"
 
-export const IconSearch = ({ fill = "neutrals.nLv1", ...props }: IconProps) => {
+interface IconSearchProps extends IconProps {
+  fill?: ColorToken
+}
+
+export const IconSearch = ({ fill = "neutrals.nLv1", ...props }: IconSearchProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
