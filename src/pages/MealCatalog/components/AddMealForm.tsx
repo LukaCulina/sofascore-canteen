@@ -121,10 +121,13 @@ export const AddMealForm = () => {
               onChange={(e) => setFieldValue("isVegetarian", e.target.checked)}
               className={`${checkboxInputClass} peer`}
             />
-            <span className={`${checkboxIconClass} ${checkboxIconUncheckedClass}`}>
+            <span
+              className={`${checkboxIconClass} ${checkboxIconUncheckedClass}`}
+              aria-hidden="true"
+            >
               <IconCheckbox width={17} height={17} />
             </span>
-            <span className={`${checkboxIconClass} ${checkboxIconCheckedClass}`}>
+            <span className={`${checkboxIconClass} ${checkboxIconCheckedClass}`} aria-hidden="true">
               <IconCheckboxFilled width={17} height={17} />
             </span>
           </span>
@@ -138,7 +141,13 @@ export const AddMealForm = () => {
         <Text textStyle="assistive.default" color="neutrals.nLv1">
           Upload image
         </Text>
-        <Flex gap="sm" alignItems="center">
+        <Flex
+          gap="sm"
+          alignItems="center"
+          role="group"
+          aria-label="Image upload"
+          aria-disabled="true"
+        >
           <Button
             textStyle="assistive.default"
             type="button"

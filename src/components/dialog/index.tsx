@@ -5,9 +5,16 @@ import { Box, Flex } from "@/styled-system/jsx"
 
 interface DialogRootProps extends PropsWithChildren {
   onClose: () => void
+  ariaLabelledBy?: string
+  ariaDescribedBy?: string
 }
 
-const DialogRoot = ({ children, onClose }: DialogRootProps) => {
+const DialogRoot = ({
+  children,
+  onClose,
+  ariaLabelledBy,
+  ariaDescribedBy,
+}: DialogRootProps) => {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose()
@@ -29,7 +36,17 @@ const DialogRoot = ({ children, onClose }: DialogRootProps) => {
           if (e.target === e.currentTarget) onClose()
         }}
       >
-        <Flex direction="column" bg="surface.s1" rounded="lg" w="full" maxW="420px">
+        <Flex
+          direction="column"
+          bg="surface.s1"
+          rounded="lg"
+          w="full"
+          maxW="420px"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={ariaLabelledBy}
+          aria-describedby={ariaDescribedBy}
+        >
           {children}
         </Flex>
       </Box>

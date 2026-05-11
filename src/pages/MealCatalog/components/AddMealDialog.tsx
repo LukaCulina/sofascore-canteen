@@ -1,8 +1,9 @@
 import { useFormikContext } from "formik"
+import { useId } from "react"
 import { Dialog } from "@/components/dialog"
 import { Spinner, Text } from "@/components/ui"
 import { Button } from "@/components/ui/Button"
-import { Flex } from "@/styled-system/jsx"
+import { Box, Flex } from "@/styled-system/jsx"
 import { AddMealForm, type AddMealFormValues } from "./AddMealForm"
 
 interface AddMealDialogProps {
@@ -40,6 +41,8 @@ const AddMealDialogFooter = ({
 
 export const AddMealDialog = ({ isOpen, onClose }: AddMealDialogProps) => {
   const formik = useFormikContext<AddMealFormValues>()
+  const dialogTitleId = useId()
+  const dialogDescriptionId = useId()
 
   if (!isOpen) {
     return null
@@ -55,15 +58,23 @@ export const AddMealDialog = ({ isOpen, onClose }: AddMealDialogProps) => {
   }
 
   return (
-    <Dialog.Root onClose={handleClose}>
-      <form onSubmit={formik.handleSubmit}>
+    <Dialog.Root
+      onClose={handleClose}
+      ariaLabelledBy={dialogTitleId}
+      ariaDescribedBy={dialogDescriptionId}
+    >
+      <form onSubmit={formik.handleSubmit} aria-busy={formik.isSubmitting}>
         <Dialog.Header>
-          <Dialog.Title>Add New Meal</Dialog.Title>
+          <Dialog.Title>
+            <span id={dialogTitleId}>Add New Meal</span>
+          </Dialog.Title>
         </Dialog.Header>
         <Dialog.Content>
-          <AddMealForm />
+          <Box id={dialogDescriptionId}>
+            <AddMealForm />
+          </Box>
           {formik.status ? (
-            <Text mt="sm" textStyle="assistive.default" color="status.error.default">
+            <Text mt="sm" textStyle="assistive.default" color="status.error.default" role="alert">
               {formik.status}
             </Text>
           ) : null}
