@@ -84,7 +84,7 @@ export function SummaryCard({
         </Flex>
       </Flex>
       {order.order_selection.map((selection) => {
-        const isTransferred = selection.transfer != null
+        const isTransferred = selection.transfer !== undefined
         return (
           <Flex
             key={selection.id}
@@ -101,7 +101,7 @@ export function SummaryCard({
                   {formatShortDate(selection.plan_day.day)}
                 </Text>
               </Flex>
-              <Text textStyle="assistive.default">{selection.meal?.description ?? "No Meal"}</Text>
+              <Text textStyle="assistive.default">{selection.meal.description}</Text>
             </Flex>
             {isTransferred ? (
               <Flex alignItems="center" gap="xs">

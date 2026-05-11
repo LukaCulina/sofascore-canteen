@@ -26,7 +26,7 @@ export function useTransfer(token: string | null, mutate: () => Promise<unknown>
 
   const handleTransfer = async (userId: string) => {
     if (transferSelectionId === null) return
-    console.log("Transferring selection", transferSelectionId, "to user", userId)
+
     try {
       await transferMeal({ order_selection_id: transferSelectionId, to_user_id: userId })
       await mutate()
