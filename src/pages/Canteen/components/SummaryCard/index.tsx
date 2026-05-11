@@ -84,7 +84,8 @@ export function SummaryCard({
         </Flex>
       </Flex>
       {order.order_selection.map((selection) => {
-        const isTransferred = selection.transfer !== undefined
+        const isTransferred = selection.transfer != null
+        
         return (
           <Flex
             key={selection.id}
