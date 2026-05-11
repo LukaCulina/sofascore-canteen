@@ -10,8 +10,9 @@ interface TransferMealDialogProps {
   isOpen: boolean
   users: User[]
   isLoadingUsers: boolean
+  hasUsersError: boolean
   isTransferring: boolean
-  error: boolean
+  hasTransferError: boolean
   onConfirm: (userId: string) => void
   onCancel: () => void
 }
@@ -20,8 +21,9 @@ export function TransferMealDialog({
   isOpen,
   users,
   isLoadingUsers,
+  hasUsersError,
   isTransferring,
-  error,
+  hasTransferError,
   onConfirm,
   onCancel,
 }: Readonly<TransferMealDialogProps>) {
@@ -52,6 +54,10 @@ export function TransferMealDialog({
             <Flex justify="center" py="md">
               <Spinner size="sm" />
             </Flex>
+          ) : hasUsersError ? (
+            <StatusMessage variant="error">
+              Failed to load employees. Please try again.
+            </StatusMessage>
           ) : (
             <SearchBar
               items={items}
@@ -71,8 +77,8 @@ export function TransferMealDialog({
             />
           )}
 
-          {error ? (
-            <StatusMessage variant="error"> Something went wrong. Please try again.</StatusMessage>
+          {hasTransferError ? (
+            <StatusMessage variant="error">Something went wrong. Please try again.</StatusMessage>
           ) : null}
         </Flex>
       </Dialog.Content>

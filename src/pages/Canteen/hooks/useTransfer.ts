@@ -8,7 +8,7 @@ import type { User } from "@/types"
 export function useTransfer(token: string | null, mutate: () => Promise<unknown>) {
   const [transferSelectionId, setTransferSelectionId] = useState<number | null>(null)
 
-  const { data: usersData, isLoading: isLoadingUsers } = useSWR<{ users: User[] }>(
+  const { data: usersData, isLoading: isLoadingUsers, error: usersError } = useSWR<{ users: User[] }>(
     token && transferSelectionId !== null ? users() : null,
     (url: string) => getJson<{ users: User[] }>(url),
   )
@@ -46,8 +46,9 @@ export function useTransfer(token: string | null, mutate: () => Promise<unknown>
     setTransferSelectionId,
     users: usersData?.users ?? [],
     isLoadingUsers,
+    usersError,
     isTransferring,
-    transferError: !!transferError,
+    transferError,
     handleTransfer,
     handleCancel,
   }

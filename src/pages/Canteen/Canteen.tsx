@@ -42,6 +42,7 @@ export const CanteenPage = () => {
     setTransferSelectionId,
     users,
     isLoadingUsers,
+    usersError,
     isTransferring,
     transferError,
     handleTransfer,
@@ -111,8 +112,9 @@ export const CanteenPage = () => {
         isOpen={transferSelectionId !== null}
         users={users}
         isLoadingUsers={isLoadingUsers}
+        hasUsersError={!!usersError}
         isTransferring={isTransferring}
-        error={transferError}
+        hasTransferError={!!transferError}
         onConfirm={handleTransfer}
         onCancel={handleCancel}
       />
