@@ -86,7 +86,7 @@ export const MealFilters = ({ filters, onSearchChange, onFiltersChange }: MealFi
         }
         endAdornment={
           inputValue ? (
-            <button type="button" onClick={handleClear}>
+            <button type="button" aria-label="Clear search" onClick={handleClear}>
               <Flex align="center" justify="center" w="xl" h="xl" cursor="pointer">
                 <IconClear />
               </Flex>
@@ -103,7 +103,13 @@ export const MealFilters = ({ filters, onSearchChange, onFiltersChange }: MealFi
         borderRadius="sm"
         data-dropdown
       >
-        <button type="button" onClick={() => setIsOpen((prev) => !prev)}>
+        <button
+          type="button"
+          aria-label="Toggle dietary filters"
+          aria-expanded={isOpen}
+          aria-haspopup="menu"
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
           <Flex alignItems="center" gap="sm" cursor="pointer">
             <Text textStyle="body.large">Type</Text>
             {isOpen ? <IconArrowUp /> : <IconArrowDown />}
@@ -124,6 +130,8 @@ export const MealFilters = ({ filters, onSearchChange, onFiltersChange }: MealFi
               right: 0,
               zIndex: 10,
             }}
+            role="menu"
+            aria-label="Dietary filters"
             data-dropdown
           >
             <Box
