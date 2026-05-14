@@ -19,6 +19,7 @@ interface SearchBarProps {
 
 export const SearchBar = ({
   items,
+  value,
   placeholder = "Search...",
   isDisabled,
   onChange,
@@ -26,6 +27,10 @@ export const SearchBar = ({
   const [inputValue, setInputValue] = useState("")
   const [open, setOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setInputValue(value ? value.label : "")
+  }, [value])
 
   const filteredItems = useMemo(() => {
     const query = inputValue.trim().toLowerCase()
@@ -61,6 +66,9 @@ export const SearchBar = ({
           setInputValue(value)
           setOpen(true)
         }}
+        role="combobox"
+        aria-expanded={open}
+        aria-haspopup="listbox"
         startAdornment={
           <Flex align="center" justify="center" w="xl" h="xl">
             <IconSearch />
@@ -68,7 +76,7 @@ export const SearchBar = ({
         }
         endAdornment={
           inputValue ? (
-            <button type="button" onClick={handleClear}>
+            <button type="button" aria-label="Clear search" onClick={handleClear}>
               <Flex align="center" justify="center" w="xl" h="xl" cursor="pointer">
                 <IconClear />
               </Flex>
@@ -101,6 +109,7 @@ export const SearchBar = ({
               borderColor="neutrals.nLv4"
               maxH="220px"
               overflowY="auto"
+              role="listbox"
             >
               {filteredItems.length ? (
                 filteredItems.map((item) => (
@@ -108,6 +117,7 @@ export const SearchBar = ({
                     key={item.id}
                     variant="ghost"
                     justifyContent="flex-start"
+                    role="option"
                     onClick={() => {
                       setInputValue(item.label)
                       onChange(item)
