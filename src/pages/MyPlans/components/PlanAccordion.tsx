@@ -66,7 +66,6 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
           </Text>
         </Flex>
 
-        {/* right — tipke + strelica uvijek zajedno */}
         <Flex align="center" gap="md">
           {isFuturePlan && !isEditing && (
             <Flex
