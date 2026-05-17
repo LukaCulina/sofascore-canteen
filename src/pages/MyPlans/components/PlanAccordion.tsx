@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Dialog } from "@/components/dialog"
 import { IconArrowDown, IconPen, IconTrash } from "@/components/icons"
 import { Button } from "@/components/ui/Button"
+import { Spinner } from "@/components/ui/Spinner"
 import { Text } from "@/components/ui/Text"
 import { MealDayCard } from "@/pages/Planner/components"
 import { useMeals } from "@/pages/Planner/hooks/useMeals"
@@ -37,7 +38,7 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
     savePlan,
   } = usePlanActions(plan, onMutate)
 
-  const { meals } = useMeals(isEditing)
+  const { meals, isLoading: mealsLoading, error: mealsError } = useMeals(isEditing)
 
   return (
     <Box borderRadius="md" overflow="hidden" bg="surface.s1">
@@ -148,19 +149,29 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
         <Box overflow="hidden">
           <Box p="lg">
             <Flex direction="column" gap="md">
-              {plan.plan_day.map((day) => (
-                <MealDayCard
-                  key={day.id}
-                  date={new Date(day.day * 1000)}
-                  meals={isEditing ? meals : day.day_meal.map((dm) => dm.meal)}
-                  selectedMeals={editedMeals[day.id] ?? []}
-                  onToggleMeal={isEditing ? (mealId) => toggleMeal(day.id, mealId) : undefined}
-                  disabled={!isEditing}
-                  backgroundColor="surface.s2"
-                  showBorder={false}
-                  dayTextStyle="display.micro"
-                />
-              ))}
+              {isEditing && mealsLoading ? (
+                <Flex justify="center" p="lg">
+                  <Spinner />
+                </Flex>
+              ) : isEditing && mealsError ? (
+                <Text textStyle="assistive.default" color="status.error.default" display="block">
+                  Failed to load meals. Please try again.
+                </Text>
+              ) : (
+                plan.plan_day.map((day) => (
+                  <MealDayCard
+                    key={day.id}
+                    date={new Date(day.day * 1000)}
+                    meals={isEditing ? meals : day.day_meal.map((dm) => dm.meal)}
+                    selectedMeals={editedMeals[day.id] ?? []}
+                    onToggleMeal={isEditing ? (mealId) => toggleMeal(day.id, mealId) : undefined}
+                    disabled={!isEditing}
+                    backgroundColor="surface.s2"
+                    showBorder={false}
+                    dayTextStyle="display.micro"
+                  />
+                ))
+              )}
             </Flex>
           </Box>
         </Box>
