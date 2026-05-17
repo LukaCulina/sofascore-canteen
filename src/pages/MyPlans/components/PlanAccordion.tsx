@@ -110,7 +110,7 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
           )}
 
           {isFuturePlan && isEditing && (
-            <Flex align="center" gap="md" onClick={(e) => e.stopPropagation()}>
+            <Flex align="center" gap="md">
               <Button
                 variant="outline"
                 w="auto"
