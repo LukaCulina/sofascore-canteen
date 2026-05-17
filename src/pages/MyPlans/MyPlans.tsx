@@ -9,7 +9,7 @@ import { Flex } from "@/styled-system/jsx"
 import { PlanAccordion } from "./components/PlanAccordion"
 
 export const MyPlans = () => {
-  const { plans, isLoading, mutate } = usePlans()
+  const { plans, isLoading, error, mutate } = usePlans()
 
   const sorted = useMemo(() => [...plans].sort((a, b) => b.period_start - a.period_start), [plans])
 
@@ -34,9 +34,26 @@ export const MyPlans = () => {
           <Spinner />
         </Flex>
       )}
+      {/* Error state */}
+      {!isLoading && error && (
+        <Flex
+          align="center"
+          justify="center"
+          direction="column"
+          gap="md"
+          border="1px solid"
+          borderColor="status.error.default"
+          borderRadius="md"
+          p="2xl"
+        >
+          <Text textStyle="body.medium" color="status.error.default">
+            Failed to load plans. Please try again.
+          </Text>
+        </Flex>
+      )}
 
       {/* Empty state */}
-      {!isLoading && sorted.length === 0 && (
+      {!isLoading && !error && sorted.length === 0 && (
         <Flex
           align="center"
           justify="center"
@@ -66,7 +83,7 @@ export const MyPlans = () => {
       )}
 
       {/* Plans list */}
-      {!isLoading && sorted.length > 0 && (
+      {!isLoading && !error && sorted.length > 0 && (
         <Flex direction="column" gap="lg">
           {sorted.map((plan) => (
             <PlanAccordion key={plan.id} plan={plan} onMutate={() => mutate()} />
