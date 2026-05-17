@@ -103,7 +103,9 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
                   setShowConfirm(true)
                 }}
               >
-                <IconTrash fill="surface.s1" width="20px" height="20px" />
+                <Flex align="center" justify="center" w="xl" h="xl">
+                  <IconTrash fill="surface.s1" />
+                </Flex>
                 <Box display={{ base: "none", sm: "block" }}>Delete Plan</Box>
               </Button>
             </Flex>
