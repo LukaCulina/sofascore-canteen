@@ -130,7 +130,13 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
                   savePlan.execute()
                 }}
               >
-                {savePlan.isLoading ? "Saving..." : "Save Changes"}
+                {savePlan.isLoading ? (
+                  <Flex align="center" gap="sm">
+                    <Spinner size="md" /> Saving...
+                  </Flex>
+                ) : (
+                  "Save Changes"
+                )}
               </Button>
             </Flex>
           )}
