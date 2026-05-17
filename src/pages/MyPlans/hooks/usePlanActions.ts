@@ -7,7 +7,10 @@ import type { Plan } from "@/types"
 const getMealIds = (plan: Plan): Record<number, number[]> =>
   Object.fromEntries(plan.plan_day.map((day) => [day.id, day.day_meal.map((dm) => dm.meal.id)]))
 
-export const usePlanActions = (plan: Plan, onMutate: () => void) => {
+export const usePlanActions = (
+  plan: Plan,
+  onMutate: () => Promise<unknown | Plan[] | undefined>,
+) => {
   const [isEditing, setIsEditing] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const [editedMeals, setEditedMeals] = useState<Record<number, number[]>>(getMealIds(plan))
@@ -18,7 +21,7 @@ export const usePlanActions = (plan: Plan, onMutate: () => void) => {
 
   const deletePlan = useAsyncAction(async () => {
     await requestJson("DELETE", planById(plan.id))
-    onMutate()
+    await onMutate()
     setShowConfirm(false)
   }, "Failed to delete plan. Please try again.")
 
@@ -29,7 +32,7 @@ export const usePlanActions = (plan: Plan, onMutate: () => void) => {
         meal_ids: mealIds,
       })),
     })
-    onMutate()
+    await onMutate()
     setIsEditing(false)
   }, "Failed to save changes. Please try again.")
 

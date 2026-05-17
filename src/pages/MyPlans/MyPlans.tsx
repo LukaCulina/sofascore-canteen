@@ -69,7 +69,7 @@ export const MyPlans = () => {
       {!isLoading && sorted.length > 0 && (
         <Flex direction="column" gap="lg">
           {sorted.map((plan) => (
-            <PlanAccordion key={plan.id} plan={plan} onMutate={mutate} />
+            <PlanAccordion key={plan.id} plan={plan} onMutate={() => mutate()} />
           ))}
         </Flex>
       )}

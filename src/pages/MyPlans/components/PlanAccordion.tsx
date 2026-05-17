@@ -12,7 +12,7 @@ import { usePlanActions } from "../hooks/usePlanActions"
 
 interface PlanAccordionProps {
   plan: Plan
-  onMutate: () => void
+  onMutate: () => Promise<unknown | Plan[] | undefined>
 }
 
 const formatDate = (timestamp: number) =>
