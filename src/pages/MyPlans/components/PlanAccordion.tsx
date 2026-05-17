@@ -213,7 +213,13 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
                 Cancel
               </Button>
               <Button variant="danger" onClick={deletePlan.execute} disabled={deletePlan.isLoading}>
-                {deletePlan.isLoading ? "Deleting..." : "Yes, delete"}
+                {deletePlan.isLoading ? (
+                  <Flex align="center" gap="sm">
+                    <Spinner size="md" /> Deleting...
+                  </Flex>
+                ) : (
+                  "Yes, delete"
+                )}
               </Button>
             </Flex>
           </Dialog.Footer>
