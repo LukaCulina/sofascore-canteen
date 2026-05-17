@@ -292,7 +292,7 @@ export const MealDetailsPage = () => {
             bg="surface.s2"
           >
             <Box>
-              {!isDirty && saveStatus === null && (
+              {isDirty && saveStatus === null && (
                 <Text textStyle="assistive.default" color="status.error.default">
                   Unsaved changes
                 </Text>
