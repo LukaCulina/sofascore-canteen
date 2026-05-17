@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router"
 import { useMemo } from "react"
 import { IconPlanner } from "@/components/icons"
 import { Spinner } from "@/components/ui/Spinner"
+import { StatusMessage } from "@/components/ui/StatusMessage"
 import { Text } from "@/components/ui/Text"
 import { usePlans } from "@/pages/Planner/hooks/usePlans"
 import { css } from "@/styled-system/css"
@@ -35,20 +36,11 @@ export const MyPlans = () => {
         </Flex>
       )}
       {/* Error state */}
-      {!isLoading && error && (
-        <Flex
-          align="center"
-          justify="center"
-          direction="column"
-          gap="md"
-          border="1px solid"
-          borderColor="status.error.default"
-          borderRadius="md"
-          p="2xl"
-        >
-          <Text textStyle="body.medium" color="status.error.default">
-            Failed to load plans. Please try again.
-          </Text>
+      {error && (
+        <Flex justify="center" align="center" py="6xl">
+          <StatusMessage variant="error">
+            Failed to load plans. Please try again later.
+          </StatusMessage>
         </Flex>
       )}
 
