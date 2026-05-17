@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { requestJson } from "@/api/http-client"
 import { planById } from "@/api/routes"
 import { useAsyncAction } from "@/hooks/useAsyncAction"
@@ -11,6 +11,10 @@ export const usePlanActions = (plan: Plan, onMutate: () => void) => {
   const [isEditing, setIsEditing] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const [editedMeals, setEditedMeals] = useState<Record<number, number[]>>(getMealIds(plan))
+
+  useEffect(() => {
+    setEditedMeals(getMealIds(plan))
+  }, [plan])
 
   const deletePlan = useAsyncAction(async () => {
     await requestJson("DELETE", planById(plan.id))
