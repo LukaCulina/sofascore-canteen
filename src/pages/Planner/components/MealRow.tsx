@@ -14,6 +14,7 @@ interface MealRowProps {
 export const MealRow = ({ meal, isSelected, onToggle, disabled }: MealRowProps) => {
   return (
     <Flex
+      as="label"
       align="center"
       gap="lg"
       px="lg"
@@ -22,7 +23,6 @@ export const MealRow = ({ meal, isSelected, onToggle, disabled }: MealRowProps) 
       borderColor="neutrals.nLv4"
       _last={{ borderBottom: "none" }}
       cursor={disabled ? "default" : "pointer"}
-      onClick={disabled ? undefined : onToggle}
     >
       {disabled ? (
         isSelected ? (

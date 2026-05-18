@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router"
 import { useMemo } from "react"
 import { IconPlanner } from "@/components/icons"
 import { Spinner } from "@/components/ui/Spinner"
+import { StatusMessage } from "@/components/ui/StatusMessage"
 import { Text } from "@/components/ui/Text"
 import { usePlans } from "@/pages/Planner/hooks/usePlans"
 import { css } from "@/styled-system/css"
@@ -9,7 +10,7 @@ import { Flex } from "@/styled-system/jsx"
 import { PlanAccordion } from "./components/PlanAccordion"
 
 export const MyPlans = () => {
-  const { plans, isLoading } = usePlans()
+  const { plans, isLoading, error, mutate } = usePlans()
 
   const sorted = useMemo(() => [...plans].sort((a, b) => b.period_start - a.period_start), [plans])
 
@@ -34,9 +35,17 @@ export const MyPlans = () => {
           <Spinner />
         </Flex>
       )}
+      {/* Error state */}
+      {error && (
+        <Flex justify="center" align="center" py="6xl">
+          <StatusMessage variant="error">
+            Failed to load plans. Please try again later.
+          </StatusMessage>
+        </Flex>
+      )}
 
       {/* Empty state */}
-      {!isLoading && sorted.length === 0 && (
+      {!isLoading && !error && sorted.length === 0 && (
         <Flex
           align="center"
           justify="center"
@@ -66,10 +75,10 @@ export const MyPlans = () => {
       )}
 
       {/* Plans list */}
-      {!isLoading && sorted.length > 0 && (
+      {!isLoading && !error && sorted.length > 0 && (
         <Flex direction="column" gap="lg">
           {sorted.map((plan) => (
-            <PlanAccordion key={plan.id} plan={plan} />
+            <PlanAccordion key={plan.id} plan={plan} onMutate={() => mutate()} />
           ))}
         </Flex>
       )}
