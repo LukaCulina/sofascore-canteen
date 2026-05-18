@@ -8,10 +8,10 @@ export const ToastContainer = () => {
   return (
     <Flex
       direction="column"
-      gap="xs"
+      gap="md"
       position="fixed"
-      bottom="sm"
-      right="sm"
+      bottom="lg"
+      right="lg"
       zIndex={9999}
       pointerEvents="none"
     >
