@@ -100,24 +100,25 @@ export const CanteenPage = () => {
         />
       )}
 
-      <CancelOrderDialog
-        isOpen={isCancelDialogOpen}
-        isSubmitting={isDeleting}
-        onConfirm={handleCancelOrder}
-        onCancel={() => setIsCancelDialogOpen(false)}
-      />
+      {isCancelDialogOpen && (
+        <CancelOrderDialog
+          isSubmitting={isDeleting}
+          onConfirm={handleCancelOrder}
+          onCancel={() => setIsCancelDialogOpen(false)}
+        />
+      )}
 
-      <TransferMealDialog
-        key={transferSelectionId ?? "closed"}
-        isOpen={transferSelectionId !== null}
-        users={users}
-        isLoadingUsers={isLoadingUsers}
-        hasUsersError={!!usersError}
-        isTransferring={isTransferring}
-        hasTransferError={!!transferError}
-        onConfirm={handleTransfer}
-        onCancel={handleCancel}
-      />
+      {transferSelectionId !== null && (
+        <TransferMealDialog
+          users={users}
+          isLoadingUsers={isLoadingUsers}
+          hasUsersError={!!usersError}
+          isTransferring={isTransferring}
+          hasTransferError={!!transferError}
+          onConfirm={handleTransfer}
+          onCancel={handleCancel}
+        />
+      )}
     </Flex>
   )
 }

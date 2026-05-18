@@ -4,22 +4,16 @@ import { Button } from "@/components/ui/Button"
 import { Flex } from "@/styled-system/jsx"
 
 interface CancelOrderDialogProps {
-  isOpen: boolean
   isSubmitting?: boolean
   onConfirm: () => void
   onCancel: () => void
 }
 
 export function CancelOrderDialog({
-  isOpen,
   isSubmitting = false,
   onConfirm,
   onCancel,
 }: Readonly<CancelOrderDialogProps>) {
-  if (!isOpen) {
-    return null
-  }
-
   return (
     <Dialog.Root onClose={isSubmitting ? () => {} : onCancel}>
       <Dialog.Header>

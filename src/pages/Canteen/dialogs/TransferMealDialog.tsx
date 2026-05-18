@@ -7,7 +7,6 @@ import { Flex } from "@/styled-system/jsx"
 import type { User } from "@/types"
 
 interface TransferMealDialogProps {
-  isOpen: boolean
   users: User[]
   isLoadingUsers: boolean
   hasUsersError: boolean
@@ -18,7 +17,6 @@ interface TransferMealDialogProps {
 }
 
 export function TransferMealDialog({
-  isOpen,
   users,
   isLoadingUsers,
   hasUsersError,
@@ -37,8 +35,6 @@ export function TransferMealDialog({
       })),
     [users],
   )
-
-  if (!isOpen) return null
 
   return (
     <Dialog.Root onClose={isTransferring ? () => {} : onCancel}>
