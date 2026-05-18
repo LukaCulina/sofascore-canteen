@@ -45,7 +45,6 @@ export const AddMealFormProvider = ({
         description: values.name.trim(),
         price: Number(values.price),
         is_vegetarian: values.isVegetarian,
-        discount: 0,
         image_url: values.imageUrl.trim(),
       }
 

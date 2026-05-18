@@ -21,6 +21,6 @@ export interface CreateMealPayload {
   description: string
   price: number
   is_vegetarian: boolean
-  discount: number
   image_url: string
+  discount?: number
 }
