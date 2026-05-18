@@ -6,7 +6,6 @@ import { Spinner, StatusMessage } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
 import { MealSelectionForm } from "@/pages/Canteen/components/MealSelection"
 import { useAuthStore } from "@/stores/auth"
-import { useToastStore } from "@/stores/toast"
 import { Flex } from "@/styled-system/jsx"
 import type { MealOptions } from "@/types"
 import { SummaryCard } from "./components/SummaryCard"
@@ -21,13 +20,11 @@ export const CanteenPage = () => {
   )
 
   const intl = useIntl()
-  const addToast = useToastStore((s) => s.addToast)
 
   const {
     isEditingOrder,
     isCancelDialogOpen,
     setIsCancelDialogOpen,
-    actionError,
     editSelectionsSnapshot,
     isCreating,
     isUpdating,
@@ -46,7 +43,6 @@ export const CanteenPage = () => {
     isLoadingUsers,
     usersError,
     isTransferring,
-    transferError,
     handleTransfer,
     handleCancel,
   } = useTransfer(token, mutate)
@@ -114,7 +110,6 @@ export const CanteenPage = () => {
           isLoadingUsers={isLoadingUsers}
           hasUsersError={!!usersError}
           isTransferring={isTransferring}
-          hasTransferError={!!transferError}
           onConfirm={handleTransfer}
           onCancel={handleCancel}
         />

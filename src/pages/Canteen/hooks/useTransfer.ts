@@ -3,12 +3,17 @@ import useSWR from "swr"
 import useSWRMutation from "swr/mutation"
 import { getJson, requestJson } from "@/api/http-client.ts"
 import { transfer, users } from "@/api/routes"
+import { useToastStore } from "@/stores/toast"
 import type { User } from "@/types"
 
 export function useTransfer(token: string | null, mutate: () => Promise<unknown>) {
   const [transferSelectionId, setTransferSelectionId] = useState<number | null>(null)
 
-  const { data: usersData, isLoading: isLoadingUsers, error: usersError } = useSWR<{ users: User[] }>(
+  const {
+    data: usersData,
+    isLoading: isLoadingUsers,
+    error: usersError,
+  } = useSWR<{ users: User[] }>(
     token && transferSelectionId !== null ? users() : null,
     (url: string) => getJson<{ users: User[] }>(url),
   )
@@ -16,13 +21,14 @@ export function useTransfer(token: string | null, mutate: () => Promise<unknown>
   const {
     trigger: transferMeal,
     isMutating: isTransferring,
-    error: transferError,
     reset,
   } = useSWRMutation(
     token ? transfer() : null,
     (url: string, { arg }: { arg: { order_selection_id: number; to_user_id: string } }) =>
       requestJson("POST", url, arg),
   )
+
+  const addToast = useToastStore((s) => s.addToast)
 
   const handleTransfer = async (userId: string) => {
     if (transferSelectionId === null) return
@@ -31,8 +37,9 @@ export function useTransfer(token: string | null, mutate: () => Promise<unknown>
       await transferMeal({ order_selection_id: transferSelectionId, to_user_id: userId })
       await mutate()
       setTransferSelectionId(null)
+      addToast("Meal transferred successfully.", "success")
     } catch {
-      // transferError from useSWRMutation handles the error state
+      addToast("Failed to transfer meal. Please try again.", "error")
     }
   }
 
@@ -48,7 +55,6 @@ export function useTransfer(token: string | null, mutate: () => Promise<unknown>
     isLoadingUsers,
     usersError,
     isTransferring,
-    transferError,
     handleTransfer,
     handleCancel,
   }

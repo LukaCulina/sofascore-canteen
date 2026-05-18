@@ -11,7 +11,6 @@ interface TransferMealDialogProps {
   isLoadingUsers: boolean
   hasUsersError: boolean
   isTransferring: boolean
-  hasTransferError: boolean
   onConfirm: (userId: string) => void
   onCancel: () => void
 }
@@ -21,7 +20,6 @@ export function TransferMealDialog({
   isLoadingUsers,
   hasUsersError,
   isTransferring,
-  hasTransferError,
   onConfirm,
   onCancel,
 }: Readonly<TransferMealDialogProps>) {
@@ -72,10 +70,6 @@ export function TransferMealDialog({
               }}
             />
           )}
-
-          {hasTransferError ? (
-            <StatusMessage variant="error">Something went wrong. Please try again.</StatusMessage>
-          ) : null}
         </Flex>
       </Dialog.Content>
 

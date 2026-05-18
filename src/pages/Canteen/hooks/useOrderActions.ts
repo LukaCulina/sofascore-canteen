@@ -2,6 +2,7 @@ import { useState } from "react"
 import useSWRMutation from "swr/mutation"
 import { requestJson } from "@/api/http-client.ts"
 import { order, orderByPlanId } from "@/api/routes.ts"
+import { useToastStore } from "@/stores/toast"
 import type { MealOptions } from "@/types"
 import { useInitialOrderSelections } from "./useInitialOrderSelections.ts"
 
@@ -29,12 +30,12 @@ export function useOrderActions(
 ) {
   const [isEditingOrder, setIsEditingOrder] = useState(false)
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false)
-  const [actionError, setActionError] = useState<string | null>(null)
   const [editSelectionsSnapshot, setEditSelectionsSnapshot] = useState<
     Record<number, number | null> | undefined
   >(undefined)
 
   const initialSelections = useInitialOrderSelections(data)
+  const addToast = useToastStore((s) => s.addToast)
 
   const { trigger: createOrder, isMutating: isCreating } = useSWRMutation(
     token ? order() : null,
@@ -59,14 +60,12 @@ export function useOrderActions(
   }
 
   const openEditMode = () => {
-    setActionError(null)
     setEditSelectionsSnapshot(initialSelections)
     setIsEditingOrder(true)
   }
 
   const handleSubmit = async (selections: Record<number, number | null>) => {
     if (!data?.plan) return
-    setActionError(null)
 
     const payload: SaveOrderPayload = {
       planId: data.plan.id,
@@ -79,12 +78,19 @@ export function useOrderActions(
         await updateOrder(payload)
         await mutate()
         closeEditMode()
+        addToast("Order updated successfully.", "success")
         return
       }
       await createOrder(payload)
       await mutate()
+      addToast("Order submitted successfully.", "success")
     } catch {
-      setActionError("Something went wrong. Please try again.")
+      addToast(
+        isEditingOrder
+          ? "Failed to update order. Please try again."
+          : "Failed to submit order. Please try again.",
+        "error",
+      )
     }
   }
 
@@ -93,15 +99,15 @@ export function useOrderActions(
       setIsCancelDialogOpen(false)
       return
     }
-    setActionError(null)
 
     try {
       await cancelOrder()
       await mutate()
       setIsCancelDialogOpen(false)
       closeEditMode()
+      addToast("Order cancelled.", "success")
     } catch {
-      setActionError("Something went wrong. Please try again.")
+      addToast("Failed to cancel order. Please try again.", "error")
     }
   }
 
@@ -115,7 +121,6 @@ export function useOrderActions(
     isEditingOrder,
     isCancelDialogOpen,
     setIsCancelDialogOpen,
-    actionError,
     editSelectionsSnapshot,
     isCreating,
     isUpdating,
