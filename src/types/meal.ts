@@ -16,3 +16,11 @@ export interface DayMeal {
 export interface Meals {
   meals: Meal[]
 }
+
+export interface CreateMealPayload {
+  description: string
+  price: number
+  is_vegetarian: boolean
+  image_url: string
+  discount?: number
+}
