@@ -82,9 +82,11 @@ export const MealCatalogPage = () => {
         </Grid>
       )}
 
-      <AddMealFormProvider onClose={closeAddMealDialog} onMealCreated={() => mutate()}>
-        <AddMealDialog isOpen={isAddDialogOpen} onClose={closeAddMealDialog} />
-      </AddMealFormProvider>
+      {isAddDialogOpen ? (
+        <AddMealFormProvider onClose={closeAddMealDialog} onMealCreated={() => mutate()}>
+          <AddMealDialog onClose={closeAddMealDialog} />
+        </AddMealFormProvider>
+      ) : null}
     </Box>
   )
 }

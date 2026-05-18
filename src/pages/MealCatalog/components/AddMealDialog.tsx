@@ -7,7 +7,6 @@ import { Box, Flex } from "@/styled-system/jsx"
 import { AddMealForm, type AddMealFormValues } from "./AddMealForm"
 
 interface AddMealDialogProps {
-  isOpen: boolean
   onClose: () => void
 }
 
@@ -39,21 +38,16 @@ const AddMealDialogFooter = ({
   )
 }
 
-export const AddMealDialog = ({ isOpen, onClose }: AddMealDialogProps) => {
+export const AddMealDialog = ({ onClose }: AddMealDialogProps) => {
   const formik = useFormikContext<AddMealFormValues>()
   const dialogTitleId = useId()
   const dialogDescriptionId = useId()
-
-  if (!isOpen) {
-    return null
-  }
 
   const handleClose = () => {
     if (formik.isSubmitting) {
       return
     }
 
-    formik.resetForm()
     onClose()
   }
 

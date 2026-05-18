@@ -9,18 +9,18 @@ interface DialogRootProps extends PropsWithChildren {
   ariaDescribedBy?: string
 }
 
-const DialogRoot = ({
-  children,
-  onClose,
-  ariaLabelledBy,
-  ariaDescribedBy,
-}: DialogRootProps) => {
+const DialogRoot = ({ children, onClose, ariaLabelledBy, ariaDescribedBy }: DialogRootProps) => {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose()
     }
     document.addEventListener("keydown", onKey)
-    return () => document.removeEventListener("keydown", onKey)
+    document.body.style.overflow = "hidden"
+
+    return () => {
+      document.removeEventListener("keydown", onKey)
+      document.body.style.overflow = ""
+    }
   }, [onClose])
   return (
     <Portal>
