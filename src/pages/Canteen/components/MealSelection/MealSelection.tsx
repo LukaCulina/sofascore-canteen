@@ -9,11 +9,13 @@ interface MealSelectionProps {
   item: PlanDay
   selectedMealId: number | null
   dispatch: Dispatch<MealSelectionAction>
+  isLocked: boolean
 }
 export const MealSelection = memo(function MealSelection({
   item,
   selectedMealId,
   dispatch,
+  isLocked,
 }: Readonly<MealSelectionProps>) {
   const handleMealChange = useCallback(
     (mealId: number | null) => {
@@ -35,6 +37,7 @@ export const MealSelection = memo(function MealSelection({
           onChange={handleMealChange}
           mealId={meal.meal.id}
           checked={selectedMealId === meal.meal.id}
+          isDisabled={isLocked}
         />
       ))}
       <MealItem
@@ -44,6 +47,7 @@ export const MealSelection = memo(function MealSelection({
         onChange={handleMealChange}
         mealId={null}
         checked={selectedMealId === null}
+        isDisabled={isLocked}
       />
     </Flex>
   )

@@ -10,10 +10,17 @@ interface Props {
   order: Order
   onEdit: () => void
   onCancelOrder: () => void
+  onTransferMeal: (selectionId: number) => void
   isDeleting?: boolean
 }
 
-export function SummaryCard({ order, onEdit, onCancelOrder, isDeleting = false }: Readonly<Props>) {
+export function SummaryCard({
+  order,
+  onEdit,
+  onCancelOrder,
+  onTransferMeal,
+  isDeleting = false,
+}: Readonly<Props>) {
   const { formatDate, formatTime } = useIntl()
   const submittedAt = new Date(order.submitted_at * 1000)
 
@@ -55,7 +62,9 @@ export function SummaryCard({ order, onEdit, onCancelOrder, isDeleting = false }
         <Flex gap="lg" alignItems="center" direction={{ mdDown: "column" }}>
           <Button variant="outline" onClick={onEdit} disabled={isDeleting}>
             <IconEdit />
-            Edit
+            <Text textStyle="assistive.default" color="primary.default">
+              Edit
+            </Text>
           </Button>
           <Button variant="error" minW="fit-content" onClick={onCancelOrder} disabled={isDeleting}>
             {isDeleting ? (
@@ -66,23 +75,56 @@ export function SummaryCard({ order, onEdit, onCancelOrder, isDeleting = false }
             ) : (
               <>
                 <IconCancel />
-                Cancel order
+                <Text textStyle="assistive.default" color="surface.s1">
+                  Cancel order
+                </Text>
               </>
             )}
           </Button>
         </Flex>
       </Flex>
-      {order.order_selection.map((selection) => (
-        <Flex key={selection.id} p="lg" direction="column" gap="xs">
-          <Flex gap="xs">
-            <Text textStyle="display.small">{formatFullDay(selection.plan_day.day)}</Text>
-            <Text textStyle="assistive.default" color="neutrals.nLv3">
-              {formatShortDate(selection.plan_day.day)}
-            </Text>
+      {order.order_selection.map((selection) => {
+        const isTransferred = selection.transfer != null
+        
+        return (
+          <Flex
+            key={selection.id}
+            direction={{ base: "column", md: "row" }}
+            justifyContent="space-between"
+            alignItems="center"
+            gap="sm"
+            p="lg"
+          >
+            <Flex direction="column" gap="xs" alignItems={{ base: "center", md: "start" }}>
+              <Flex gap={{ base: "sm", md: "xs" }}>
+                <Text textStyle="display.small">{formatFullDay(selection.plan_day.day)}</Text>
+                <Text textStyle="assistive.default" color="neutrals.nLv3">
+                  {formatShortDate(selection.plan_day.day)}
+                </Text>
+              </Flex>
+              <Text textStyle="assistive.default">{selection.meal.description}</Text>
+            </Flex>
+            {isTransferred ? (
+              <Flex alignItems="center" gap="xs">
+                <Text textStyle="assistive.default" color="status.success.default">
+                  Transferred to: {selection.transfer?.to_user_display_name ?? "Unknown Recipient"}
+                </Text>
+              </Flex>
+            ) : (
+              <Button
+                variant="outline"
+                onClick={() => onTransferMeal(selection.id)}
+                disabled={isDeleting}
+                w={{ base: "100%", md: "fit-content" }}
+              >
+                <Text textStyle="assistive.default" color="primary.default">
+                  Transfer meal
+                </Text>
+              </Button>
+            )}
           </Flex>
-          <Text textStyle="display.small">{selection.meal?.description ?? "No Meal"}</Text>
-        </Flex>
-      ))}
+        )
+      })}
     </Flex>
   )
 }

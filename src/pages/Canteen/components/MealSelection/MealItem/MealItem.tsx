@@ -15,6 +15,7 @@ interface MealItemProps {
   image?: string
   isVegan?: boolean
   isNoMeal?: boolean
+  isDisabled: boolean
 }
 export function MealItem({
   checked,
@@ -26,6 +27,7 @@ export function MealItem({
   image,
   isVegan,
   isNoMeal = false,
+  isDisabled,
 }: Readonly<MealItemProps>) {
   const itemId = useId()
   const handleChange = () => onChange(mealId)
@@ -38,6 +40,8 @@ export function MealItem({
       bg="surface.s1"
       noMeal={isNoMeal}
       htmlFor={itemId}
+      aria-disabled={isDisabled || undefined}
+      style={isDisabled ? { opacity: 0.5, pointerEvents: "none" } : undefined}
     >
       <Flex p="sm" rounded="sm">
         <S.RadioWrap>
@@ -49,6 +53,7 @@ export function MealItem({
             aria-label={title}
             aria-checked={checked}
             className="peer"
+            disabled={isDisabled}
           />
           <S.RadioIcon className="radioIcon">
             <IconCircleCheckFilled width={19} height={19} />
