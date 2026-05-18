@@ -6,6 +6,7 @@ import { Spinner, StatusMessage } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
 import { MealSelectionForm } from "@/pages/Canteen/components/MealSelection"
 import { useAuthStore } from "@/stores/auth"
+import { useToastStore } from "@/stores/toast"
 import { Flex } from "@/styled-system/jsx"
 import type { MealOptions } from "@/types"
 import { SummaryCard } from "./components/SummaryCard"
@@ -20,6 +21,7 @@ export const CanteenPage = () => {
   )
 
   const intl = useIntl()
+  const addToast = useToastStore((s) => s.addToast)
 
   const {
     isEditingOrder,
@@ -75,8 +77,6 @@ export const CanteenPage = () => {
         </Text>
         <Text textStyle="body.large">Choose your meals for the upcoming work week.</Text>
       </Flex>
-
-      {actionError ? <StatusMessage variant="error">{actionError}</StatusMessage> : null}
 
       {data.order && !isEditingOrder ? (
         <SummaryCard
