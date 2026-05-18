@@ -16,8 +16,9 @@ export const MealCatalogPage = () => {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const navigate = useNavigate()
   const { token } = useAuthStore()
-  const { data, isLoading, error } = useSWR<Meals>(token ? mealsRoute() : null, (url: string) =>
-    getJson<Meals>(url),
+  const { data, isLoading, error, mutate } = useSWR<Meals>(
+    token ? mealsRoute() : null,
+    (url: string) => getJson<Meals>(url),
   )
 
   const meals = data?.meals ?? []
