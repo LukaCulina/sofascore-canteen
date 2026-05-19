@@ -36,6 +36,8 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
     handleCancelEdit,
     deletePlan,
     savePlan,
+    isDeleting,
+    isSaving,
   } = usePlanActions(plan, onMutate)
 
   const { meals, isLoading: mealsLoading, error: mealsError } = useMeals(isEditing)
@@ -116,7 +118,7 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
               <Button
                 variant="outline"
                 w="auto"
-                disabled={savePlan.isLoading}
+                disabled={isSaving}
                 onClick={(e) => {
                   e.stopPropagation()
                   handleCancelEdit()
@@ -126,13 +128,13 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
               </Button>
               <Button
                 w="auto"
-                disabled={savePlan.isLoading}
+                disabled={isSaving}
                 onClick={(e) => {
                   e.stopPropagation()
-                  savePlan.execute()
+                  savePlan()
                 }}
               >
-                {savePlan.isLoading ? (
+                {isSaving ? (
                   <Flex align="center" gap="sm">
                     <Spinner size="md" /> Saving...
                   </Flex>
@@ -194,28 +196,14 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
             <Text textStyle="body.medium" color="neutrals.nLv1">
               Are you sure you want to delete this plan? This action cannot be undone.
             </Text>
-            {deletePlan.error && (
-              <Text
-                textStyle="assistive.default"
-                color="status.error.default"
-                display="block"
-                mt="md"
-              >
-                {deletePlan.error}
-              </Text>
-            )}
           </Dialog.Content>
           <Dialog.Footer>
             <Flex gap="md">
-              <Button
-                variant="outline"
-                onClick={() => setShowConfirm(false)}
-                disabled={deletePlan.isLoading}
-              >
+              <Button variant="outline" onClick={() => setShowConfirm(false)} disabled={isDeleting}>
                 Cancel
               </Button>
-              <Button variant="danger" onClick={deletePlan.execute} disabled={deletePlan.isLoading}>
-                {deletePlan.isLoading ? (
+              <Button variant="danger" onClick={deletePlan} disabled={isDeleting}>
+                {isDeleting ? (
                   <Flex align="center" gap="sm">
                     <Spinner size="md" /> Deleting...
                   </Flex>
