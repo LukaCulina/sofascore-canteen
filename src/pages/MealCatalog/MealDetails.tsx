@@ -6,6 +6,7 @@ import { meal as mealRoute } from "@/api/routes"
 import { IconArrowLeft, IconVeganMealSelector } from "@/components/icons"
 import { Button, Input, Spinner, StatusMessage, Text } from "@/components/ui"
 import { useAuthStore } from "@/stores/auth"
+import { useToastStore } from "@/stores/toast"
 import { css } from "@/styled-system/css"
 import { Box, Flex } from "@/styled-system/jsx"
 import type { Meal } from "@/types"
@@ -23,23 +24,24 @@ export const MealDetailsPage = () => {
   const { id } = useParams({ strict: false }) as { id: string }
   const navigate = useNavigate()
   const mealId = Number(id)
+
   const { token } = useAuthStore()
+  const addToast = useToastStore((s) => s.addToast)
+
+  const [form, setForm] = useState<MealForm>(emptyForm)
+  const [savedForm, setSavedForm] = useState<MealForm | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const { data, isLoading, error } = useSWR<{ meal: Meal }>(
     token ? mealRoute(mealId) : null,
     (url: string) => getJson<{ meal: Meal }>(url),
   )
-  const mealData = data?.meal
 
-  const [form, setForm] = useState<MealForm>(emptyForm)
-  const [savedForm, setSavedForm] = useState<MealForm | null>(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [saveStatus, setSaveStatus] = useState<"success" | "error" | null>(null)
+  const mealData = data?.meal
 
   useEffect(() => {
     setForm(emptyForm)
     setSavedForm(null)
-    setSaveStatus(null)
   }, [mealId])
 
   useEffect(() => {
@@ -52,7 +54,6 @@ export const MealDetailsPage = () => {
       }
       setForm(loaded)
       setSavedForm(loaded)
-      setSaveStatus(null)
     }
   }, [mealData])
 
@@ -63,7 +64,6 @@ export const MealDetailsPage = () => {
   const handleSubmit = async () => {
     if (!isDirty || !isValid || isSubmitting) return
     setIsSubmitting(true)
-    setSaveStatus(null)
     try {
       await putJson(mealRoute(mealId), {
         description: form.description,
@@ -71,10 +71,10 @@ export const MealDetailsPage = () => {
         discount: Number(form.discount),
         is_vegetarian: form.is_vegetarian,
       })
-      setSaveStatus("success")
       setSavedForm(form)
+      addToast("Meal updated successfully.", "success")
     } catch {
-      setSaveStatus("error")
+      addToast("Failed to update meal. Please try again.", "error")
     } finally {
       setIsSubmitting(false)
     }
@@ -292,20 +292,10 @@ export const MealDetailsPage = () => {
             bg="surface.s2"
           >
             <Box>
-              {isDirty && saveStatus === null && (
+              {isDirty && (
                 <Text textStyle="assistive.default" color="status.error.default">
                   Unsaved changes
                 </Text>
-              )}
-              {saveStatus === "success" && (
-                <StatusMessage variant="success" size="sm">
-                  Saved successfully
-                </StatusMessage>
-              )}
-              {saveStatus === "error" && (
-                <StatusMessage variant="error" size="sm">
-                  Failed to save
-                </StatusMessage>
               )}
             </Box>
             <Flex gap="md">
