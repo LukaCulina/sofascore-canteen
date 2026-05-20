@@ -1,5 +1,5 @@
 import { motion } from "framer-motion"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { IconCancel, IconCheckmark, IconError } from "@/components/icons"
 import { Text } from "@/components/ui/Text"
 import { type Toast, useToastStore } from "@/stores/toast"
@@ -12,14 +12,30 @@ interface ToastItemProps {
 export const ToastItem = ({ toast }: ToastItemProps) => {
   const removeToast = useToastStore((state) => state.removeToast)
   const isSuccess = toast.type === "success"
+  const remainingRef = useRef(5000)
+  const startRef = useRef(Date.now())
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const startTimer = (duration: number) => {
+    startRef.current = Date.now()
+    timerRef.current = setTimeout(() => removeToast(toast.id), duration)
+  }
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      removeToast(toast.id)
-    }, 5000)
+    startTimer(remainingRef.current)
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
+  }, [])
 
-    return () => clearTimeout(timer)
-  }, [toast.id, removeToast])
+  const pauseTimer = () => {
+    if (timerRef.current) clearTimeout(timerRef.current)
+    remainingRef.current -= Date.now() - startRef.current
+  }
+
+  const resumeTimer = () => {
+    startTimer(remainingRef.current)
+  }
 
   return (
     <motion.div
@@ -29,10 +45,13 @@ export const ToastItem = ({ toast }: ToastItemProps) => {
       exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
       transition={{ duration: 0.3, ease: "easeOut" }}
       style={{ pointerEvents: "auto" }}
+      onMouseEnter={pauseTimer}
+      onMouseLeave={resumeTimer}
     >
       <Flex
         role={isSuccess ? "status" : "alert"}
         align="center"
+        w="320px"
         maxW="calc(100vw - token(spacing.xl))"
         minH="4xl"
         gap="lg"
@@ -64,6 +83,8 @@ export const ToastItem = ({ toast }: ToastItemProps) => {
           aria-label="Close notification"
           type="button"
           onClick={() => removeToast(toast.id)}
+          onFocus={pauseTimer}
+          onBlur={resumeTimer}
           style={{ cursor: "pointer" }}
         >
           <Flex align="center" justify="center" w="xl" h="xl">
