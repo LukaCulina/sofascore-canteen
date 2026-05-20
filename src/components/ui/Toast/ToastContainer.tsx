@@ -13,7 +13,7 @@ export const ToastContainer = () => {
       position="fixed"
       bottom="lg"
       right="lg"
-      zIndex={9999}
+      zIndex="toast"
       pointerEvents="none"
     >
       <AnimatePresence>
