@@ -16,6 +16,11 @@ const ToggleButton = styled("button", {
     _hover: {
       bg: "primary.highlight",
     },
+    _focusVisible: {
+      outline: "2px solid",
+      outlineColor: "primary.default",
+      outlineOffset: "2px",
+    },
   },
 })
 
@@ -31,7 +36,11 @@ export const ThemeToggle = () => {
       onClick={toggleTheme}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
-      {isDark ? <IconArrowDown fill="neutrals.nLv1" /> : <IconMoon fill="neutrals.nLv1" />}
+      {isDark ? (
+        <IconArrowDown fill="neutrals.nLv1" aria-hidden="true" />
+      ) : (
+        <IconMoon fill="neutrals.nLv1" aria-hidden="true" />
+      )}
     </ToggleButton>
   )
 }
