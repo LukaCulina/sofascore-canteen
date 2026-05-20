@@ -31,9 +31,9 @@ export const ToastItem = ({ toast }: ToastItemProps) => {
       style={{ pointerEvents: "auto" }}
     >
       <Flex
-        role="alert"
+        role={isSuccess ? "status" : "alert"}
         align="center"
-        w="320px"
+        maxW="calc(100vw - token(spacing.xl))"
         minH="4xl"
         gap="lg"
         px="lg"
@@ -60,8 +60,13 @@ export const ToastItem = ({ toast }: ToastItemProps) => {
         <Text flex="1" color="surface.s1">
           {toast.message}
         </Text>
-        <button aria-label="Close notification" type="button" onClick={() => removeToast(toast.id)}>
-          <Flex align="center" justify="center" w="xl" h="xl" cursor="pointer">
+        <button
+          aria-label="Close notification"
+          type="button"
+          onClick={() => removeToast(toast.id)}
+          style={{ cursor: "pointer" }}
+        >
+          <Flex align="center" justify="center" w="xl" h="xl">
             <IconCancel fill="surface.s1" width="12" height="12" />
           </Flex>
         </button>
