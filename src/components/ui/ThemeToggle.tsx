@@ -1,4 +1,4 @@
-import { IconArrowDown, IconMoon } from "@/components/icons"
+import { IconMoon, IconSun } from "@/components/icons"
 import { useThemeStore } from "@/stores/theme"
 import { styled } from "@/styled-system/jsx"
 
@@ -37,7 +37,7 @@ export const ThemeToggle = () => {
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       {isDark ? (
-        <IconArrowDown fill="neutrals.nLv1" aria-hidden="true" />
+        <IconSun fill="neutrals.nLv1" aria-hidden="true" />
       ) : (
         <IconMoon fill="neutrals.nLv1" aria-hidden="true" />
       )}
