@@ -1,7 +1,7 @@
 import { useFormikContext } from "formik"
 import { useId } from "react"
 import { Dialog } from "@/components/dialog"
-import { Spinner, Text } from "@/components/ui"
+import { Spinner } from "@/components/ui"
 import { Button } from "@/components/ui/Button"
 import { Box, Flex } from "@/styled-system/jsx"
 import { AddMealForm, type AddMealFormValues } from "./AddMealForm"
@@ -67,11 +67,6 @@ export const AddMealDialog = ({ onClose }: AddMealDialogProps) => {
           <Box id={dialogDescriptionId}>
             <AddMealForm />
           </Box>
-          {formik.status ? (
-            <Text mt="sm" textStyle="assistive.default" color="status.error.default" role="alert">
-              {formik.status}
-            </Text>
-          ) : null}
         </Dialog.Content>
         <Dialog.Footer>
           <AddMealDialogFooter isSubmitting={formik.isSubmitting} onCancel={handleClose} />

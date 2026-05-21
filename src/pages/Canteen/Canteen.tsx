@@ -25,7 +25,6 @@ export const CanteenPage = () => {
     isEditingOrder,
     isCancelDialogOpen,
     setIsCancelDialogOpen,
-    actionError,
     editSelectionsSnapshot,
     isCreating,
     isUpdating,
@@ -44,7 +43,6 @@ export const CanteenPage = () => {
     isLoadingUsers,
     usersError,
     isTransferring,
-    transferError,
     handleTransfer,
     handleCancel,
   } = useTransfer(token, mutate)
@@ -75,8 +73,6 @@ export const CanteenPage = () => {
         </Text>
         <Text textStyle="body.large">Choose your meals for the upcoming work week.</Text>
       </Flex>
-
-      {actionError ? <StatusMessage variant="error">{actionError}</StatusMessage> : null}
 
       {data.order && !isEditingOrder ? (
         <SummaryCard
@@ -114,7 +110,6 @@ export const CanteenPage = () => {
           isLoadingUsers={isLoadingUsers}
           hasUsersError={!!usersError}
           isTransferring={isTransferring}
-          hasTransferError={!!transferError}
           onConfirm={handleTransfer}
           onCancel={handleCancel}
         />

@@ -234,6 +234,9 @@ export default defineConfig({
           thick: { value: "2px" },
           heavy: { value: "4px" },
         },
+        zIndex: {
+          toast: { value: 9999 },
+        },
       },
       keyframes: {
         rotation: {

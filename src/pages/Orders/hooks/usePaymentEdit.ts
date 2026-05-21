@@ -4,6 +4,7 @@ import useSWRMutation from "swr/mutation"
 import { requestJson } from "@/api/http-client"
 import { updatePaymentStatus } from "@/api/routes"
 import { useAuthStore } from "@/stores/auth"
+import { useToastStore } from "@/stores/toast"
 import type { Order } from "@/types"
 
 interface PaymentStatusUpdate {
@@ -20,12 +21,9 @@ export const usePaymentEdit = (
   const [isSaving, setIsSaving] = useState(false)
 
   const { token } = useAuthStore()
+  const addToast = useToastStore((s) => s.addToast)
 
-  const {
-    trigger,
-    error: saveError,
-    reset,
-  } = useSWRMutation(
+  const { trigger } = useSWRMutation(
     token ? updatePaymentStatus() : null,
     (url: string, { arg }: { arg: { updates: PaymentStatusUpdate[] } }) =>
       requestJson<void>("POST", url, arg),
@@ -58,8 +56,9 @@ export const usePaymentEdit = (
       await mutate()
       setIsEditing(false)
       setChanges({})
+      addToast("Payment status updated successfully.", "success")
     } catch {
-      // error state is handled by saveError
+      addToast("Failed to update payment status. Please try again.", "error")
     } finally {
       setIsSaving(false)
     }
@@ -68,7 +67,6 @@ export const usePaymentEdit = (
   const handleCancel = () => {
     setIsEditing(false)
     setChanges({})
-    reset()
   }
 
   return {
@@ -76,7 +74,6 @@ export const usePaymentEdit = (
     changes,
     setChanges,
     isSaving,
-    saveError,
     handleEdit,
     handleSave,
     handleCancel,

@@ -22,16 +22,8 @@ export const Orders = () => {
     (url: string) => getJson<{ orders: Order[] }>(url),
   )
 
-  const {
-    isEditing,
-    changes,
-    setChanges,
-    isSaving,
-    saveError,
-    handleEdit,
-    handleSave,
-    handleCancel,
-  } = usePaymentEdit(data?.orders, mutate)
+  const { isEditing, changes, setChanges, isSaving, handleEdit, handleSave, handleCancel } =
+    usePaymentEdit(data?.orders, mutate)
 
   return (
     <Flex direction="column" gap="xl">
@@ -57,27 +49,20 @@ export const Orders = () => {
             direction={{ base: "column", lg: "row" }}
           >
             {isEditing && (
-              <>
-                {saveError && (
-                  <Flex align="center" justify="center">
-                    <P color="status.error.default">Failed to update payment status</P>
+              <Button
+                variant="primary"
+                w={{ base: "100%", lg: "fit-content" }}
+                onClick={handleSave}
+                disabled={Object.keys(changes).length === 0 || isSaving}
+              >
+                {isSaving ? (
+                  <Flex align="center" gap="sm">
+                    <Spinner size="md" /> Saving...
                   </Flex>
+                ) : (
+                  "Save Changes"
                 )}
-                <Button
-                  variant="primary"
-                  w={{ base: "100%", lg: "fit-content" }}
-                  onClick={handleSave}
-                  disabled={Object.keys(changes).length === 0 || isSaving}
-                >
-                  {isSaving ? (
-                    <Flex align="center" gap="sm">
-                      <Spinner size="md" /> Saving...
-                    </Flex>
-                  ) : (
-                    "Save Changes"
-                  )}
-                </Button>
-              </>
+              </Button>
             )}
             <Button
               variant="outline"
