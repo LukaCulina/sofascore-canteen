@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { requestJson } from "@/api/http-client"
 import { planById } from "@/api/routes"
-import { useAsyncAction } from "@/hooks/useAsyncAction"
+import { useToastStore } from "@/stores/toast"
 import type { Plan } from "@/types"
 
 const getMealIds = (plan: Plan): Record<number, number[]> =>
@@ -15,26 +15,47 @@ export const usePlanActions = (
   const [showConfirm, setShowConfirm] = useState(false)
   const [editedMeals, setEditedMeals] = useState<Record<number, number[]>>(getMealIds(plan))
 
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
+
+  const addToast = useToastStore((s) => s.addToast)
+
   useEffect(() => {
     setEditedMeals(getMealIds(plan))
   }, [plan])
 
-  const deletePlan = useAsyncAction(async () => {
-    await requestJson("DELETE", planById(plan.id))
-    await onMutate()
-    setShowConfirm(false)
-  }, "Failed to delete plan. Please try again.")
+  const deletePlan = async () => {
+    setIsDeleting(true)
+    try {
+      await requestJson("DELETE", planById(plan.id))
+      await onMutate()
+      setShowConfirm(false)
+      addToast("Plan deleted successfully.", "success")
+    } catch {
+      addToast("Failed to delete plan. Please try again.", "error")
+    } finally {
+      setIsDeleting(false)
+    }
+  }
 
-  const savePlan = useAsyncAction(async () => {
-    await requestJson("PUT", planById(plan.id), {
-      days: Object.entries(editedMeals).map(([planDayId, mealIds]) => ({
-        plan_day_id: Number(planDayId),
-        meal_ids: mealIds,
-      })),
-    })
-    await onMutate()
-    setIsEditing(false)
-  }, "Failed to save changes. Please try again.")
+  const savePlan = async () => {
+    setIsSaving(true)
+    try {
+      await requestJson("PUT", planById(plan.id), {
+        days: Object.entries(editedMeals).map(([planDayId, mealIds]) => ({
+          plan_day_id: Number(planDayId),
+          meal_ids: mealIds,
+        })),
+      })
+      await onMutate()
+      setIsEditing(false)
+      addToast("Plan updated successfully.", "success")
+    } catch {
+      addToast("Failed to save changes. Please try again.", "error")
+    } finally {
+      setIsSaving(false)
+    }
+  }
 
   const toggleMeal = (planDayId: number, mealId: number) => {
     setEditedMeals((prev) => {
@@ -63,5 +84,7 @@ export const usePlanActions = (
     handleCancelEdit,
     deletePlan,
     savePlan,
+    isDeleting,
+    isSaving,
   }
 }

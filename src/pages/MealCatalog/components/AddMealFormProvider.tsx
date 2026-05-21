@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 import * as yup from "yup"
 import { requestJson } from "@/api/http-client"
 import { meals } from "@/api/routes"
+import { useToastStore } from "@/stores/toast"
 import type { CreateMealPayload } from "@/types"
 import type { AddMealFormValues } from "./AddMealForm"
 
@@ -36,6 +37,8 @@ export const AddMealFormProvider = ({
   onClose,
   onMealCreated,
 }: AddMealFormProviderProps) => {
+  const addToast = useToastStore((s) => s.addToast)
+
   const formik = useFormik<AddMealFormValues>({
     initialValues,
     validationSchema: schema,
@@ -53,8 +56,9 @@ export const AddMealFormProvider = ({
         await onMealCreated()
         helpers.resetForm()
         onClose()
+        addToast("Meal added successfully.", "success")
       } catch {
-        helpers.setStatus("Failed to add meal")
+        addToast("Failed to add meal. Please try again.", "error")
       }
     },
   })

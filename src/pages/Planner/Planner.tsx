@@ -4,6 +4,7 @@ import { plans } from "@/api/routes"
 import { IconPlanner } from "@/components/icons"
 import { Spinner, StatusMessage } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
+import { useToastStore } from "@/stores/toast"
 import { Flex } from "@/styled-system/jsx"
 import { DateRangeSelector, MealDayCard, PlannerHeader } from "./components"
 import { PlannerFooter } from "./components/PlannerFooter"
@@ -52,9 +53,7 @@ export const Planner = () => {
   const [endDate, setEndDate] = useState("")
   const [error, setError] = useState("")
   const [selectedMeals, setSelectedMeals] = useState<Record<string, number[]>>({})
-  const [submitError, setSubmitError] = useState("")
-  const [submitSuccess, setSubmitSuccess] = useState(false)
-
+  const addToast = useToastStore((s) => s.addToast)
   const dateRange = startDate && endDate && !error ? getDateRange(startDate, endDate) : []
   const { meals, isLoading, error: mealsError } = useMeals(dateRange.length > 0)
 
@@ -104,9 +103,6 @@ export const Planner = () => {
     dateRange.every((date) => (selectedMeals[date] ?? []).length > 0)
 
   const handleSubmit = async () => {
-    setSubmitError("")
-    setSubmitSuccess(false)
-
     const body = {
       periodStart: startDate,
       periodEnd: endDate,
@@ -118,10 +114,10 @@ export const Planner = () => {
 
     try {
       await postJson(plans(), body)
-      setSubmitSuccess(true)
+      addToast("Plan created successfully.", "success")
       handleClear()
     } catch {
-      setSubmitError("Failed to create plan. Please try again.")
+      addToast("Failed to create plan. Please try again.", "error")
     }
   }
 
@@ -138,8 +134,6 @@ export const Planner = () => {
           onStartDateChange={handleStartDate}
           onEndDateChange={handleEndDate}
           onClear={handleClear}
-          success={submitSuccess}
-          submitError={submitError}
           overlapError={hasOverlap ? "A plan already exists for the selected dates." : ""}
         />
 

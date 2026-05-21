@@ -1,0 +1,31 @@
+import { create } from "zustand"
+
+export type ToastType = "success" | "error"
+
+const MAX_TOASTS = 3
+
+export interface Toast {
+  id: string
+  message: string
+  type: ToastType
+}
+
+interface ToastState {
+  toasts: Toast[]
+  addToast: (message: string, type: ToastType) => void
+  removeToast: (id: string) => void
+}
+
+export const useToastStore = create<ToastState>((set) => ({
+  toasts: [],
+  addToast: (message, type) => {
+    const id = crypto.randomUUID()
+    set((state) => ({
+      toasts: [...state.toasts, { id, message, type }].slice(-MAX_TOASTS),
+    }))
+  },
+  removeToast: (id) =>
+    set((state) => ({
+      toasts: state.toasts.filter((toast) => toast.id !== id),
+    })),
+}))
