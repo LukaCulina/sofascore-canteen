@@ -31,6 +31,7 @@ export const Td = styled("td", {
     px: "lg",
     py: "md",
     textStyle: "body.small",
+    color: "neutrals.nLv1",
   },
 })
 
