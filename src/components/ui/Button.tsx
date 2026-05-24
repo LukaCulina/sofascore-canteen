@@ -54,6 +54,7 @@ export const Button = styled("button", {
         _hover: { bg: "status.error.highlight" },
       },
       ghost: {
+        color: "neutrals.nLv1",
         textStyle: "body.medium",
         _hover: {
           bg: "surface.s2",

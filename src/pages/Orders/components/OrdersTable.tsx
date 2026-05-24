@@ -89,7 +89,8 @@ export const OrdersTable = ({ orders, isEditing, changes, setChanges }: OrdersTa
       <Box
         hideBelow="lg"
         overflow="hidden"
-        border="1px solid"
+        borderWidth="thin"
+        borderStyle="solid"
         borderColor="neutrals.nLv4"
         borderRadius="lg"
       >
@@ -143,7 +144,8 @@ export const OrdersTable = ({ orders, isEditing, changes, setChanges }: OrdersTa
           align="center"
           p="lg"
           bg="surface.s1"
-          border="1px solid"
+          borderWidth="thin"
+          borderStyle="solid"
           borderColor="neutrals.nLv4"
           borderRadius="lg"
         >

@@ -137,7 +137,7 @@ export const MealDetailsPage = () => {
         <Box
           bg="surface.s1"
           borderRadius="lg"
-          borderWidth="1px"
+          borderWidth="thin"
           borderStyle="solid"
           borderColor="neutrals.nLv4"
           w="100%"
@@ -146,10 +146,10 @@ export const MealDetailsPage = () => {
             <Box
               w={{ base: "100%", md: "380px" }}
               flexShrink="0"
-              borderRightWidth={{ base: "0", md: "1px" }}
+              borderRightWidth={{ base: "0", md: "thin" }}
               borderRightStyle="solid"
               borderRightColor="neutrals.nLv4"
-              borderBottomWidth={{ base: "1px", md: "0" }}
+              borderBottomWidth={{ base: "thin", md: "0" }}
               borderBottomStyle="solid"
               borderBottomColor="neutrals.nLv4"
               bg="surface.s2"
@@ -179,18 +179,19 @@ export const MealDetailsPage = () => {
                       position="absolute"
                       top="sm"
                       right="sm"
-                      bg="status.success.default"
-                      borderColor="rgba(0, 0, 0, 0.25)"
-                      borderWidth="1px"
-                      borderStyle="solid"
-                      color="white"
-                      px="sm"
-                      py="xs"
-                      borderRadius="xl"
                       align="center"
                       gap="xs"
+                      px="sm"
+                      py="xs"
+                      bg="status.success.default"
+                      borderWidth="thin"
+                      borderStyle="solid"
+                      borderColor="overlay.darken1"
+                      borderRadius="xl"
                     >
-                      <IconVeganMealSelector fill="surface.s1" />
+                      <Flex align="center" justify="center" w="lg" h="lg">
+                        <IconVeganMealSelector fill="surface.s1" />
+                      </Flex>
                       <Text textStyle="assistive.default" color="surface.s1">
                         Vegetarian
                       </Text>
@@ -199,7 +200,7 @@ export const MealDetailsPage = () => {
                 </Box>
               </Box>
               <Flex direction="column" gap="lg" display={{ base: "none", md: "flex" }} p="lg">
-                <Flex direction="column" gap="8px">
+                <Flex direction="column" gap="sm">
                   <Text textStyle="assistive.default" color="neutrals.nLv1">
                     Upload Image
                   </Text>
@@ -213,11 +214,11 @@ export const MealDetailsPage = () => {
                 <Flex direction="column">
                   <Flex
                     direction="column"
-                    bg="white"
+                    bg="surface.s1"
                     py="5px"
                     px="lg"
                     gap="2xs"
-                    borderWidth="1px"
+                    borderWidth="thin"
                     borderRadius="sm"
                     borderColor="neutrals.nLv4"
                     width="352px"
@@ -284,7 +285,7 @@ export const MealDetailsPage = () => {
             justify="space-between"
             px="lg"
             py="md"
-            borderTopWidth="1px"
+            borderTopWidth="thin"
             borderTopStyle="solid"
             borderTopColor="neutrals.nLv4"
             bg="surface.s2"

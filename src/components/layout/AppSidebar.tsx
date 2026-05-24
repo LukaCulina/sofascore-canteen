@@ -127,7 +127,8 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
         <Box px="lg" py="xl" boxShadow="inset 0 1px 0 0 token(colors.neutrals.nLv4)">
           <Box
             bg="tertiary.highlight"
-            border="1px solid"
+            borderWidth="thin"
+            borderStyle="solid"
             borderColor="tertiary.highlight"
             borderRadius="sm"
             px="lg"

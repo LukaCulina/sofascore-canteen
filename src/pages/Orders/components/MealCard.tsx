@@ -11,7 +11,7 @@ interface MealCardProps {
 
 export const MealCard = ({ selection, unpaid }: MealCardProps) => {
   const intl = useIntl()
-  
+
   const { meal, plan_day } = selection
 
   const finalPrice = (meal.price * (100 - meal.discount)) / 100
@@ -27,7 +27,8 @@ export const MealCard = ({ selection, unpaid }: MealCardProps) => {
       gap="sm"
       p="lg"
       bg={unpaid ? "status.error.highlight" : "surface.s1"}
-      border="1px solid"
+      borderWidth="thin"
+      borderStyle="solid"
       borderColor={unpaid ? "status.error.default" : "neutrals.nLv4"}
       borderRadius="lg"
     >
