@@ -6,9 +6,11 @@ import { Text } from "./Text"
 interface CheckboxProps {
   checked: boolean
   label?: string
+  labelStyle?: string
   ariaLabel?: string
   name?: string
   disabled?: boolean
+  variant?: "neutral" | "primary"
   onChange: (checked: boolean) => void
 }
 
@@ -74,7 +76,16 @@ const checkboxIconCheckedClass = css({
   },
 })
 
-export const Checkbox = ({ checked, label, ariaLabel, name, disabled = false, onChange }: CheckboxProps) => {
+export const Checkbox = ({
+  checked,
+  label,
+  labelStyle,
+  ariaLabel,
+  name,
+  disabled = false,
+  variant = "neutral",
+  onChange,
+}: CheckboxProps) => {
   const inputId = useId()
 
   return (
@@ -91,14 +102,18 @@ export const Checkbox = ({ checked, label, ariaLabel, name, disabled = false, on
           aria-label={ariaLabel}
         />
         <span className={`${checkboxIconClass} ${checkboxIconUncheckedClass}`} aria-hidden="true">
-          <IconCheckbox width={17} height={17} />
+          <IconCheckbox
+            width={17}
+            height={17}
+            fill={variant === "primary" ? "primary.default" : "neutrals.nLv3"}
+          />
         </span>
         <span className={`${checkboxIconClass} ${checkboxIconCheckedClass}`} aria-hidden="true">
           <IconCheckboxFilled width={17} height={17} />
         </span>
       </span>
       {label && (
-        <Text textStyle="body.large" color="neutrals.nLv1">
+        <Text textStyle={labelStyle ?? "body.large"} color="neutrals.nLv1">
           {label}
         </Text>
       )}
