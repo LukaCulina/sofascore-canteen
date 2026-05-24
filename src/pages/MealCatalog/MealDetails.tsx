@@ -4,7 +4,7 @@ import useSWR from "swr"
 import { getJson, putJson } from "@/api/http-client"
 import { meal as mealRoute } from "@/api/routes"
 import { IconArrowLeft, IconVeganMealSelector } from "@/components/icons"
-import { Button, Input, Spinner, StatusMessage, Text } from "@/components/ui"
+import { Button, Checkbox, Input, Spinner, StatusMessage, Text } from "@/components/ui"
 import { useAuthStore } from "@/stores/auth"
 import { useToastStore } from "@/stores/toast"
 import { css } from "@/styled-system/css"
@@ -262,12 +262,10 @@ export const MealDetailsPage = () => {
                 max="100"
               />
               <Flex align="center" gap="lg">
-                <input
-                  type="checkbox"
-                  id="is_vegetarian"
+                <Checkbox
                   checked={form.is_vegetarian}
-                  onChange={(e) => setForm((f) => ({ ...f, is_vegetarian: e.target.checked }))}
-                  className={css({ w: "16px", h: "16px", cursor: "pointer", flexShrink: "0" })}
+                  onChange={(checked) => setForm((f) => ({ ...f, is_vegetarian: checked }))}
+                  ariaLabel="Mark this meal as a vegetarian option"
                 />
                 <Flex direction="column" gap="xs">
                   <Text textStyle="display.medium" color="neutrals.nLv1">

@@ -57,6 +57,7 @@ export const AddMealForm = () => {
           name="isVegetarian"
           label="Vegetarian"
           checked={values.isVegetarian}
+          variant="primary"
           onChange={(checked) => setFieldValue("isVegetarian", checked)}
         />
       </Flex>

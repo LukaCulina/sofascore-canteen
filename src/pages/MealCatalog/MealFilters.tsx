@@ -2,9 +2,8 @@ import { AnimatePresence, motion } from "framer-motion"
 import { debounce } from "lodash"
 import { useEffect, useMemo, useState } from "react"
 import { IconArrowDown, IconArrowUp, IconClear, IconSearch } from "@/components/icons"
-import { Input, Text } from "@/components/ui"
+import { Checkbox, Input, Text } from "@/components/ui"
 import { Box, Flex } from "@/styled-system/jsx"
-import { Checkbox, Label } from "./styles"
 
 interface FiltersState {
   vegetarian: boolean
@@ -135,34 +134,29 @@ export const MealFilters = ({ filters, onSearchChange, onFiltersChange }: MealFi
             data-dropdown
           >
             <Box
-              w={{ base: "100%", md: "170px" }}
+              w={{ base: "100%", md: "160px" }}
               mt="sm"
               ml={{ base: 0, md: "auto" }}
-              p="md"
+              p="lg"
               bg="surface.s1"
               borderRadius="sm"
               borderWidth="thin"
               borderColor="neutrals.nLv4"
               boxShadow="md"
             >
-              <Flex direction="column" gap="sm">
-                <Label>
-                  <Checkbox
-                    type="checkbox"
-                    checked={filters.vegetarian}
-                    onChange={() => handleFilters("vegetarian")}
-                  />
-                  Vegetarian
-                </Label>
-
-                <Label>
-                  <Checkbox
-                    type="checkbox"
-                    checked={filters.nonVegetarian}
-                    onChange={() => handleFilters("nonVegetarian")}
-                  />
-                  Non-Vegetarian
-                </Label>
+              <Flex direction="column" gap="md">
+                <Checkbox
+                  checked={filters.vegetarian}
+                  onChange={() => handleFilters("vegetarian")}
+                  label="Vegetarian"
+                  labelStyle="body.medium"
+                />
+                <Checkbox
+                  checked={filters.nonVegetarian}
+                  onChange={() => handleFilters("nonVegetarian")}
+                  label="Non-Vegetarian"
+                  labelStyle="body.medium"
+                />
               </Flex>
             </Box>
           </motion.div>

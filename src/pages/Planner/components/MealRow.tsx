@@ -1,6 +1,6 @@
 import { IconVegan } from "@/components/icons"
+import { Checkbox } from "@/components/ui"
 import { Text } from "@/components/ui/Text"
-import { css } from "@/styled-system/css"
 import { Box, Flex } from "@/styled-system/jsx"
 import type { Meal } from "@/types"
 
@@ -29,17 +29,10 @@ export const MealRow = ({ meal, isSelected, onToggle, disabled }: MealRowProps) 
           <Box w="8px" h="8px" borderRadius="full" bg="primary.default" flexShrink={0} />
         ) : null
       ) : (
-        <input
-          type="checkbox"
+        <Checkbox
           checked={isSelected}
           onChange={onToggle}
-          className={css({
-            w: "17px",
-            h: "17px",
-            accentColor: "primary.default",
-            cursor: "pointer",
-            flexShrink: 0,
-          })}
+          ariaLabel={`Select ${meal.description}`}
         />
       )}
       <Flex align="center" gap="sm" flex="1">
