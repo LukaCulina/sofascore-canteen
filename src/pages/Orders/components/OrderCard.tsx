@@ -1,9 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
-import { Badge, P, Text } from "@/components/ui/"
+import { Badge, Checkbox, P, Text } from "@/components/ui/"
 import { Box, Flex } from "@/styled-system/jsx"
-import { Checkbox, GreyText } from "../styles"
+import { GreyText } from "../styles"
 import { MealCard } from "./MealCard"
 import type { ProcessedOrder } from "./OrdersTable"
 
@@ -70,9 +70,9 @@ export const OrderCard = ({ order, isEditing, changes, setChanges }: OrderCardPr
             </Text>
             {isEditing ? (
               <Checkbox
-                type="checkbox"
                 checked={isUnpaid}
-                onChange={(e) => toggleAll(e.target.checked)}
+                onChange={toggleAll}
+                ariaLabel={`Toggle payment status for order ${order.id}`}
               />
             ) : isExpanded ? (
               <IconArrowUp />

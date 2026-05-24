@@ -41,12 +41,3 @@ export const GreyText = styled("span", {
     color: "neutrals.nLv3",
   },
 })
-
-export const Checkbox = styled("input", {
-  base: {
-    h: "lg",
-    w: "lg",
-    accentColor: "primary.default",
-    cursor: "pointer",
-  },
-})
