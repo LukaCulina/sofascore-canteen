@@ -2,14 +2,16 @@ import { styled } from "@/styled-system/jsx"
 
 export const Badge = styled("span", {
   base: {
+    px: "sm",
+    py: "xs",
+    textAlign: "center",
+    whiteSpace: "nowrap",
     bg: "status.error.highlight",
     color: "status.error.default",
     textStyle: "assistive.default",
-    border: "1px solid transparent",
+    borderWidth: "thin",
+    borderStyle: "solid",
+    borderColor: "transparent",
     borderRadius: "xl",
-    px: "sm",
-    py: "xs",
-    w: "fit-content",
-    textAlign: "center",
   },
 })

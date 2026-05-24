@@ -1,5 +1,5 @@
 import { IconVeganMealSelector } from "@/components/icons"
-import { Text } from "@/components/ui/Text"
+import { Badge, Text } from "@/components/ui"
 import { css } from "@/styled-system/css"
 import { Box, Flex } from "@/styled-system/jsx"
 import type { Meal } from "@/types"
@@ -81,26 +81,7 @@ export const MealCard = ({ meal }: { meal: Meal }) => {
             )}
           </Flex>
 
-          {discount > 0 && (
-            <Flex align="center" justify="center">
-              <Box
-                borderWidth="1px"
-                borderStyle="solid"
-                borderColor="#fff"
-                bg="status.error.highlight"
-                borderRadius="full"
-                px="md"
-                py="xs"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Text textStyle="body.medium" color="status.error.default" whiteSpace="nowrap">
-                  {discount}% off
-                </Text>
-              </Box>
-            </Flex>
-          )}
+          {discount > 0 && <Badge>{discount}% off</Badge>}
         </Flex>
       </Box>
     </Box>
