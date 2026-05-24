@@ -47,45 +47,42 @@ export const OrderCard = ({ order, isEditing, changes, setChanges }: OrderCardPr
       borderRadius="lg"
       overflow="hidden"
     >
-      <Flex
-        justify="space-between"
-        align="center"
-        p="lg"
-        onClick={handleCardClick}
-        cursor="pointer"
-      >
-        <Flex direction="column" gap="sm">
-          <Flex align="center" gap="md">
-            <Text textStyle="display.medium">#{order.id}</Text>
-            {isUnpaid && <Badge>Not Paid</Badge>}
-          </Flex>
-          <Text textStyle="body.medium">{order.user}</Text>
+      <Flex direction="column" gap="sm" p="lg" onClick={handleCardClick} cursor="pointer">
+        <Flex align="center" gap="md">
+          <Text textStyle="display.medium">#{order.id}</Text>
+          {isUnpaid && <Badge>Not Paid</Badge>}
+        </Flex>
+
+        <Flex justify="space-between" gap="sm">
           <Flex direction="column" gap="sm">
-            <Flex gap="xl">
+            <Text textStyle="body.medium">{order.user}</Text>
+            <Flex columnGap="xl" wrap="wrap">
               <GreyText>{order.period}</GreyText>
               <GreyText>{order.meals} meals</GreyText>
             </Flex>
             <GreyText>{order.submitted}</GreyText>
           </Flex>
-        </Flex>
-        <Flex direction="column" align="end" gap="xs">
-          <Text textStyle="display.small">€{order.total.toFixed(2)}</Text>
-          <Text textStyle="assistive.default" color="status.success.default">
-            €{order.discount.toFixed(2)}
-          </Text>
-          {isEditing ? (
-            <Checkbox
-              type="checkbox"
-              checked={isUnpaid}
-              onChange={(e) => toggleAll(e.target.checked)}
-            />
-          ) : isExpanded ? (
-            <IconArrowUp />
-          ) : (
-            <IconArrowDown />
-          )}
+
+          <Flex direction="column" align="end" gap="xs">
+            <Text textStyle="display.small">€{order.total.toFixed(2)}</Text>
+            <Text textStyle="assistive.default" color="status.success.default">
+              €{order.discount.toFixed(2)}
+            </Text>
+            {isEditing ? (
+              <Checkbox
+                type="checkbox"
+                checked={isUnpaid}
+                onChange={(e) => toggleAll(e.target.checked)}
+              />
+            ) : isExpanded ? (
+              <IconArrowUp />
+            ) : (
+              <IconArrowDown />
+            )}
+          </Flex>
         </Flex>
       </Flex>
+
       <AnimatePresence>
         {isExpanded && (
           <Box p="md">

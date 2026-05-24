@@ -61,7 +61,7 @@ export const OrderRow = ({ order, isEditing, changes, setChanges }: OrderRowProp
           )}
         </Td>
         <Td>
-          <Flex justify="space-between" align="center" gap="sm">
+          <Flex align="center" justify="space-between" gap="sm" wrap="wrap">
             #{order.id}
             {isUnpaid && <Badge>Not Paid</Badge>}
           </Flex>
