@@ -1,4 +1,5 @@
 import { IconMenu } from "@/components/icons"
+import { LanguagePicker } from "@/components/ui/LanguagePicker"
 import { ThemeToggle } from "@/components/ui/ThemeToggle"
 import { useAuthStore } from "@/stores/auth"
 import { Flex } from "@/styled-system/jsx"
@@ -28,6 +29,7 @@ export const AppHeader = ({ onOpenSidebar }: AppHeaderProps) => {
       </S.HamburgerButton>
 
       <Flex align="center" gap="lg">
+        <LanguagePicker />
         <ThemeToggle />
         <S.InitialsContainer>{user ? getInitials(user.email) : "??"}</S.InitialsContainer>
       </Flex>
