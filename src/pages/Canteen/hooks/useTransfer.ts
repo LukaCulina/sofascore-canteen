@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useIntl } from "react-intl"
 import useSWR from "swr"
 import useSWRMutation from "swr/mutation"
 import { getJson, requestJson } from "@/api/http-client.ts"
@@ -29,6 +30,7 @@ export function useTransfer(token: string | null, mutate: () => Promise<unknown>
   )
 
   const addToast = useToastStore((s) => s.addToast)
+  const intl = useIntl()
 
   const handleTransfer = async (userId: string) => {
     if (transferSelectionId === null) return
@@ -37,9 +39,9 @@ export function useTransfer(token: string | null, mutate: () => Promise<unknown>
       await transferMeal({ order_selection_id: transferSelectionId, to_user_id: userId })
       await mutate()
       setTransferSelectionId(null)
-      addToast("Meal transferred successfully.", "success")
+      addToast(intl.formatMessage({ id: "toast.mealTransferred" }), "success")
     } catch {
-      addToast("Failed to transfer meal. Please try again.", "error")
+      addToast(intl.formatMessage({ id: "toast.mealTransferFailed" }), "error")
     }
   }
 

@@ -1,3 +1,4 @@
+import { FormattedMessage } from "react-intl"
 import useSWR from "swr"
 import { getJson } from "@/api/http-client"
 import { adminOrders, myOrders } from "@/api/routes"
@@ -38,9 +39,13 @@ export const Orders = () => {
             <Flex align="center" justify="center" w="2xl" h="2xl">
               <IconOrders width={28} height={28} />
             </Flex>
-            <H1 fontSize="28px">All Orders</H1>
+            <H1 fontSize="28px">
+              <FormattedMessage id="orders.title" />
+            </H1>
           </Flex>
-          <P textStyle="body.large">View all employee meal orders across all periods.</P>
+          <P textStyle="body.large">
+            <FormattedMessage id="orders.subtitle" />
+          </P>
         </Flex>
         {isAdmin && (
           <Flex
@@ -57,10 +62,10 @@ export const Orders = () => {
               >
                 {isSaving ? (
                   <Flex align="center" gap="sm">
-                    <Spinner size="md" /> Saving...
+                    <Spinner size="md" /> <FormattedMessage id="orders.saving" />
                   </Flex>
                 ) : (
-                  "Save Changes"
+                  <FormattedMessage id="orders.saveChanges" />
                 )}
               </Button>
             )}
@@ -72,7 +77,7 @@ export const Orders = () => {
             >
               {isEditing ? (
                 <Text textStyle="label.medium" color="primary.default">
-                  Cancel
+                  <FormattedMessage id="orders.cancel" />
                 </Text>
               ) : (
                 <Flex direction="row" gap="sm" align="center">
@@ -80,7 +85,7 @@ export const Orders = () => {
                     <IconPen />
                   </Flex>
                   <Text textStyle="label.medium" color="primary.default">
-                    Edit Payment Status
+                    <FormattedMessage id="orders.editPaymentStatus" />
                   </Text>
                 </Flex>
               )}
@@ -95,11 +100,15 @@ export const Orders = () => {
         </Flex>
       ) : error || !data ? (
         <Flex justify="center" align="center" py="6xl">
-          <StatusMessage variant="error">Failed to load orders</StatusMessage>
+          <StatusMessage variant="error">
+            <FormattedMessage id="orders.failedToLoad" />
+          </StatusMessage>
         </Flex>
       ) : data.orders.length === 0 ? (
         <Flex justify="center" align="center" py="6xl">
-          <StatusMessage variant="info">No orders found</StatusMessage>
+          <StatusMessage variant="info">
+            <FormattedMessage id="orders.noOrders" />
+          </StatusMessage>
         </Flex>
       ) : (
         <OrdersTable

@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router"
 import { useMemo } from "react"
+import { FormattedMessage } from "react-intl"
 import { IconPlanner } from "@/components/icons"
 import { Spinner } from "@/components/ui/Spinner"
 import { StatusMessage } from "@/components/ui/StatusMessage"
@@ -21,11 +22,11 @@ export const MyPlans = () => {
         <Flex align="center" gap="sm">
           <IconPlanner width="22" height="25" fill="primary.default" />
           <Text textStyle="display.extraLarge" color="neutrals.nLv1">
-            My Plans
+            <FormattedMessage id="myPlans.title" />
           </Text>
         </Flex>
         <Text textStyle="body.large" color="neutrals.nLv1">
-          View and review all your created meal plans
+          <FormattedMessage id="myPlans.subtitle" />
         </Text>
       </Flex>
 
@@ -39,7 +40,7 @@ export const MyPlans = () => {
       {error && (
         <Flex justify="center" align="center" py="6xl">
           <StatusMessage variant="error">
-            Failed to load plans. Please try again later.
+            <FormattedMessage id="myPlans.failedToLoad" />
           </StatusMessage>
         </Flex>
       )}
@@ -59,7 +60,7 @@ export const MyPlans = () => {
         >
           <IconPlanner width="34" height="38" fill="neutrals.nLv3" />
           <Text textStyle="body.medium" color="neutrals.nLv3">
-            No plans created yet.
+            <FormattedMessage id="myPlans.noPlans" />
           </Text>
           <Link
             to="/planner"
@@ -70,7 +71,7 @@ export const MyPlans = () => {
               _hover: { textDecoration: "underline" },
             })}
           >
-            Go to Menu Planner to create your first plan
+            <FormattedMessage id="myPlans.goToPlanner" />
           </Link>
         </Flex>
       )}

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useIntl } from "react-intl"
 import type { KeyedMutator } from "swr"
 import useSWRMutation from "swr/mutation"
 import { requestJson } from "@/api/http-client"
@@ -22,6 +23,7 @@ export const usePaymentEdit = (
 
   const { token } = useAuthStore()
   const addToast = useToastStore((s) => s.addToast)
+  const intl = useIntl()
 
   const { trigger } = useSWRMutation(
     token ? updatePaymentStatus() : null,
@@ -56,9 +58,9 @@ export const usePaymentEdit = (
       await mutate()
       setIsEditing(false)
       setChanges({})
-      addToast("Payment status updated successfully.", "success")
+      addToast(intl.formatMessage({ id: "toast.paymentUpdated" }), "success")
     } catch {
-      addToast("Failed to update payment status. Please try again.", "error")
+      addToast(intl.formatMessage({ id: "toast.paymentUpdateFailed" }), "error")
     } finally {
       setIsSaving(false)
     }

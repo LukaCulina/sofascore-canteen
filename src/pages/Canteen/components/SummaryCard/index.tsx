@@ -1,4 +1,4 @@
-import { useIntl } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 import { IconCancel } from "@/components/icons/IconCancel"
 import { IconCircleCheckFilled } from "@/components/icons/IconCircleCheckFilled"
 import { IconEdit } from "@/components/icons/IconEdit"
@@ -21,7 +21,7 @@ export function SummaryCard({
   onTransferMeal,
   isDeleting = false,
 }: Readonly<Props>) {
-  const { formatDate, formatTime } = useIntl()
+  const { formatDate, formatTime, formatMessage } = useIntl()
   const submittedAt = new Date(order.submitted_at * 1000)
 
   const formattedDate = formatDate(submittedAt, { month: "long", day: "numeric", year: "numeric" })
@@ -53,9 +53,14 @@ export function SummaryCard({
         <Flex gap="lg" alignItems="center">
           <IconCircleCheckFilled fill="status.success.default" />
           <Flex direction="column">
-            <Text textStyle="display.small">Order Confirmed</Text>
+            <Text textStyle="display.small">
+              <FormattedMessage id="summary.orderConfirmed" />
+            </Text>
             <Text textStyle="assistive.default" color="neutrals.nLv3">
-              Submitted on {formattedDate} at {formattedTime}
+              <FormattedMessage
+                id="summary.submittedOn"
+                values={{ date: formattedDate, time: formattedTime }}
+              />
             </Text>
           </Flex>
         </Flex>
@@ -63,20 +68,20 @@ export function SummaryCard({
           <Button variant="outline" onClick={onEdit} disabled={isDeleting}>
             <IconEdit />
             <Text textStyle="assistive.default" color="primary.default">
-              Edit
+              <FormattedMessage id="summary.edit" />
             </Text>
           </Button>
           <Button variant="error" minW="fit-content" onClick={onCancelOrder} disabled={isDeleting}>
             {isDeleting ? (
               <Flex alignItems="center" gap="sm">
                 <Spinner size="sm" />
-                Cancelling...
+                <FormattedMessage id="summary.cancelling" />
               </Flex>
             ) : (
               <>
                 <IconCancel />
                 <Text textStyle="assistive.default" color="surface.s1">
-                  Cancel order
+                  <FormattedMessage id="summary.cancelOrder" />
                 </Text>
               </>
             )}
@@ -85,7 +90,7 @@ export function SummaryCard({
       </Flex>
       {order.order_selection.map((selection) => {
         const isTransferred = selection.transfer != null
-        
+
         return (
           <Flex
             key={selection.id}
@@ -107,7 +112,14 @@ export function SummaryCard({
             {isTransferred ? (
               <Flex alignItems="center" gap="xs">
                 <Text textStyle="assistive.default" color="status.success.default">
-                  Transferred to: {selection.transfer?.to_user_display_name ?? "Unknown Recipient"}
+                  <FormattedMessage
+                    id="summary.transferredTo"
+                    values={{
+                      name:
+                        selection.transfer?.to_user_display_name ??
+                        formatMessage({ id: "summary.unknownRecipient" }),
+                    }}
+                  />
                 </Text>
               </Flex>
             ) : (
@@ -118,7 +130,7 @@ export function SummaryCard({
                 w={{ base: "100%", md: "fit-content" }}
               >
                 <Text textStyle="assistive.default" color="primary.default">
-                  Transfer meal
+                  <FormattedMessage id="summary.transferMeal" />
                 </Text>
               </Button>
             )}

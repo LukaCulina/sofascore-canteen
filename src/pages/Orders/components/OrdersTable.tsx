@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { useIntl } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 import { Text } from "@/components/ui/Text"
 import { Box, Flex } from "@/styled-system/jsx"
 import type { Order } from "@/types"
@@ -98,13 +98,27 @@ export const OrdersTable = ({ orders, isEditing, changes, setChanges }: OrdersTa
           <thead>
             <Tr>
               <Th w="72px" aria-label="Actions"></Th>
-              <Th>Order ID</Th>
-              <Th>User</Th>
-              <Th>Period</Th>
-              <Th>Submitted</Th>
-              <Th>Meals</Th>
-              <Th>Discount</Th>
-              <Th>Total</Th>
+              <Th>
+                <FormattedMessage id="orders.orderId" />
+              </Th>
+              <Th>
+                <FormattedMessage id="orders.user" />
+              </Th>
+              <Th>
+                <FormattedMessage id="orders.period" />
+              </Th>
+              <Th>
+                <FormattedMessage id="orders.submitted" />
+              </Th>
+              <Th>
+                <FormattedMessage id="orders.meals" />
+              </Th>
+              <Th>
+                <FormattedMessage id="orders.discount" />
+              </Th>
+              <Th>
+                <FormattedMessage id="orders.total" />
+              </Th>
             </Tr>
           </thead>
           <tbody>
@@ -118,7 +132,9 @@ export const OrdersTable = ({ orders, isEditing, changes, setChanges }: OrdersTa
               />
             ))}
             <Tr>
-              <Td colSpan={5}>Totals</Td>
+              <Td colSpan={5}>
+                <FormattedMessage id="orders.totals" />
+              </Td>
               <Td>{totals.meals}</Td>
               <Td color="status.success.default">€{totals.discount.toFixed(2)}</Td>
               <Td textAlign="right">€{totals.total.toFixed(2)}</Td>
@@ -150,8 +166,12 @@ export const OrdersTable = ({ orders, isEditing, changes, setChanges }: OrdersTa
           borderRadius="lg"
         >
           <Flex direction="row" align="end" gap="xl">
-            <Text textStyle="display.medium">Totals</Text>
-            <GreyText>{totals.meals} meals</GreyText>
+            <Text textStyle="display.medium">
+              <FormattedMessage id="orders.totals" />
+            </Text>
+            <GreyText>
+              <FormattedMessage id="orders.nMeals" values={{ count: totals.meals }} />
+            </GreyText>
           </Flex>
           <Flex direction="column" align="end" gap="xs">
             <Text textStyle="display.large">€{totals.total.toFixed(2)}</Text>

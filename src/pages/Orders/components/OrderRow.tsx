@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
+import { FormattedMessage } from "react-intl"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
 import { Badge, Checkbox, P } from "@/components/ui/"
 import { Flex, Grid } from "@/styled-system/jsx"
@@ -63,7 +64,11 @@ export const OrderRow = ({ order, isEditing, changes, setChanges }: OrderRowProp
         <Td>
           <Flex align="center" justify="space-between" gap="sm" wrap="wrap">
             #{order.id}
-            {isUnpaid && <Badge>Not Paid</Badge>}
+            {isUnpaid && (
+              <Badge>
+                <FormattedMessage id="orders.notPaid" />
+              </Badge>
+            )}
           </Flex>
         </Td>
         <Td>{order.user}</Td>
@@ -86,7 +91,7 @@ export const OrderRow = ({ order, isEditing, changes, setChanges }: OrderRowProp
                 style={{ overflow: "hidden" }}
               >
                 <P textStyle="display.micro" p="lg">
-                  Meal Selections:
+                  <FormattedMessage id="orders.mealSelections" />
                 </P>
                 <Grid gridTemplateColumns="repeat(3, 1fr)" p="lg" gap="lg">
                   {order.order_selection.map((selection) => (

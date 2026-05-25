@@ -1,5 +1,6 @@
 import { Link, useNavigate, useParams } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 import useSWR from "swr"
 import { getJson, putJson } from "@/api/http-client"
 import { meal as mealRoute } from "@/api/routes"
@@ -27,6 +28,7 @@ export const MealDetailsPage = () => {
 
   const { token } = useAuthStore()
   const addToast = useToastStore((s) => s.addToast)
+  const intl = useIntl()
 
   const [form, setForm] = useState<MealForm>(emptyForm)
   const [savedForm, setSavedForm] = useState<MealForm | null>(null)
@@ -72,9 +74,9 @@ export const MealDetailsPage = () => {
         is_vegetarian: form.is_vegetarian,
       })
       setSavedForm(form)
-      addToast("Meal updated successfully.", "success")
+      addToast(intl.formatMessage({ id: "toast.mealUpdated" }), "success")
     } catch {
-      addToast("Failed to update meal. Please try again.", "error")
+      addToast(intl.formatMessage({ id: "toast.mealUpdateFailed" }), "error")
     } finally {
       setIsSubmitting(false)
     }
@@ -105,7 +107,7 @@ export const MealDetailsPage = () => {
           })}
         >
           <IconArrowLeft fill="primary.default" />
-          Back to Catalog
+          <FormattedMessage id="mealDetails.backToCatalog" />
         </Link>
       </Box>
 
@@ -117,11 +119,11 @@ export const MealDetailsPage = () => {
         alignSelf="flex-start"
       >
         <Text alignSelf="flex-start" textStyle="display.extraLarge" color="neutrals.nLv1">
-          Edit Meal
+          <FormattedMessage id="mealDetails.editMeal" />
         </Text>
 
         <Text textStyle="body.large" color="neutrals.nLv1">
-          Update the details for this meal in the catalog.
+          <FormattedMessage id="mealDetails.updateDetails" />
         </Text>
       </Box>
 
@@ -131,7 +133,9 @@ export const MealDetailsPage = () => {
         </Flex>
       ) : error ? (
         <Flex justify="center" py="6xl">
-          <StatusMessage variant="error">Failed to load meal</StatusMessage>
+          <StatusMessage variant="error">
+            <FormattedMessage id="mealDetails.failedToLoadMeal" />
+          </StatusMessage>
         </Flex>
       ) : (
         <Box
@@ -156,7 +160,7 @@ export const MealDetailsPage = () => {
             >
               <Box display="flex" flexDirection="column" gap="sm" position="relative" p="lg">
                 <Text textStyle="body.medium" color="neutrals.nLv1">
-                  Meal Image
+                  <FormattedMessage id="mealDetails.mealImage" />
                 </Text>
                 <Box position="relative" w="100%" h="198px" borderRadius="lg" overflow="hidden">
                   {mealData?.image_url ? (
@@ -193,7 +197,7 @@ export const MealDetailsPage = () => {
                         <IconVeganMealSelector fill="surface.s1" />
                       </Flex>
                       <Text textStyle="assistive.default" color="surface.s1">
-                        Vegetarian
+                        <FormattedMessage id="common.vegetarian" />
                       </Text>
                     </Flex>
                   )}
@@ -202,14 +206,14 @@ export const MealDetailsPage = () => {
               <Flex direction="column" gap="lg" display={{ base: "none", md: "flex" }} p="lg">
                 <Flex direction="column" gap="sm">
                   <Text textStyle="assistive.default" color="neutrals.nLv1">
-                    Upload Image
+                    <FormattedMessage id="mealDetails.uploadImage" />
                   </Text>
                   <Button variant="primary" w="100px" h="32px" disabled fontSize="xs">
-                    Choose file
+                    <FormattedMessage id="mealDetails.chooseFile" />
                   </Button>
                 </Flex>
                 <Text textStyle="assistive.default" color="neutrals.nLv1">
-                  Or
+                  <FormattedMessage id="mealDetails.or" />
                 </Text>
                 <Flex direction="column">
                   <Flex
@@ -224,14 +228,14 @@ export const MealDetailsPage = () => {
                     width="352px"
                   >
                     <Text textStyle="assistive.default" color="neutrals.nLv3">
-                      Paste Image URL
+                      <FormattedMessage id="mealDetails.pasteImageUrl" />
                     </Text>
                     <Text textStyle="body.large" color="neutrals.nLv1">
                       https://images.unsplash.com/photo-14
                     </Text>
                   </Flex>
                   <Text textStyle="assistive.default" color="neutrals.nLv3" pl="lg">
-                    Leave Empty for no image
+                    <FormattedMessage id="mealDetails.leaveEmptyForNoImage" />
                   </Text>
                 </Flex>
               </Flex>
@@ -239,13 +243,13 @@ export const MealDetailsPage = () => {
 
             <Flex flex="1" direction="column" gap="xl" p="lg">
               <Input
-                label="Meal Name"
+                label={intl.formatMessage({ id: "mealDetails.mealName" })}
                 name="description"
                 value={form.description}
                 onChange={(val) => setForm((f) => ({ ...f, description: val }))}
               />
               <Input
-                label="Price (€)"
+                label={intl.formatMessage({ id: "mealDetails.price" })}
                 name="price"
                 type="number"
                 value={form.price}
@@ -254,7 +258,7 @@ export const MealDetailsPage = () => {
                 step="0.01"
               />
               <Input
-                label="Discount (%)"
+                label={intl.formatMessage({ id: "mealDetails.discount" })}
                 name="discount"
                 type="number"
                 value={form.discount}
@@ -266,14 +270,14 @@ export const MealDetailsPage = () => {
                 <Checkbox
                   checked={form.is_vegetarian}
                   onChange={(checked) => setForm((f) => ({ ...f, is_vegetarian: checked }))}
-                  ariaLabel="Mark this meal as a vegetarian option"
+                  ariaLabel={intl.formatMessage({ id: "mealDetails.markVegetarian" })}
                 />
                 <Flex direction="column" gap="xs">
                   <Text textStyle="display.medium" color="neutrals.nLv1">
-                    Vegetarian
+                    <FormattedMessage id="mealDetails.vegetarian" />
                   </Text>
                   <Text textStyle="assistive.default" color="neutrals.nLv3">
-                    Mark this meal as a vegetarian option
+                    <FormattedMessage id="mealDetails.markVegetarian" />
                   </Text>
                 </Flex>
               </Flex>
@@ -293,7 +297,7 @@ export const MealDetailsPage = () => {
             <Box>
               {isDirty && (
                 <Text textStyle="assistive.default" color="status.error.default">
-                  Unsaved changes
+                  <FormattedMessage id="mealDetails.unsavedChanges" />
                 </Text>
               )}
             </Box>
@@ -303,7 +307,7 @@ export const MealDetailsPage = () => {
                 w="auto"
                 onClick={() => navigate({ to: "/catering/catalog" })}
               >
-                Cancel
+                <FormattedMessage id="common.cancel" />
               </Button>
               <Button
                 variant="primary"
@@ -311,7 +315,11 @@ export const MealDetailsPage = () => {
                 disabled={!isDirty || !isValid || isSubmitting}
                 onClick={handleSubmit}
               >
-                {isSubmitting ? "Saving..." : "Save Changes"}
+                {isSubmitting ? (
+                  <FormattedMessage id="mealDetails.savingEllipsis" />
+                ) : (
+                  <FormattedMessage id="mealDetails.saveChanges" />
+                )}
               </Button>
             </Flex>
           </Flex>

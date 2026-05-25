@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
+import { FormattedMessage } from "react-intl"
 import { IconArrowDown, IconArrowUp } from "@/components/icons"
 import { Badge, Checkbox, P, Text } from "@/components/ui/"
 import { Box, Flex } from "@/styled-system/jsx"
@@ -51,7 +52,11 @@ export const OrderCard = ({ order, isEditing, changes, setChanges }: OrderCardPr
       <Flex direction="column" gap="sm" p="lg" onClick={handleCardClick} cursor="pointer">
         <Flex align="center" gap="md">
           <Text textStyle="display.medium">#{order.id}</Text>
-          {isUnpaid && <Badge>Not Paid</Badge>}
+          {isUnpaid && (
+            <Badge>
+              <FormattedMessage id="orders.notPaid" />
+            </Badge>
+          )}
         </Flex>
 
         <Flex justify="space-between" gap="sm">
@@ -59,7 +64,9 @@ export const OrderCard = ({ order, isEditing, changes, setChanges }: OrderCardPr
             <Text textStyle="body.medium">{order.user}</Text>
             <Flex columnGap="xl" wrap="wrap">
               <GreyText>{order.period}</GreyText>
-              <GreyText>{order.meals} meals</GreyText>
+              <GreyText>
+                <FormattedMessage id="orders.nMeals" values={{ count: order.meals }} />
+              </GreyText>
             </Flex>
             <GreyText>{order.submitted}</GreyText>
           </Flex>
@@ -95,7 +102,7 @@ export const OrderCard = ({ order, isEditing, changes, setChanges }: OrderCardPr
               style={{ overflow: "hidden" }}
             >
               <P textStyle="display.micro" mb="md">
-                Meal Selections:
+                <FormattedMessage id="orders.mealSelections" />
               </P>
               <Flex direction="column" gap="md">
                 {order.order_selection.map((selection) => (

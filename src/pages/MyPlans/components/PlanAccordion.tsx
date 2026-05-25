@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 import { Dialog } from "@/components/dialog"
 import { IconArrowDown, IconPen, IconTrash } from "@/components/icons"
 import { Button } from "@/components/ui/Button"
@@ -15,16 +16,17 @@ interface PlanAccordionProps {
   onMutate: () => Promise<unknown | Plan[] | undefined>
 }
 
-const formatDate = (timestamp: number) =>
-  new Date(timestamp * 1000).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  })
-
 export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const isFuturePlan = plan.period_start * 1000 > Date.now()
+  const intl = useIntl()
+
+  const formatDate = (timestamp: number) =>
+    intl.formatDate(new Date(timestamp * 1000), {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
 
   const {
     isEditing,
@@ -62,7 +64,7 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
           minW="0"
         >
           <Text textStyle="display.small" color="neutrals.nLv1">
-            Plan #{plan.id}
+            <FormattedMessage id="myPlans.planId" values={{ id: plan.id }} />
           </Text>
           <Text textStyle="assistive.default" color="neutrals.nLv3">
             {formatDate(plan.period_start)} - {formatDate(plan.period_end)}
@@ -92,7 +94,9 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
                 }}
               >
                 <IconPen fill="primary.default" />
-                <Box display={{ base: "none", sm: "block" }}>Edit</Box>
+                <Box display={{ base: "none", sm: "block" }}>
+                  <FormattedMessage id="myPlans.edit" />
+                </Box>
               </Button>
               <Button
                 variant="danger"
@@ -108,7 +112,9 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
                 <Flex align="center" justify="center" w="xl" h="xl">
                   <IconTrash fill="surface.s1" />
                 </Flex>
-                <Box display={{ base: "none", sm: "block" }}>Delete Plan</Box>
+                <Box display={{ base: "none", sm: "block" }}>
+                  <FormattedMessage id="myPlans.deletePlan" />
+                </Box>
               </Button>
             </Flex>
           )}
@@ -124,7 +130,7 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
                   handleCancelEdit()
                 }}
               >
-                Cancel
+                <FormattedMessage id="myPlans.cancel" />
               </Button>
               <Button
                 w="auto"
@@ -136,10 +142,10 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
               >
                 {isSaving ? (
                   <Flex align="center" gap="sm">
-                    <Spinner size="md" /> Saving...
+                    <Spinner size="md" /> <FormattedMessage id="myPlans.saving" />
                   </Flex>
                 ) : (
-                  "Save Changes"
+                  <FormattedMessage id="myPlans.saveChanges" />
                 )}
               </Button>
             </Flex>
@@ -165,7 +171,7 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
                 </Flex>
               ) : isEditing && mealsError ? (
                 <Text textStyle="assistive.default" color="status.error.default" display="block">
-                  Failed to load meals. Please try again.
+                  <FormattedMessage id="myPlans.failedToLoadMeals" />
                 </Text>
               ) : (
                 plan.plan_day.map((day) => (
@@ -190,25 +196,27 @@ export const PlanAccordion = ({ plan, onMutate }: PlanAccordionProps) => {
       {showConfirm && (
         <Dialog.Root onClose={() => setShowConfirm(false)}>
           <Dialog.Header>
-            <Dialog.Title>Delete Plan</Dialog.Title>
+            <Dialog.Title>
+              <FormattedMessage id="myPlans.deleteTitle" />
+            </Dialog.Title>
           </Dialog.Header>
           <Dialog.Content>
             <Text textStyle="body.medium" color="neutrals.nLv1">
-              Are you sure you want to delete this plan? This action cannot be undone.
+              <FormattedMessage id="myPlans.deleteMessage" />
             </Text>
           </Dialog.Content>
           <Dialog.Footer>
             <Flex gap="md">
               <Button variant="outline" onClick={() => setShowConfirm(false)} disabled={isDeleting}>
-                Cancel
+                <FormattedMessage id="myPlans.cancel" />
               </Button>
               <Button variant="danger" onClick={deletePlan} disabled={isDeleting}>
                 {isDeleting ? (
                   <Flex align="center" gap="sm">
-                    <Spinner size="md" /> Deleting...
+                    <Spinner size="md" /> <FormattedMessage id="myPlans.deleting" />
                   </Flex>
                 ) : (
-                  "Yes, delete"
+                  <FormattedMessage id="myPlans.yesDelete" />
                 )}
               </Button>
             </Flex>

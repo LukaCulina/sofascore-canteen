@@ -1,3 +1,4 @@
+import { useIntl } from "react-intl"
 import { Text } from "@/components/ui/Text"
 import { Box, Flex } from "@/styled-system/jsx"
 import type { Meal } from "@/types"
@@ -24,6 +25,8 @@ export const MealDayCard = ({
   showBorder = true,
   dayTextStyle,
 }: MealDayCardProps) => {
+  const intl = useIntl()
+
   return (
     <Box
       borderWidth={showBorder ? "thin" : undefined}
@@ -44,15 +47,15 @@ export const MealDayCard = ({
       >
         <Box bg="surface.s2" borderRadius="sm" p="sm" textAlign="center">
           <Text textStyle={dayTextStyle ?? "display.small"} color="neutrals.nLv1">
-            {date.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase()}
+            {intl.formatDate(date, { weekday: "short" }).toUpperCase()}
           </Text>
         </Box>
         <Flex direction="column">
           <Text textStyle={dayTextStyle ?? "display.small"} color="neutrals.nLv1">
-            {date.toLocaleDateString("en-US", { weekday: "long" })}
+            {intl.formatDate(date, { weekday: "long" })}
           </Text>
           <Text textStyle={dayTextStyle ?? "assistive.default"} color="neutrals.nLv3">
-            {date.toLocaleDateString("en-US", {
+            {intl.formatDate(date, {
               month: "long",
               day: "numeric",
               year: "numeric",

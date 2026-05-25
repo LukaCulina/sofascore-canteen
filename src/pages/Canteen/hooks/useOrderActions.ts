@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useIntl } from "react-intl"
 import useSWRMutation from "swr/mutation"
 import { requestJson } from "@/api/http-client.ts"
 import { order, orderByPlanId } from "@/api/routes.ts"
@@ -36,6 +37,7 @@ export function useOrderActions(
 
   const initialSelections = useInitialOrderSelections(data)
   const addToast = useToastStore((s) => s.addToast)
+  const intl = useIntl()
 
   const { trigger: createOrder, isMutating: isCreating } = useSWRMutation(
     token ? order() : null,
@@ -78,17 +80,17 @@ export function useOrderActions(
         await updateOrder(payload)
         await mutate()
         closeEditMode()
-        addToast("Order updated successfully.", "success")
+        addToast(intl.formatMessage({ id: "toast.orderUpdated" }), "success")
         return
       }
       await createOrder(payload)
       await mutate()
-      addToast("Order submitted successfully.", "success")
+      addToast(intl.formatMessage({ id: "toast.orderSubmitted" }), "success")
     } catch {
       addToast(
-        isEditingOrder
-          ? "Failed to update order. Please try again."
-          : "Failed to submit order. Please try again.",
+        intl.formatMessage({
+          id: isEditingOrder ? "toast.orderUpdateFailed" : "toast.orderSubmitFailed",
+        }),
         "error",
       )
     }
@@ -105,9 +107,9 @@ export function useOrderActions(
       await mutate()
       setIsCancelDialogOpen(false)
       closeEditMode()
-      addToast("Order cancelled.", "success")
+      addToast(intl.formatMessage({ id: "toast.orderCancelled" }), "success")
     } catch {
-      addToast("Failed to cancel order. Please try again.", "error")
+      addToast(intl.formatMessage({ id: "toast.orderCancelFailed" }), "error")
     }
   }
 

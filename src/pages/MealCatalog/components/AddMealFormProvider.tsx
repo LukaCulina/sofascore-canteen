@@ -1,5 +1,6 @@
 import { FormikProvider, useFormik } from "formik"
 import type { ReactNode } from "react"
+import { useIntl } from "react-intl"
 import * as yup from "yup"
 import { requestJson } from "@/api/http-client"
 import { meals } from "@/api/routes"
@@ -20,24 +21,28 @@ const initialValues: AddMealFormValues = {
   imageUrl: "",
 }
 
-const schema = yup.object({
-  name: yup.string().trim().required("Meal name is required"),
-  price: yup
-    .number()
-    .transform((parsedValue, originalValue) => (originalValue === "" ? Number.NaN : parsedValue))
-    .typeError("Price must be a valid number")
-    .moreThan(0, "Price must be greater than 0")
-    .required("Price is required"),
-  isVegetarian: yup.boolean().required(),
-  imageUrl: yup.string().optional(),
-})
-
 export const AddMealFormProvider = ({
   children,
   onClose,
   onMealCreated,
 }: AddMealFormProviderProps) => {
   const addToast = useToastStore((s) => s.addToast)
+  const intl = useIntl()
+
+  const schema = yup.object({
+    name: yup
+      .string()
+      .trim()
+      .required(intl.formatMessage({ id: "validation.mealNameRequired" })),
+    price: yup
+      .number()
+      .transform((parsedValue, originalValue) => (originalValue === "" ? Number.NaN : parsedValue))
+      .typeError(intl.formatMessage({ id: "validation.priceMustBeNumber" }))
+      .moreThan(0, intl.formatMessage({ id: "validation.priceGreaterThanZero" }))
+      .required(intl.formatMessage({ id: "validation.priceRequired" })),
+    isVegetarian: yup.boolean().required(),
+    imageUrl: yup.string().optional(),
+  })
 
   const formik = useFormik<AddMealFormValues>({
     initialValues,
@@ -56,9 +61,9 @@ export const AddMealFormProvider = ({
         await onMealCreated()
         helpers.resetForm()
         onClose()
-        addToast("Meal added successfully.", "success")
+        addToast(intl.formatMessage({ id: "toast.mealAdded" }), "success")
       } catch {
-        addToast("Failed to add meal. Please try again.", "error")
+        addToast(intl.formatMessage({ id: "toast.mealAddFailed" }), "error")
       }
     },
   })

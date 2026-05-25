@@ -1,4 +1,5 @@
 import { useEffect, useReducer } from "react"
+import { FormattedMessage } from "react-intl"
 import { Button, Spinner } from "@/components/ui"
 import { MealSelection } from "@/pages/Canteen/components/MealSelection/MealSelection.tsx"
 import {
@@ -60,14 +61,14 @@ export function MealSelectionForm({
             type="button"
             minW="fit-content"
           >
-            Cancel
+            <FormattedMessage id="dialog.cancel" />
           </Button>
         ) : null}
         <Button disabled={isSubmitting} type="submit" minW="fit-content">
           {isSubmitting ? (
             <Flex alignItems="center" gap="sm">
               <Spinner size="sm" />
-              Saving...
+              <FormattedMessage id="mealSelection.saving" />
             </Flex>
           ) : (
             submitLabel

@@ -1,3 +1,4 @@
+import { FormattedMessage } from "react-intl"
 import { Dialog } from "@/components/dialog"
 import { Spinner, Text } from "@/components/ui"
 import { Button } from "@/components/ui/Button"
@@ -17,24 +18,28 @@ export function CancelOrderDialog({
   return (
     <Dialog.Root onClose={isSubmitting ? () => {} : onCancel}>
       <Dialog.Header>
-        <Dialog.Title>Cancel order</Dialog.Title>
+        <Dialog.Title>
+          <FormattedMessage id="cancelOrder.title" />
+        </Dialog.Title>
       </Dialog.Header>
       <Dialog.Content>
-        <Text textStyle="display.small">Are you sure you want to cancel your order?</Text>
+        <Text textStyle="display.small">
+          <FormattedMessage id="cancelOrder.message" />
+        </Text>
       </Dialog.Content>
       <Dialog.Footer>
         <Flex gap="md" justifyContent="flex-end">
           <Button variant="outline" onClick={onCancel} disabled={isSubmitting} minW="fit-content">
-            Cancel
+            <FormattedMessage id="dialog.cancel" />
           </Button>
           <Button variant="error" onClick={onConfirm} disabled={isSubmitting} minW="fit-content">
             {isSubmitting ? (
               <Flex alignItems="center" gap="sm">
                 <Spinner size="sm" />
-                Cancelling...
+                <FormattedMessage id="cancelOrder.cancelling" />
               </Flex>
             ) : (
-              "Confirm"
+              <FormattedMessage id="dialog.confirm" />
             )}
           </Button>
         </Flex>
