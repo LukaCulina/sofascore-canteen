@@ -58,7 +58,8 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
           gap="lg"
           px="lg"
           py="xl"
-          borderBottom="1px solid"
+          borderBottomWidth="thin"
+          borderBottomStyle="solid"
           borderColor="neutrals.nLv4"
         >
           <Box

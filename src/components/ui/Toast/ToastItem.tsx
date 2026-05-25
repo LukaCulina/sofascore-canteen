@@ -88,7 +88,7 @@ export const ToastItem = ({ toast }: ToastItemProps) => {
           style={{ cursor: "pointer" }}
         >
           <Flex align="center" justify="center" w="xl" h="xl">
-            <IconCancel fill="surface.s1" width="12" height="12" />
+            <IconCancel fill="surface.s1" width={12} height={12} />
           </Flex>
         </button>
       </Flex>

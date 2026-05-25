@@ -11,7 +11,8 @@ export const Table = styled("table", {
 export const Tr = styled("tr", {
   base: {
     h: "4xl",
-    borderBottom: "1px solid",
+    borderBottomWidth: "thin",
+    borderBottomStyle: "solid",
     borderColor: "neutrals.nLv4",
   },
 })

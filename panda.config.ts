@@ -197,6 +197,7 @@ export default defineConfig({
         },
         overlay: {
           darken1: { value: "rgba(0, 0, 0, 0.25)" },
+          darken2: { value: "rgba(0, 0, 0, 0.5)" },
         },
       },
     },

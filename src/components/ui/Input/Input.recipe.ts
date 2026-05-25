@@ -47,7 +47,7 @@ export const inputRecipe = sva({
       position: "relative",
       display: "flex",
       alignItems: "center",
-      minHeight: "48px",
+      minHeight: "4xl",
       padding: "0 token(spacing.md) 0 token(spacing.lg)",
       borderRadius: "sm",
       cursor: "text",
@@ -98,7 +98,9 @@ export const inputRecipe = sva({
       },
       outlined: {
         wrapper: {
-          border: "1px solid {colors.neutrals.nLv4}",
+          borderWidth: "thin",
+          borderStyle: "solid",
+          borderColor: "neutrals.nLv4",
           _focusWithin: {
             borderColor: "primary.default",
           },

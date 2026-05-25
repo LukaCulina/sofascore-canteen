@@ -27,7 +27,7 @@ const DialogRoot = ({ children, onClose, ariaLabelledBy, ariaDescribedBy }: Dial
       <Box
         position="fixed"
         inset={0}
-        bg="rgba(0, 0, 0, 0.45)"
+        bg="overlay.darken2"
         display="flex"
         alignItems="center"
         justifyContent="center"

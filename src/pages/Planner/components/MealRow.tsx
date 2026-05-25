@@ -27,7 +27,7 @@ export const MealRow = ({ meal, isSelected, onToggle, disabled }: MealRowProps) 
     >
       {disabled ? (
         isSelected ? (
-          <Box w="8px" h="8px" borderRadius="full" bg="primary.default" flexShrink={0} />
+          <Box w="sm" h="sm" borderRadius="full" bg="primary.default" flexShrink={0} />
         ) : null
       ) : (
         <Checkbox

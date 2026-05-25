@@ -17,9 +17,10 @@ const ToggleButton = styled("button", {
       bg: "primary.highlight",
     },
     _focusVisible: {
-      outline: "2px solid",
+      outlineWidth: "thick",
+      outlineStyle: "solid",
       outlineColor: "primary.default",
-      outlineOffset: "2px",
+      outlineOffset: "2xs",
     },
   },
 })

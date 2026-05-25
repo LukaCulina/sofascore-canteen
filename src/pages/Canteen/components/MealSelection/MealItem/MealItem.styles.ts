@@ -16,7 +16,7 @@ export const MealItemRadio = styled("input", {
     height: "19px",
     width: "19px",
     cursor: "pointer",
-    borderWidth: "2px",
+    borderWidth: "thick",
     borderStyle: "solid",
     borderColor: "neutrals.nLv3",
     borderRadius: "50%",

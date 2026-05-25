@@ -26,14 +26,22 @@ export const MealDayCard = ({
 }: MealDayCardProps) => {
   return (
     <Box
-      border={showBorder ? "1px solid" : undefined}
+      borderWidth={showBorder ? "thin" : undefined}
+      borderStyle={showBorder ? "solid" : undefined}
       borderColor="neutrals.nLv4"
       borderRadius="md"
       overflow="hidden"
       backgroundColor={backgroundColor ?? "surface.s1"}
     >
       {/* Day header */}
-      <Flex align="center" gap="lg" p="lg" borderBottom="1px solid" borderColor="neutrals.nLv4">
+      <Flex
+        align="center"
+        gap="lg"
+        p="lg"
+        borderBottomWidth="thin"
+        borderBottomStyle="solid"
+        borderColor="neutrals.nLv4"
+      >
         <Box bg="surface.s2" borderRadius="sm" p="sm" textAlign="center">
           <Text textStyle={dayTextStyle ?? "display.small"} color="neutrals.nLv1">
             {date.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase()}

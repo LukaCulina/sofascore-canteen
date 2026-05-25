@@ -12,11 +12,14 @@ export const Button = styled("button", {
     textStyle: "label.medium",
     cursor: "pointer",
     w: "full",
-    border: "1px solid transparent",
+    borderWidth: "thin",
+    borderStyle: "solid",
+    borderColor: "transparent",
     _focusVisible: {
-      outline: "2px solid",
+      outlineWidth: "thick",
+      outlineStyle: "solid",
       outlineColor: "primary.default",
-      outlineOffset: "2px",
+      outlineOffset: "2xs",
     },
   },
   variants: {

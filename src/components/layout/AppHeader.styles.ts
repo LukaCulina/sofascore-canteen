@@ -3,7 +3,8 @@ import { styled } from "@/styled-system/jsx"
 export const Header = styled("header", {
   base: {
     bg: "surface.s1",
-    borderBottom: "1px solid",
+    borderBottomWidth: "thin",
+    borderBottomStyle: "solid",
     borderColor: "neutrals.nLv4",
     px: "xl",
     py: "xl",
