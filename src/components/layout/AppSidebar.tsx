@@ -19,14 +19,14 @@ interface NavItem {
 const navItems: NavItem[] = [
   { to: "/", icon: IconCanteen, label: "Canteen" },
   { to: "/planner", icon: IconPlanner, label: "Planner", roles: [Role.ADMIN, Role.CATERING] },
-  { to: "/my-plans", icon: IconPlans, label: "My Plans", roles: [Role.CATERING] },
-  { to: "/orders", icon: IconOrders, label: "My Orders", roles: [Role.EMPLOYEE, Role.CATERING] },
   {
     to: "/catering/catalog",
     icon: IconMealCatalog,
     label: "Meal Catalog",
     roles: [Role.CATERING, Role.ADMIN],
   },
+  { to: "/my-plans", icon: IconPlans, label: "My Plans", roles: [Role.CATERING] },
+  { to: "/orders", icon: IconOrders, label: "My Orders", roles: [Role.EMPLOYEE, Role.CATERING] },
 ] as const
 
 interface AppSidebarProps {
