@@ -25,7 +25,7 @@
   "canteen.chooseMeals": "Choose your meals for the upcoming work week.",
   "canteen.failedToLoadMealOptions": "Failed to load meal options",
   "canteen.saveChanges": "Save changes",
-  "canteen.submit": "Submit",
+  "canteen.submit": "Submit Order",
   "summary.orderConfirmed": "Order Confirmed",
   "summary.submittedOn": "Submitted on {date} at {time}",
   "summary.edit": "Edit",

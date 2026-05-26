@@ -25,7 +25,7 @@
   "canteen.chooseMeals": "Odaberite obroke za nadolazeći radni tjedan.",
   "canteen.failedToLoadMealOptions": "Učitavanje opcija obroka nije uspjelo",
   "canteen.saveChanges": "Spremi promjene",
-  "canteen.submit": "Pošalji",
+  "canteen.submit": "Pošalji narudžbu",
   "summary.orderConfirmed": "Narudžba potvrđena",
   "summary.submittedOn": "Poslano {date} u {time}",
   "summary.edit": "Uredi",
