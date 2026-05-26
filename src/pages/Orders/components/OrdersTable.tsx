@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { Text } from "@/components/ui/Text"
 import { Box, Flex } from "@/styled-system/jsx"
 import type { Order } from "@/types"
-import { GreyText, Table, Td, Th, Tr } from "../styles"
+import { GreyText, Table, TableContainer, TableWrapper, Td, Th, Tr } from "../styles"
 import { OrderCard } from "./OrderCard"
 import { OrderRow } from "./OrderRow"
 
@@ -86,62 +86,57 @@ export const OrdersTable = ({ orders, isEditing, changes, setChanges }: OrdersTa
   return (
     <Box>
       {/* Desktop View */}
-      <Box
-        hideBelow="lg"
-        overflow="hidden"
-        borderWidth="thin"
-        borderStyle="solid"
-        borderColor="neutrals.nLv4"
-        borderRadius="lg"
-      >
-        <Table>
-          <thead>
-            <Tr>
-              <Th w="72px" aria-label="Actions"></Th>
-              <Th>
-                <FormattedMessage id="orders.orderId" />
-              </Th>
-              <Th>
-                <FormattedMessage id="orders.user" />
-              </Th>
-              <Th>
-                <FormattedMessage id="orders.period" />
-              </Th>
-              <Th>
-                <FormattedMessage id="orders.submitted" />
-              </Th>
-              <Th>
-                <FormattedMessage id="orders.meals" />
-              </Th>
-              <Th>
-                <FormattedMessage id="orders.discount" />
-              </Th>
-              <Th>
-                <FormattedMessage id="orders.total" />
-              </Th>
-            </Tr>
-          </thead>
-          <tbody>
-            {processedOrders.map((order) => (
-              <OrderRow
-                key={order.id}
-                order={order}
-                isEditing={isEditing}
-                changes={changes}
-                setChanges={setChanges}
-              />
-            ))}
-            <Tr>
-              <Td colSpan={5}>
-                <FormattedMessage id="orders.totals" />
-              </Td>
-              <Td>{totals.meals}</Td>
-              <Td color="status.success.default">€{totals.discount.toFixed(2)}</Td>
-              <Td textAlign="right">€{totals.total.toFixed(2)}</Td>
-            </Tr>
-          </tbody>
-        </Table>
-      </Box>
+      <TableWrapper hideBelow="lg">
+        <TableContainer>
+          <Table>
+            <thead>
+              <Tr>
+                <Th w="72px" aria-label="Actions"></Th>
+                <Th>
+                  <FormattedMessage id="orders.orderId" />
+                </Th>
+                <Th>
+                  <FormattedMessage id="orders.user" />
+                </Th>
+                <Th>
+                  <FormattedMessage id="orders.period" />
+                </Th>
+                <Th>
+                  <FormattedMessage id="orders.submitted" />
+                </Th>
+                <Th>
+                  <FormattedMessage id="orders.meals" />
+                </Th>
+                <Th>
+                  <FormattedMessage id="orders.discount" />
+                </Th>
+                <Th>
+                  <FormattedMessage id="orders.total" />
+                </Th>
+              </Tr>
+            </thead>
+            <tbody>
+              {processedOrders.map((order) => (
+                <OrderRow
+                  key={order.id}
+                  order={order}
+                  isEditing={isEditing}
+                  changes={changes}
+                  setChanges={setChanges}
+                />
+              ))}
+              <Tr>
+                <Td colSpan={5}>
+                  <FormattedMessage id="orders.totals" />
+                </Td>
+                <Td>{totals.meals}</Td>
+                <Td color="status.success.default">€{totals.discount.toFixed(2)}</Td>
+                <Td textAlign="right">€{totals.total.toFixed(2)}</Td>
+              </Tr>
+            </tbody>
+          </Table>
+        </TableContainer>
+      </TableWrapper>
 
       {/* Mobile View */}
       <Flex direction="column" gap="sm" hideFrom="lg">

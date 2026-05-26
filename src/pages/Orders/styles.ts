@@ -1,8 +1,51 @@
 import { styled } from "@/styled-system/jsx"
 
+export const TableWrapper = styled("div", {
+  base: {
+    borderWidth: "thin",
+    borderStyle: "solid",
+    borderColor: "neutrals.nLv4",
+    borderRadius: "lg",
+    overflow: "hidden",
+  },
+})
+
+export const TableContainer = styled("div", {
+  base: {
+    width: "100%",
+    overflowX: "auto",
+    WebkitOverflowScrolling: "touch",
+    scrollbarWidth: "thin",
+    "&::-webkit-scrollbar-button": {
+      display: "none",
+    },
+    "&::-webkit-scrollbar": {
+      height: "8px",
+      width: "8px",
+      backgroundColor: "transparent",
+    },
+    "&::-webkit-scrollbar-track": {
+      backgroundColor: "transparent",
+      borderRadius: "lg",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "neutrals.nLv4",
+      borderRadius: "lg",
+      borderWidth: "2px",
+      borderStyle: "solid",
+      borderColor: "surface.s1",
+      backgroundClip: "padding-box",
+      "&:hover": {
+        backgroundColor: "neutrals.nLv3",
+      },
+    },
+  },
+})
+
 export const Table = styled("table", {
   base: {
     width: "100%",
+    minW: "1000px",
     tableLayout: "fixed",
     borderCollapse: "collapse",
   },
