@@ -14,14 +14,13 @@ export const TableContainer = styled("div", {
   base: {
     width: "100%",
     overflowX: "auto",
-    WebkitOverflowScrolling: "touch",
     scrollbarWidth: "thin",
     "&::-webkit-scrollbar-button": {
       display: "none",
     },
     "&::-webkit-scrollbar": {
-      height: "8px",
-      width: "8px",
+      height: "sm",
+      width: "sm",
       backgroundColor: "transparent",
     },
     "&::-webkit-scrollbar-track": {
@@ -31,7 +30,7 @@ export const TableContainer = styled("div", {
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "neutrals.nLv4",
       borderRadius: "lg",
-      borderWidth: "2px",
+      borderWidth: "thick",
       borderStyle: "solid",
       borderColor: "surface.s1",
       backgroundClip: "padding-box",
