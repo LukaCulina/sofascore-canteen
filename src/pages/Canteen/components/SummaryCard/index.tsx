@@ -47,8 +47,8 @@ export function SummaryCard({
       <Flex
         justifyContent="space-between"
         p="lg"
-        gap={{ mdDown: "lg" }}
-        direction={{ mdDown: "column" }}
+        gap="lg"
+        direction={{ lgDown: "column" }}
       >
         <Flex gap="lg" alignItems="center">
           <IconCircleCheckFilled fill="status.success.default" />
