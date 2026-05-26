@@ -146,14 +146,13 @@ export const MealDetailsPage = () => {
           borderColor="neutrals.nLv4"
           w="100%"
         >
-          <Flex direction={{ base: "column", md: "row" }}>
+          <Box display="grid" gridTemplateColumns={{ base: "1fr", lg: "1fr 1fr" }}>
             <Box
-              w={{ base: "100%", md: "380px" }}
-              flexShrink="0"
-              borderRightWidth={{ base: "0", md: "thin" }}
+              minW="0"
+              borderRightWidth={{ base: "0", lg: "thin" }}
               borderRightStyle="solid"
               borderRightColor="neutrals.nLv4"
-              borderBottomWidth={{ base: "thin", md: "0" }}
+              borderBottomWidth={{ base: "thin", lg: "0" }}
               borderBottomStyle="solid"
               borderBottomColor="neutrals.nLv4"
               bg="surface.s2"
@@ -203,19 +202,25 @@ export const MealDetailsPage = () => {
                   )}
                 </Box>
               </Box>
-              <Flex direction="column" gap="lg" display={{ base: "none", md: "flex" }} p="lg">
+              <Flex direction="column" gap="lg" p="lg">
                 <Flex direction="column" gap="sm">
                   <Text textStyle="assistive.default" color="neutrals.nLv1">
                     <FormattedMessage id="mealDetails.uploadImage" />
                   </Text>
-                  <Button variant="primary" w="100px" h="32px" disabled fontSize="xs">
+                  <Button
+                    type="button"
+                    variant="primary"
+                    w="fit-content"
+                    textStyle="assistive.default"
+                    disabled
+                  >
                     <FormattedMessage id="mealDetails.chooseFile" />
                   </Button>
                 </Flex>
                 <Text textStyle="assistive.default" color="neutrals.nLv1">
                   <FormattedMessage id="mealDetails.or" />
                 </Text>
-                <Flex direction="column">
+                <Flex direction="column" gap="xs">
                   <Flex
                     direction="column"
                     bg="surface.s1"
@@ -225,12 +230,11 @@ export const MealDetailsPage = () => {
                     borderWidth="thin"
                     borderRadius="sm"
                     borderColor="neutrals.nLv4"
-                    width="352px"
                   >
                     <Text textStyle="assistive.default" color="neutrals.nLv3">
                       <FormattedMessage id="mealDetails.pasteImageUrl" />
                     </Text>
-                    <Text textStyle="body.large" color="neutrals.nLv1">
+                    <Text textStyle="body.large" color="neutrals.nLv1" wordWrap="break-word">
                       https://images.unsplash.com/photo-14
                     </Text>
                   </Flex>
@@ -241,7 +245,7 @@ export const MealDetailsPage = () => {
               </Flex>
             </Box>
 
-            <Flex flex="1" direction="column" gap="xl" p="lg">
+            <Flex minW="0" direction="column" gap="xl" p="lg">
               <Input
                 label={intl.formatMessage({ id: "mealDetails.mealName" })}
                 name="description"
@@ -282,7 +286,7 @@ export const MealDetailsPage = () => {
                 </Flex>
               </Flex>
             </Flex>
-          </Flex>
+          </Box>
 
           <Flex
             align="center"
@@ -303,6 +307,7 @@ export const MealDetailsPage = () => {
             </Box>
             <Flex gap="md">
               <Button
+                type="button"
                 variant="outline"
                 w="auto"
                 onClick={() => navigate({ to: "/catering/catalog" })}
@@ -310,6 +315,7 @@ export const MealDetailsPage = () => {
                 <FormattedMessage id="common.cancel" />
               </Button>
               <Button
+                type="button"
                 variant="primary"
                 w="auto"
                 disabled={!isDirty || !isValid || isSubmitting}
