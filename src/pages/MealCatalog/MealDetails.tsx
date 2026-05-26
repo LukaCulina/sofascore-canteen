@@ -3,14 +3,14 @@ import { useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import useSWR from "swr"
 import { getJson, putJson } from "@/api/http-client"
-import { meal as mealRoute } from "@/api/routes"
+import { mealFeedbackById, meal as mealRoute } from "@/api/routes"
 import { IconArrowLeft, IconVeganMealSelector } from "@/components/icons"
 import { Button, Checkbox, Input, Spinner, StatusMessage, Text } from "@/components/ui"
 import { useAuthStore } from "@/stores/auth"
 import { useToastStore } from "@/stores/toast"
 import { css } from "@/styled-system/css"
 import { Box, Flex } from "@/styled-system/jsx"
-import type { Meal } from "@/types"
+import type { Feedback, Meal } from "@/types"
 
 type MealForm = {
   description: string
@@ -24,11 +24,11 @@ const emptyForm: MealForm = { description: "", price: "", discount: "", is_veget
 export const MealDetailsPage = () => {
   const { id } = useParams({ strict: false }) as { id: string }
   const navigate = useNavigate()
+  const intl = useIntl()
   const mealId = Number(id)
 
   const { token } = useAuthStore()
   const addToast = useToastStore((s) => s.addToast)
-  const intl = useIntl()
 
   const [form, setForm] = useState<MealForm>(emptyForm)
   const [savedForm, setSavedForm] = useState<MealForm | null>(null)
@@ -39,7 +39,16 @@ export const MealDetailsPage = () => {
     (url: string) => getJson<{ meal: Meal }>(url),
   )
 
+  const { data: feedbackData, isLoading: feedbackLoading } = useSWR<{ feedback: Feedback[] }>(
+    token && mealId ? mealFeedbackById(mealId) : null,
+    (url: string) => getJson<{ feedback: Feedback[] }>(url),
+  )
+
   const mealData = data?.meal
+  const sortedFeedback =
+    feedbackData?.feedback?.sort(
+      (a, b) => new Date(b.created_at * 1000).getTime() - new Date(a.created_at * 1000).getTime(),
+    ) ?? []
 
   useEffect(() => {
     setForm(emptyForm)
@@ -110,7 +119,6 @@ export const MealDetailsPage = () => {
           <FormattedMessage id="mealDetails.backToCatalog" />
         </Link>
       </Box>
-
       <Box
         display="flex"
         flexDirection="column"
@@ -126,7 +134,6 @@ export const MealDetailsPage = () => {
           <FormattedMessage id="mealDetails.updateDetails" />
         </Text>
       </Box>
-
       {isLoading ? (
         <Flex justify="center" py="6xl">
           <Spinner />
@@ -331,6 +338,85 @@ export const MealDetailsPage = () => {
           </Flex>
         </Box>
       )}
+      {feedbackLoading ? (
+        <Flex justify="center" py="2xl" w="100%">
+          <Spinner />
+        </Flex>
+      ) : sortedFeedback.length > 0 ? (
+        <Box w="100%" display="flex" flexDirection="column" gap="lg" py="lg">
+          <Text textStyle="display.large" color="neutrals.nLv1">
+            Recent Feedback
+          </Text>
+
+          <Box maxH="400px" overflowY="auto" display="flex" flexDirection="column" gap="lg" pr="sm">
+            {sortedFeedback.map((review) => {
+              const reviewDate = new Date(review.created_at * 1000)
+              const formattedDate = intl.formatDate(reviewDate, {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })
+
+              return (
+                <Box
+                  key={review.id}
+                  bg="surface.s1"
+                  borderRadius="lg"
+                  p="lg"
+                  display="flex"
+                  flexDirection="column"
+                  gap="lg"
+                >
+                  <Flex justify="space-between" align="flex-start" gap="lg">
+                    <Flex direction="column" gap="sm" flex="1">
+                      <Text textStyle="display.small" color="neutrals.nLv1">
+                        {review.user_display_name}
+                      </Text>
+                      <Text textStyle="body.medium" color="neutrals.nLv1">
+                        {review.message}
+                      </Text>
+                    </Flex>
+                    <Box
+                      display="flex"
+                      borderRadius="xl"
+                      gap="xs"
+                      py="xs"
+                      pl="sm"
+                      pr="md"
+                      backgroundColor="surface.s2"
+                      alignItems="center"
+                    >
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>Star Rating</title>
+                        <path
+                          d="M11.9996 16.689L8.10939 19.035C7.96439 19.1196 7.81914 19.1552 7.67364 19.1417C7.52814 19.1282 7.39648 19.0792 7.27864 18.9947C7.16064 18.9101 7.06956 18.7995 7.00539 18.663C6.94139 18.5265 6.93114 18.3755 6.97464 18.21L8.00739 13.7927L4.57289 10.8197C4.44456 10.7082 4.36281 10.5791 4.32764 10.4322C4.29231 10.2854 4.30156 10.1427 4.35539 10.0042C4.40923 9.86589 4.48681 9.75281 4.58814 9.66498C4.68948 9.57714 4.82798 9.51973 5.00364 9.49273L9.53614 9.09673L11.2959 4.92548C11.3599 4.77031 11.457 4.65556 11.5871 4.58123C11.7173 4.50689 11.8548 4.46973 11.9996 4.46973C12.1445 4.46973 12.282 4.50689 12.4121 4.58123C12.5423 4.65556 12.6394 4.77031 12.7034 4.92548L14.4631 9.09673L18.9956 9.49273C19.1713 9.51973 19.3098 9.57714 19.4111 9.66498C19.5125 9.75281 19.5901 9.86589 19.6439 10.0042C19.6977 10.1427 19.707 10.2854 19.6716 10.4322C19.6365 10.5791 19.5547 10.7082 19.4264 10.8197L15.9919 13.7927L17.0246 18.21C17.0681 18.3755 17.0579 18.5265 16.9939 18.663C16.9297 18.7995 16.8386 18.9101 16.7206 18.9947C16.6028 19.0792 16.4711 19.1282 16.3256 19.1417C16.1801 19.1552 16.0349 19.1196 15.8899 19.035L11.9996 16.689Z"
+                          fill="#C7921F"
+                        />
+                      </svg>
+
+                      <Text textStyle="display.small" color="neutrals.nLv1">
+                        {review.rating}
+                      </Text>
+                    </Box>
+                  </Flex>
+
+                  {review.message && (
+                    <Text textStyle="body.small" color="neutrals.nLv3">
+                      {formattedDate}
+                    </Text>
+                  )}
+                </Box>
+              )
+            })}
+          </Box>
+        </Box>
+      ) : null}{" "}
     </Box>
   )
 }

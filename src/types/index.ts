@@ -1,3 +1,4 @@
+export type { Feedback, FeedbackResponse } from "./feedback"
 export type { CreateMealPayload, DayMeal, Meal, Meals } from "./meal"
 export type { MealOptions } from "./mealOptions"
 export type { Plan, PlanDay } from "./mealPlan"

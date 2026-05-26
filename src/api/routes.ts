@@ -10,3 +10,5 @@ export const orderByPlanId = (planId: number) => `/user-order?planId=${planId}`
 export const planById = (id: number) => `/plans/${id}`
 export const users = () => `/users`
 export const transfer = () => `/transfer`
+export const mealFeedback = () => `/feedback`
+export const mealFeedbackById = (id: number) => `/meals/${id}/feedback`
