@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useIntl } from "react-intl"
 import { requestJson } from "@/api/http-client"
 import { planById } from "@/api/routes"
 import { useToastStore } from "@/stores/toast"
@@ -19,6 +20,7 @@ export const usePlanActions = (
   const [isSaving, setIsSaving] = useState(false)
 
   const addToast = useToastStore((s) => s.addToast)
+  const intl = useIntl()
 
   useEffect(() => {
     setEditedMeals(getMealIds(plan))
@@ -30,9 +32,9 @@ export const usePlanActions = (
       await requestJson("DELETE", planById(plan.id))
       await onMutate()
       setShowConfirm(false)
-      addToast("Plan deleted successfully.", "success")
+      addToast(intl.formatMessage({ id: "toast.planDeleted" }), "success")
     } catch {
-      addToast("Failed to delete plan. Please try again.", "error")
+      addToast(intl.formatMessage({ id: "toast.planDeleteFailed" }), "error")
     } finally {
       setIsDeleting(false)
     }
@@ -49,9 +51,9 @@ export const usePlanActions = (
       })
       await onMutate()
       setIsEditing(false)
-      addToast("Plan updated successfully.", "success")
+      addToast(intl.formatMessage({ id: "toast.planUpdated" }), "success")
     } catch {
-      addToast("Failed to save changes. Please try again.", "error")
+      addToast(intl.formatMessage({ id: "toast.planSaveFailed" }), "error")
     } finally {
       setIsSaving(false)
     }

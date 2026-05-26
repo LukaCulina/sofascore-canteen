@@ -1,5 +1,6 @@
 import { useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 import { postJson } from "@/api/http-client"
 import { login } from "@/api/routes"
 import { IconEmail, IconGoogle, IconSofascore } from "@/components/icons"
@@ -16,6 +17,7 @@ export const Login = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const navigate = useNavigate()
+  const intl = useIntl()
 
   const { setAuth } = useAuthStore()
 
@@ -60,15 +62,19 @@ export const Login = () => {
             <IconSofascore />
           </Box>
           <LabelGroup>
-            <H1 textStyle="display.large">Welcome to Canteen</H1>
-            <P textStyle="body.medium">Sign in to order your meals</P>
+            <H1 textStyle="display.large">
+              <FormattedMessage id="login.welcome" />
+            </H1>
+            <P textStyle="body.medium">
+              <FormattedMessage id="login.subtitle" />
+            </P>
           </LabelGroup>
         </Header>
 
         <Form>
           <VStack gap="lg" w="full" alignItems="stretch">
             <Input
-              label="Email"
+              label={intl.formatMessage({ id: "login.email" })}
               name="email"
               type="email"
               required
@@ -78,14 +84,14 @@ export const Login = () => {
             <Input
               name="password"
               type="password"
-              label="Password"
+              label={intl.formatMessage({ id: "login.password" })}
               required
               value={password}
               onChange={(value) => setPassword(value)}
             />
             <Button variant="primary" type="button" onClick={handleLogin} disabled={isSubmitting}>
               <IconEmail />
-              Sign In
+              <FormattedMessage id="login.signIn" />
             </Button>
           </VStack>
         </Form>
@@ -93,7 +99,7 @@ export const Login = () => {
         <HStack role="separator" px="lg" py="sm" w="full" gap="lg" alignItems="center" my="lg">
           <Box flex="1" h="1px" bg="neutrals.nLv4" />
           <Text textStyle="body.medium" color="neutrals.nLv3" flexShrink={0}>
-            or continue with
+            <FormattedMessage id="login.orContinueWith" />
           </Text>
           <Box flex="1" h="1px" bg="neutrals.nLv4" />
         </HStack>
@@ -101,17 +107,26 @@ export const Login = () => {
         <Box px="lg" pb="lg" w="full">
           <Button variant="outline">
             <IconGoogle />
-            Google
+            <FormattedMessage id="login.google" />
           </Button>
         </Box>
 
         <Footer>
-          By continuing, you agree to our{" "}
-          <Anchor href="https://www.sofascore.com/en-us/privacy-policy">Terms of Service</Anchor>{" "}
-          and{" "}
-          <Anchor href="https://www.sofascore.com/en-us/terms-and-conditions">
-            Privacy Policy
-          </Anchor>
+          <FormattedMessage
+            id="login.footer"
+            values={{
+              terms: (
+                <Anchor href="https://www.sofascore.com/en-us/privacy-policy">
+                  <FormattedMessage id="login.termsOfService" />
+                </Anchor>
+              ),
+              privacy: (
+                <Anchor href="https://www.sofascore.com/en-us/terms-and-conditions">
+                  <FormattedMessage id="login.privacyPolicy" />
+                </Anchor>
+              ),
+            }}
+          />
         </Footer>
       </VStack>
     </Center>

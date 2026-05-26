@@ -1,3 +1,4 @@
+import { FormattedMessage } from "react-intl"
 import { IconVeganMealSelector } from "@/components/icons"
 import { Badge, Text } from "@/components/ui"
 import { css } from "@/styled-system/css"
@@ -47,7 +48,7 @@ export const MealCard = ({ meal }: { meal: Meal }) => {
               <IconVeganMealSelector fill="surface.s1" />
             </Flex>
             <Text textStyle="assistive.default" color="surface.s1">
-              Vegetarian
+              <FormattedMessage id="common.vegetarian" />
             </Text>
           </Flex>
         )}
@@ -81,7 +82,11 @@ export const MealCard = ({ meal }: { meal: Meal }) => {
             )}
           </Flex>
 
-          {discount > 0 && <Badge>{discount}% off</Badge>}
+          {discount > 0 && (
+            <Badge>
+              <FormattedMessage id="common.discountOff" values={{ discount }} />
+            </Badge>
+          )}
         </Flex>
       </Box>
     </Box>

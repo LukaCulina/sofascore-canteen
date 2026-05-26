@@ -1,3 +1,4 @@
+import { FormattedMessage } from "react-intl"
 import { Button } from "@/components/ui/Button"
 import { Text } from "@/components/ui/Text"
 import { Flex } from "@/styled-system/jsx"
@@ -22,11 +23,11 @@ export const PlannerFooter = ({ isSubmitEnabled, onSubmit }: PlannerFooterProps)
     >
       {!isSubmitEnabled && (
         <Text textStyle="body.small" color="neutrals.nLv3">
-          Select at least one meal for each day
+          <FormattedMessage id="planner.selectAtLeastOneMeal" />
         </Text>
       )}
       <Button onClick={onSubmit} disabled={!isSubmitEnabled} w="auto" ml="auto">
-        Create Menu Plan
+        <FormattedMessage id="planner.createMenuPlan" />
       </Button>
     </Flex>
   )

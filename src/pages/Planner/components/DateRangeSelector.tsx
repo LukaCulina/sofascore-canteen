@@ -1,3 +1,4 @@
+import { FormattedMessage, useIntl } from "react-intl"
 import { IconPlanner } from "@/components/icons"
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
@@ -25,14 +26,16 @@ export const DateRangeSelector = ({
   onClear,
   overlapError,
 }: DateRangeSelectorProps) => {
+  const intl = useIntl()
+
   return (
     <Box minW={{ base: "100%", md: "388px" }} p="lg">
       <Text textStyle="display.medium" color="neutrals.nLv1" mb="md" display="block">
-        Select Date Range
+        <FormattedMessage id="planner.selectDateRange" />
       </Text>
       <Flex direction="column" gap="lg">
         <Input
-          label="Start date"
+          label={intl.formatMessage({ id: "planner.startDate" })}
           type="date"
           name="startDate"
           value={startDate}
@@ -42,7 +45,7 @@ export const DateRangeSelector = ({
           endAdornment={<IconPlanner fill="neutrals.nLv1" />}
         />
         <Input
-          label="End date"
+          label={intl.formatMessage({ id: "planner.endDate" })}
           type="date"
           name="endDate"
           value={endDate}
@@ -58,7 +61,7 @@ export const DateRangeSelector = ({
         )}
         {hasDateRange && (
           <Button variant="outline" onClick={onClear}>
-            Clear dates
+            <FormattedMessage id="planner.clearDates" />
           </Button>
         )}
         {overlapError && (

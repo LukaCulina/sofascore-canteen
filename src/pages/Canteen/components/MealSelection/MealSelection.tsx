@@ -1,4 +1,5 @@
 import { type Dispatch, memo, useCallback } from "react"
+import { useIntl } from "react-intl"
 import { DateItem } from "@/pages/Canteen/components/MealSelection/DateItem.tsx"
 import { MealItem } from "@/pages/Canteen/components/MealSelection/MealItem"
 import type { MealSelectionAction } from "@/pages/Canteen/mealSelectionReducer.ts"
@@ -17,6 +18,7 @@ export const MealSelection = memo(function MealSelection({
   dispatch,
   isLocked,
 }: Readonly<MealSelectionProps>) {
+  const intl = useIntl()
   const handleMealChange = useCallback(
     (mealId: number | null) => {
       dispatch({ type: "SET_SELECTION", payload: { planDayId: item.id, mealId } })
@@ -41,8 +43,8 @@ export const MealSelection = memo(function MealSelection({
         />
       ))}
       <MealItem
-        title="No Meal"
-        description="Opt-out for this day"
+        title={intl.formatMessage({ id: "mealSelection.noMeal" })}
+        description={intl.formatMessage({ id: "mealSelection.optOut" })}
         isNoMeal={true}
         onChange={handleMealChange}
         mealId={null}

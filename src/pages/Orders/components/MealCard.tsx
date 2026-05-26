@@ -1,4 +1,4 @@
-import { useIntl } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 import { Badge, Button, P, Text } from "@/components/ui"
 import { Box, Flex } from "@/styled-system/jsx"
 import type { OrderSelection } from "@/types"
@@ -34,7 +34,11 @@ export const MealCard = ({ selection, unpaid }: MealCardProps) => {
     >
       <Flex align="center" gap="sm">
         <GreyText>{formattedMealDate}</GreyText>
-        {unpaid && <Badge>Not Paid</Badge>}
+        {unpaid && (
+          <Badge>
+            <FormattedMessage id="orders.notPaid" />
+          </Badge>
+        )}
       </Flex>
       <Box>
         <P textStyle="display.small">{meal.description}</P>
@@ -42,7 +46,7 @@ export const MealCard = ({ selection, unpaid }: MealCardProps) => {
       </Box>
       <Button variant="outline" px="md" width="fit-content">
         <Text textStyle="assistive.default" color="primary.default">
-          Leave Feedback
+          <FormattedMessage id="orders.leaveFeedback" />
         </Text>
       </Button>
     </Flex>

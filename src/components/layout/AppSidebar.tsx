@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router"
+import { FormattedMessage, useIntl } from "react-intl"
 import { IconMealCatalog, IconPlans, IconSofascore } from "@/components/icons"
 import { Text } from "@/components/ui/Text"
 import { Role, useAuthStore } from "@/stores/auth"
@@ -12,21 +13,26 @@ import * as S from "./AppSidebar.styles"
 interface NavItem {
   to: string
   icon: React.FunctionComponent<IconProps>
-  label: string
+  labelId: string
   roles?: Role[]
 }
 
 const navItems: NavItem[] = [
-  { to: "/", icon: IconCanteen, label: "Canteen" },
-  { to: "/planner", icon: IconPlanner, label: "Planner", roles: [Role.ADMIN, Role.CATERING] },
+  { to: "/", icon: IconCanteen, labelId: "nav.canteen" },
+  { to: "/planner", icon: IconPlanner, labelId: "nav.planner", roles: [Role.ADMIN, Role.CATERING] },
   {
     to: "/catering/catalog",
     icon: IconMealCatalog,
-    label: "Meal Catalog",
+    labelId: "nav.mealCatalog",
     roles: [Role.CATERING, Role.ADMIN],
   },
-  { to: "/my-plans", icon: IconPlans, label: "My Plans", roles: [Role.CATERING] },
-  { to: "/orders", icon: IconOrders, label: "My Orders", roles: [Role.EMPLOYEE, Role.CATERING] },
+  { to: "/my-plans", icon: IconPlans, labelId: "nav.myPlans", roles: [Role.CATERING] },
+  {
+    to: "/orders",
+    icon: IconOrders,
+    labelId: "nav.myOrders",
+    roles: [Role.EMPLOYEE, Role.CATERING],
+  },
 ] as const
 
 interface AppSidebarProps {
@@ -38,6 +44,7 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
   const user = useAuthStore((s) => s.user)
   const logout = useAuthStore((s) => s.logout)
   const navigate = useNavigate()
+  const intl = useIntl()
 
   const handleLogout = () => {
     logout()
@@ -73,14 +80,14 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
             <IconSofascore />
           </Box>
           <Text textStyle="display.large" color="neutrals.nLv1">
-            Canteen
+            <FormattedMessage id="nav.canteen" />
           </Text>
         </Flex>
 
         {/* Nav Items */}
         <Box flex="1" p="lg" overflow="auto">
           <S.SidebarNavigationList>
-            {visibleNavItems.map(({ to, icon: Icon, label }) => (
+            {visibleNavItems.map(({ to, icon: Icon, labelId }) => (
               <li key={to}>
                 <Link
                   to={to}
@@ -99,7 +106,7 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
                         textStyle="display.small"
                         color={isActive ? "primary.default" : "neutrals.nLv1"}
                       >
-                        {label}
+                        {intl.formatMessage({ id: labelId })}
                       </Text>
                     </Flex>
                   )}
@@ -118,7 +125,7 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
                 <Flex align="center" justify="center" w="xl" h="xl">
                   <IconLogout />
                 </Flex>
-                Log out
+                <FormattedMessage id="nav.logout" />
               </button>
             </li>
           </S.SidebarNavigationList>
@@ -136,7 +143,7 @@ export const AppSidebar = ({ isOpen, onClose }: AppSidebarProps) => {
             py="sm"
           >
             <Text textStyle="assistive.default" color="neutrals.nLv3" display="block">
-              Logged as
+              <FormattedMessage id="nav.loggedAs" />
             </Text>
             <Text textStyle="display.small" color="neutrals.nLv1" display="block">
               {user!.email}

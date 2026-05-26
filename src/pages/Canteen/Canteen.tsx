@@ -1,4 +1,4 @@
-import { useIntl } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 import useSWR from "swr"
 import { getJson } from "@/api/http-client.ts"
 import { order } from "@/api/routes.ts"
@@ -61,7 +61,9 @@ export const CanteenPage = () => {
   if (error || !data)
     return (
       <Flex justify="center" align="center" py="6xl">
-        <StatusMessage variant="error">Failed to load meal options</StatusMessage>
+        <StatusMessage variant="error">
+          <FormattedMessage id="canteen.failedToLoadMealOptions" />
+        </StatusMessage>
       </Flex>
     )
 
@@ -69,9 +71,17 @@ export const CanteenPage = () => {
     <Flex direction="column" gap="xl">
       <Flex direction="column" gap="lg">
         <Text textStyle="display.extraLarge">
-          {`Week of ${formatTitleDate(data.plan.period_start)} - ${formatTitleDate(data.plan.period_end)}`}
+          <FormattedMessage
+            id="canteen.weekOf"
+            values={{
+              start: formatTitleDate(data.plan.period_start),
+              end: formatTitleDate(data.plan.period_end),
+            }}
+          />
         </Text>
-        <Text textStyle="body.large">Choose your meals for the upcoming work week.</Text>
+        <Text textStyle="body.large">
+          <FormattedMessage id="canteen.chooseMeals" />
+        </Text>
       </Flex>
 
       {data.order && !isEditingOrder ? (
@@ -90,7 +100,11 @@ export const CanteenPage = () => {
           initialSelections={isEditingOrder ? editSelectionsSnapshot : undefined}
           onSubmit={handleSubmit}
           isSubmitting={isCreating || isUpdating}
-          submitLabel={isEditingOrder ? "Save changes" : "Submit"}
+          submitLabel={
+            isEditingOrder
+              ? intl.formatMessage({ id: "canteen.saveChanges" })
+              : intl.formatMessage({ id: "canteen.submit" })
+          }
           onCancel={isEditingOrder ? closeEditMode : undefined}
           lockedDays={isEditingOrder ? lockedDays : undefined}
         />

@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { debounce } from "lodash"
 import { useEffect, useMemo, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 import { IconArrowDown, IconArrowUp, IconClear, IconSearch } from "@/components/icons"
 import { Checkbox, Input, Text } from "@/components/ui"
 import { Box, Flex } from "@/styled-system/jsx"
@@ -19,6 +20,7 @@ interface MealFiltersProps {
 export const MealFilters = ({ filters, onSearchChange, onFiltersChange }: MealFiltersProps) => {
   const [inputValue, setInputValue] = useState("")
   const [isOpen, setIsOpen] = useState(false)
+  const intl = useIntl()
 
   const debouncedSearch = useMemo(
     () =>
@@ -75,7 +77,7 @@ export const MealFilters = ({ filters, onSearchChange, onFiltersChange }: MealFi
         flex="1"
         w={{ base: "100%", md: "auto" }}
         name="meal-search"
-        placeholder="Search meals by name"
+        placeholder={intl.formatMessage({ id: "mealCatalog.searchByName" })}
         value={inputValue}
         onChange={handleInput}
         startAdornment={
@@ -110,7 +112,9 @@ export const MealFilters = ({ filters, onSearchChange, onFiltersChange }: MealFi
           onClick={() => setIsOpen((prev) => !prev)}
         >
           <Flex alignItems="center" gap="sm" cursor="pointer">
-            <Text textStyle="body.large">Type</Text>
+            <Text textStyle="body.large">
+              <FormattedMessage id="mealCatalog.type" />
+            </Text>
             {isOpen ? <IconArrowUp /> : <IconArrowDown />}
           </Flex>
         </button>
@@ -148,13 +152,13 @@ export const MealFilters = ({ filters, onSearchChange, onFiltersChange }: MealFi
                 <Checkbox
                   checked={filters.vegetarian}
                   onChange={() => handleFilters("vegetarian")}
-                  label="Vegetarian"
+                  label={intl.formatMessage({ id: "mealCatalog.vegetarian" })}
                   labelStyle="body.medium"
                 />
                 <Checkbox
                   checked={filters.nonVegetarian}
                   onChange={() => handleFilters("nonVegetarian")}
-                  label="Non-Vegetarian"
+                  label={intl.formatMessage({ id: "mealCatalog.nonVegetarian" })}
                   labelStyle="body.medium"
                 />
               </Flex>

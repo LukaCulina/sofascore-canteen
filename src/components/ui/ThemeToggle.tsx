@@ -1,3 +1,4 @@
+import { useIntl } from "react-intl"
 import { IconMoon, IconSun } from "@/components/icons"
 import { useThemeStore } from "@/stores/theme"
 import { styled } from "@/styled-system/jsx"
@@ -28,6 +29,7 @@ const ToggleButton = styled("button", {
 export const ThemeToggle = () => {
   const theme = useThemeStore((s) => s.theme)
   const toggleTheme = useThemeStore((s) => s.toggleTheme)
+  const intl = useIntl()
 
   const isDark = theme === "dark"
 
@@ -35,7 +37,11 @@ export const ThemeToggle = () => {
     <ToggleButton
       type="button"
       onClick={toggleTheme}
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-label={
+        isDark
+          ? intl.formatMessage({ id: "theme.switchToLight" })
+          : intl.formatMessage({ id: "theme.switchToDark" })
+      }
     >
       {isDark ? (
         <IconSun fill="neutrals.nLv1" aria-hidden="true" />

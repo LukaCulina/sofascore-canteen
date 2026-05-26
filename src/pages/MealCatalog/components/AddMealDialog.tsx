@@ -1,5 +1,6 @@
 import { useFormikContext } from "formik"
 import { useId } from "react"
+import { FormattedMessage } from "react-intl"
 import { Dialog } from "@/components/dialog"
 import { Spinner } from "@/components/ui"
 import { Button } from "@/components/ui/Button"
@@ -22,16 +23,16 @@ const AddMealDialogFooter = ({
   return (
     <Flex gap="lg" w="full">
       <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
-        Cancel
+        <FormattedMessage id="addMeal.cancel" />
       </Button>
       <Button type="submit" disabled={isSubmitting || !dirty || !isValid}>
         {isSubmitting ? (
           <Flex alignItems="center" gap="sm">
             <Spinner size="sm" />
-            Adding...
+            <FormattedMessage id="addMeal.adding" />
           </Flex>
         ) : (
-          "Add Meal"
+          <FormattedMessage id="addMeal.addMeal" />
         )}
       </Button>
     </Flex>
@@ -60,7 +61,9 @@ export const AddMealDialog = ({ onClose }: AddMealDialogProps) => {
       <form onSubmit={formik.handleSubmit} aria-busy={formik.isSubmitting}>
         <Dialog.Header>
           <Dialog.Title>
-            <span id={dialogTitleId}>Add New Meal</span>
+            <span id={dialogTitleId}>
+              <FormattedMessage id="addMeal.title" />
+            </span>
           </Dialog.Title>
         </Dialog.Header>
         <Dialog.Content>

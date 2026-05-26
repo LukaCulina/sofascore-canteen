@@ -1,4 +1,5 @@
 import { useFormikContext } from "formik"
+import { FormattedMessage, useIntl } from "react-intl"
 import { Button, Checkbox, Input, Text } from "@/components/ui"
 import { css } from "@/styled-system/css"
 import { Box, Flex } from "@/styled-system/jsx"
@@ -13,14 +14,15 @@ export interface AddMealFormValues {
 export const AddMealForm = () => {
   const { values, touched, errors, setFieldValue, setFieldTouched } =
     useFormikContext<AddMealFormValues>()
+  const intl = useIntl()
 
   return (
     <Flex direction="column" gap="lg">
       <Box>
         <Input
           name="name"
-          label="Meal Name"
-          placeholder="e.g. Grilled Chicken Salad"
+          label={intl.formatMessage({ id: "addMeal.mealName" })}
+          placeholder={intl.formatMessage({ id: "addMeal.mealNamePlaceholder" })}
           value={values.name}
           required
           onChange={(value) => setFieldValue("name", value)}
@@ -36,8 +38,8 @@ export const AddMealForm = () => {
       <Box>
         <Input
           name="price"
-          label="Price"
-          placeholder="0,00"
+          label={intl.formatMessage({ id: "addMeal.price" })}
+          placeholder={intl.formatMessage({ id: "addMeal.pricePlaceholder" })}
           type="number"
           step="0.01"
           value={values.price}
@@ -55,7 +57,7 @@ export const AddMealForm = () => {
       <Flex py="lg" alignItems="center" gap="sm">
         <Checkbox
           name="isVegetarian"
-          label="Vegetarian"
+          label={intl.formatMessage({ id: "addMeal.vegetarian" })}
           checked={values.isVegetarian}
           variant="primary"
           onChange={(checked) => setFieldValue("isVegetarian", checked)}
@@ -64,7 +66,7 @@ export const AddMealForm = () => {
 
       <Flex direction="column" pb="lg" gap="lg">
         <Text textStyle="assistive.default" color="neutrals.nLv1">
-          Upload image
+          <FormattedMessage id="addMeal.uploadImage" />
         </Text>
         <Flex
           gap="sm"
@@ -80,23 +82,23 @@ export const AddMealForm = () => {
             disabled
             w="fit-content"
           >
-            Choose file
+            <FormattedMessage id="addMeal.chooseFile" />
           </Button>
           <input type="file" disabled className={css({ display: "none" })} />
         </Flex>
         <Text textStyle="assistive.default" color="neutrals.nLv1">
-          or paste URL below
+          <FormattedMessage id="addMeal.orPasteUrl" />
         </Text>
         <Input
           name="imageUrl"
-          label="Image URL"
+          label={intl.formatMessage({ id: "addMeal.imageUrl" })}
           placeholder="https://"
           value={values.imageUrl}
           onChange={(value) => setFieldValue("imageUrl", value)}
           onBlur={() => setFieldTouched("imageUrl", true)}
         />
         <Text textStyle="assistive.default" color="neutrals.nLv3">
-          Leave empty for no image.
+          <FormattedMessage id="addMeal.leaveEmpty" />
         </Text>
       </Flex>
     </Flex>

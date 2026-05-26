@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 import { Dialog } from "@/components/dialog"
 import { Spinner, StatusMessage, Text } from "@/components/ui"
 import { Button } from "@/components/ui/Button"
@@ -24,6 +25,7 @@ export function TransferMealDialog({
   onCancel,
 }: Readonly<TransferMealDialogProps>) {
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const intl = useIntl()
 
   const items = useMemo(
     () =>
@@ -37,12 +39,16 @@ export function TransferMealDialog({
   return (
     <Dialog.Root onClose={isTransferring ? () => {} : onCancel}>
       <Dialog.Header>
-        <Dialog.Title>Transfer meal</Dialog.Title>
+        <Dialog.Title>
+          <FormattedMessage id="transferMeal.title" />
+        </Dialog.Title>
       </Dialog.Header>
 
       <Dialog.Content>
         <Flex direction="column" gap="md">
-          <Text textStyle="display.small">Who should receive your meal?</Text>
+          <Text textStyle="display.small">
+            <FormattedMessage id="transferMeal.question" />
+          </Text>
 
           {isLoadingUsers ? (
             <Flex justify="center" py="md">
@@ -50,7 +56,7 @@ export function TransferMealDialog({
             </Flex>
           ) : hasUsersError ? (
             <StatusMessage variant="error">
-              Failed to load employees. Please try again.
+              <FormattedMessage id="transferMeal.failedToLoadEmployees" />
             </StatusMessage>
           ) : (
             <SearchBar
@@ -63,7 +69,7 @@ export function TransferMealDialog({
                     }
                   : null
               }
-              placeholder="Search employees"
+              placeholder={intl.formatMessage({ id: "transferMeal.searchEmployees" })}
               onChange={(item) => {
                 const user = users.find((u) => u.id === item?.id)
                 setSelectedUser(user || null)
@@ -76,7 +82,7 @@ export function TransferMealDialog({
       <Dialog.Footer>
         <Flex justifyContent="flex-end" gap="md">
           <Button variant="outline" onClick={onCancel} disabled={isTransferring}>
-            Cancel
+            <FormattedMessage id="dialog.cancel" />
           </Button>
 
           <Button
@@ -87,10 +93,10 @@ export function TransferMealDialog({
             {isTransferring ? (
               <Flex gap="sm" alignItems="center">
                 <Spinner size="sm" />
-                Transferring...
+                <FormattedMessage id="transferMeal.transferring" />
               </Flex>
             ) : (
-              "Confirm"
+              <FormattedMessage id="dialog.confirm" />
             )}
           </Button>
         </Flex>

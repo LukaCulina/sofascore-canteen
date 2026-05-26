@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useMemo, useRef, useState } from "react"
+import { FormattedMessage } from "react-intl"
 import { IconClear, IconSearch } from "@/components/icons"
 import { Button, Input, StatusMessage } from "@/components/ui"
 import { Box, Flex } from "@/styled-system/jsx"
@@ -129,7 +130,7 @@ export const SearchBar = ({
                 ))
               ) : (
                 <StatusMessage variant="info" size="md">
-                  No results found
+                  <FormattedMessage id="search.noResults" />
                 </StatusMessage>
               )}
             </Box>

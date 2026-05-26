@@ -1,5 +1,6 @@
 import { useNavigate } from "@tanstack/react-router"
 import { useMemo, useState } from "react"
+import { FormattedMessage } from "react-intl"
 import useSWR from "swr"
 import { getJson } from "@/api/http-client"
 import { meals as mealsRoute } from "@/api/routes"
@@ -60,10 +61,14 @@ export const MealCatalogPage = () => {
             <Flex align="center" justify="center" w="2xl" h="2xl">
               <IconMealCatalog width={32} height={32} />
             </Flex>
-            <H1 fontSize="28px">Meal Catalog</H1>
+            <H1 fontSize="28px">
+              <FormattedMessage id="mealCatalog.title" />
+            </H1>
           </Flex>
 
-          <P textStyle="body.large">Browse all available meals in the catalog.</P>
+          <P textStyle="body.large">
+            <FormattedMessage id="mealCatalog.subtitle" />
+          </P>
         </Flex>
 
         <Button
@@ -73,7 +78,7 @@ export const MealCatalogPage = () => {
           }}
         >
           <IconPlus width={13} height={13} />
-          Add New Meal
+          <FormattedMessage id="mealCatalog.addNewMeal" />
         </Button>
       </Flex>
 
@@ -85,15 +90,21 @@ export const MealCatalogPage = () => {
         </Flex>
       ) : error ? (
         <Flex justify="center" align="center" py="6xl">
-          <StatusMessage variant="error">Failed to load meals</StatusMessage>
+          <StatusMessage variant="error">
+            <FormattedMessage id="mealCatalog.failedToLoadMeals" />
+          </StatusMessage>
         </Flex>
       ) : meals.length === 0 ? (
         <Flex justify="center" align="center" py="6xl">
-          <StatusMessage variant="info">No meals available</StatusMessage>
+          <StatusMessage variant="info">
+            <FormattedMessage id="mealCatalog.noMealsAvailable" />
+          </StatusMessage>
         </Flex>
       ) : filteredMeals.length === 0 ? (
         <Flex justify="center" align="center" py="6xl">
-          <StatusMessage variant="info">No meals match your search</StatusMessage>
+          <StatusMessage variant="info">
+            <FormattedMessage id="mealCatalog.noMealsMatch" />
+          </StatusMessage>
         </Flex>
       ) : (
         <Grid

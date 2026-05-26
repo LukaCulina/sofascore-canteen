@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 import { postJson } from "@/api/http-client"
 import { plans } from "@/api/routes"
 import { IconPlanner } from "@/components/icons"
@@ -26,16 +27,6 @@ const getDaysBetween = (start: string, end: string) => {
   return Math.floor((endMs - startMs) / (1000 * 60 * 60 * 24)) + 1
 }
 
-const validateRange = (start: string, end: string) => {
-  if (!start || !end) return ""
-  const startMs = new Date(start).getTime()
-  const endMs = new Date(end).getTime()
-  if (endMs < startMs) return "End date cannot be before start date."
-  const days = getDaysBetween(start, end)
-  if (days > MAX_DAYS) return "Selected period cannot be longer than 5 days."
-  return ""
-}
-
 const getDateRange = (start: string, end: string): string[] => {
   if (!start || !end) return []
   const dates: string[] = []
@@ -54,6 +45,18 @@ export const Planner = () => {
   const [error, setError] = useState("")
   const [selectedMeals, setSelectedMeals] = useState<Record<string, number[]>>({})
   const addToast = useToastStore((s) => s.addToast)
+  const intl = useIntl()
+
+  const validateRange = (start: string, end: string) => {
+    if (!start || !end) return ""
+    const startMs = new Date(start).getTime()
+    const endMs = new Date(end).getTime()
+    if (endMs < startMs) return intl.formatMessage({ id: "planner.endBeforeStart" })
+    const days = getDaysBetween(start, end)
+    if (days > MAX_DAYS) return intl.formatMessage({ id: "planner.periodTooLong" })
+    return ""
+  }
+
   const dateRange = startDate && endDate && !error ? getDateRange(startDate, endDate) : []
   const { meals, isLoading, error: mealsError } = useMeals(dateRange.length > 0)
 
@@ -114,10 +117,10 @@ export const Planner = () => {
 
     try {
       await postJson(plans(), body)
-      addToast("Plan created successfully.", "success")
+      addToast(intl.formatMessage({ id: "toast.planCreated" }), "success")
       handleClear()
     } catch {
-      addToast("Failed to create plan. Please try again.", "error")
+      addToast(intl.formatMessage({ id: "toast.planCreateFailed" }), "error")
     }
   }
 
@@ -134,13 +137,13 @@ export const Planner = () => {
           onStartDateChange={handleStartDate}
           onEndDateChange={handleEndDate}
           onClear={handleClear}
-          overlapError={hasOverlap ? "A plan already exists for the selected dates." : ""}
+          overlapError={hasOverlap ? intl.formatMessage({ id: "planner.overlapError" }) : ""}
         />
 
         {/* Right — Meals */}
         <Flex flex="1" p="lg" w={{ base: "100%", md: "auto" }} direction="column">
           <Text textStyle="display.medium" color="neutrals.nLv1" mb="md" display="block">
-            Select meals for each day
+            <FormattedMessage id="planner.selectMealsForEachDay" />
           </Text>
 
           {isLoading ? (
@@ -149,7 +152,9 @@ export const Planner = () => {
             </Flex>
           ) : mealsError ? (
             <Flex justify="center" align="center" py="6xl">
-              <StatusMessage variant="error">Failed to load meals.</StatusMessage>
+              <StatusMessage variant="error">
+                <FormattedMessage id="planner.failedToLoadMeals" />
+              </StatusMessage>
             </Flex>
           ) : dateRange.length === 0 ? (
             <Flex
@@ -165,7 +170,7 @@ export const Planner = () => {
             >
               <IconPlanner width="34" height="38" fill="neutrals.nLv3" />
               <Text textStyle="body.medium" color="neutrals.nLv3">
-                Choose a start and end date to plan meals for that range.
+                <FormattedMessage id="planner.chooseDateRange" />
               </Text>
             </Flex>
           ) : (
