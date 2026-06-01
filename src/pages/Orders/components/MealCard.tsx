@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { useIntl } from "react-intl"
 import useSWR from "swr"
 import { getJson, requestJson } from "@/api/http-client"
 import { mealFeedback } from "@/api/routes"
