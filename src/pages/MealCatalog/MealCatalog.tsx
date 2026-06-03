@@ -56,7 +56,7 @@ export const MealCatalogPage = () => {
         align={{ base: "stretch", lg: "center" }}
         gap="lg"
       >
-        <Flex direction="column" gap="sm">
+        <Flex direction="column" gap="lg">
           <Flex align="center" gap="sm">
             <Flex align="center" justify="center" w="2xl" h="2xl">
               <IconMealCatalog width={32} height={32} />
@@ -65,7 +65,6 @@ export const MealCatalogPage = () => {
               <FormattedMessage id="mealCatalog.title" />
             </H1>
           </Flex>
-
           <P textStyle="body.large">
             <FormattedMessage id="mealCatalog.subtitle" />
           </P>
