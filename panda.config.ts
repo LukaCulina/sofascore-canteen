@@ -5,7 +5,7 @@ const textStyles = defineTextStyles({
     extraLarge: {
       value: {
         fontFamily: "SofascoreSans",
-        fontSize: "2xl",
+        fontSize: "28px",
         fontWeight: 700,
         lineHeight: 1.14,
         letterSpacing: "-0.14px",

@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl"
 import { IconPlanner } from "@/components/icons"
 import { Spinner } from "@/components/ui/Spinner"
 import { StatusMessage } from "@/components/ui/StatusMessage"
-import { Text } from "@/components/ui/Text"
+import { H1, Text } from "@/components/ui/Text"
 import { usePlans } from "@/pages/Planner/hooks/usePlans"
 import { css } from "@/styled-system/css"
 import { Flex } from "@/styled-system/jsx"
@@ -21,9 +21,9 @@ export const MyPlans = () => {
       <Flex direction="column" gap="lg">
         <Flex align="center" gap="sm">
           <IconPlanner width="22" height="25" fill="primary.default" />
-          <Text textStyle="display.extraLarge" color="neutrals.nLv1">
+          <H1>
             <FormattedMessage id="myPlans.title" />
-          </Text>
+          </H1>
         </Flex>
         <Text textStyle="body.large" color="neutrals.nLv1">
           <FormattedMessage id="myPlans.subtitle" />

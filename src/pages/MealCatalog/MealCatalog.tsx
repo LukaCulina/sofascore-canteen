@@ -61,7 +61,7 @@ export const MealCatalogPage = () => {
             <Flex align="center" justify="center" w="2xl" h="2xl">
               <IconMealCatalog width={32} height={32} />
             </Flex>
-            <H1 fontSize="28px">
+            <H1>
               <FormattedMessage id="mealCatalog.title" />
             </H1>
           </Flex>

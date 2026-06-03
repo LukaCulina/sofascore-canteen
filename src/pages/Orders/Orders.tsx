@@ -39,7 +39,7 @@ export const Orders = () => {
             <Flex align="center" justify="center" w="2xl" h="2xl">
               <IconOrders width={28} height={28} />
             </Flex>
-            <H1 fontSize="28px">
+            <H1>
               <FormattedMessage id="orders.title" />
             </H1>
           </Flex>

@@ -1,6 +1,6 @@
 import { FormattedMessage } from "react-intl"
 import { IconPlanner } from "@/components/icons"
-import { Text } from "@/components/ui/Text"
+import { H1, Text } from "@/components/ui/Text"
 import { Flex } from "@/styled-system/jsx"
 
 export const PlannerHeader = () => {
@@ -8,9 +8,9 @@ export const PlannerHeader = () => {
     <Flex direction="column" gap="lg">
       <Flex align="center" gap="sm">
         <IconPlanner width="22" height="25" fill="primary.default" />
-        <Text textStyle="display.extraLarge" color="neutrals.nLv1">
+        <H1>
           <FormattedMessage id="planner.title" />
-        </Text>
+        </H1>
       </Flex>
       <Text textStyle="body.large" color="neutrals.nLv2">
         <FormattedMessage id="planner.description" />

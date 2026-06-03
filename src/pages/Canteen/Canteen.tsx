@@ -3,7 +3,7 @@ import useSWR from "swr"
 import { getJson } from "@/api/http-client.ts"
 import { order } from "@/api/routes.ts"
 import { Spinner, StatusMessage } from "@/components/ui"
-import { Text } from "@/components/ui/Text"
+import { H1, Text } from "@/components/ui/Text"
 import { MealSelectionForm } from "@/pages/Canteen/components/MealSelection"
 import { useAuthStore } from "@/stores/auth"
 import { Flex } from "@/styled-system/jsx"
@@ -70,7 +70,7 @@ export const CanteenPage = () => {
   return (
     <Flex direction="column" gap="xl">
       <Flex direction="column" gap="lg">
-        <Text textStyle="display.extraLarge">
+        <H1>
           <FormattedMessage
             id="canteen.weekOf"
             values={{
@@ -78,7 +78,7 @@ export const CanteenPage = () => {
               end: formatTitleDate(data.plan.period_end),
             }}
           />
-        </Text>
+        </H1>
         <Text textStyle="body.large">
           <FormattedMessage id="canteen.chooseMeals" />
         </Text>

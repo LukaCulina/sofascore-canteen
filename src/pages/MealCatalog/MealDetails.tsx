@@ -5,7 +5,7 @@ import useSWR from "swr"
 import { getJson, putJson } from "@/api/http-client"
 import { mealFeedbackById, meal as mealRoute } from "@/api/routes"
 import { IconArrowLeft, IconVeganMealSelector } from "@/components/icons"
-import { Button, Checkbox, Input, Spinner, StatusMessage, Text } from "@/components/ui"
+import { Button, Checkbox, H1, Input, Spinner, StatusMessage, Text } from "@/components/ui"
 import { useAuthStore } from "@/stores/auth"
 import { useToastStore } from "@/stores/toast"
 import { css } from "@/styled-system/css"
@@ -126,9 +126,9 @@ export const MealDetailsPage = () => {
         gap="md"
         alignSelf="flex-start"
       >
-        <Text alignSelf="flex-start" textStyle="display.extraLarge" color="neutrals.nLv1">
+        <H1 alignSelf="flex-start">
           <FormattedMessage id="mealDetails.editMeal" />
-        </Text>
+        </H1>
 
         <Text textStyle="body.large" color="neutrals.nLv1">
           <FormattedMessage id="mealDetails.updateDetails" />
