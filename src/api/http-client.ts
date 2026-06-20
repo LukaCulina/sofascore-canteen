@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/stores/auth"
-export const API_BASE_URL = "https://frontend-academy.sofascore-api.deno.net/api"
+export const API_BASE_URL = "https://frontend-academy-api-2026.lukaculina.deno.net/"
 
 type JsonRequestMethod = "POST" | "PUT" | "DELETE"
 
