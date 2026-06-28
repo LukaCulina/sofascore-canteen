@@ -6,7 +6,7 @@ type JsonRequestMethod = "POST" | "PUT" | "DELETE"
 const getUrl = (path: string) => `${API_BASE_URL}${path}`
 
 const dbTargetHeader = {
-  "x-target-db": "pbsrb",
+  "x-target-db": "tsbsk",
 }
 
 const getAuthHeaders = (): HeadersInit => {
