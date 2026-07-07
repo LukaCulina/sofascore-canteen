@@ -38,6 +38,12 @@ yarn dev
 | `yarn test` | Run tests in watch mode (Vitest) |
 | `yarn test:run` | Run tests once |
 
+## Testing the Application
+Since the application requires authentication, you can use the following test credentials to explore the full functionality:
+
+- **Email:** employee@example.com
+- **Password:** employee
+
 ## Tech Stack
 
 - **React 19** — UI library
