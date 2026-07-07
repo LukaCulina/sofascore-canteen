@@ -26,11 +26,13 @@ yarn dev
 ```
 
 ## Testing the Application
-Since the application requires authentication, you can use the following test credentials to explore the full functionality:
+The application supports multiple user roles. You can explore the system using the following test credentials:
 
-- **Email:** employee@example.com
-- **Password:** employee
-
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| **Employee** | `user@example.com` | `user` |
+| **Catering Manager** | `catering@example.com` | `catering` |
+ 
 ## Available Commands
 
 | Command | Description |
