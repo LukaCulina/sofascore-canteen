@@ -25,6 +25,12 @@ yarn install
 yarn dev
 ```
 
+## Testing the Application
+Since the application requires authentication, you can use the following test credentials to explore the full functionality:
+
+- **Email:** employee@example.com
+- **Password:** employee
+
 ## Available Commands
 
 | Command | Description |
@@ -37,12 +43,6 @@ yarn dev
 | `yarn format` | Format code with Biome |
 | `yarn test` | Run tests in watch mode (Vitest) |
 | `yarn test:run` | Run tests once |
-
-## Testing the Application
-Since the application requires authentication, you can use the following test credentials to explore the full functionality:
-
-- **Email:** employee@example.com
-- **Password:** employee
 
 ## Tech Stack
 
