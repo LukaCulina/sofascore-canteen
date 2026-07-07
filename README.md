@@ -1,4 +1,4 @@
-# Canteen Starter
+# Sofascore canteen
 
 A React application built with Vite, TanStack Router, Panda CSS, and Zustand.
 
