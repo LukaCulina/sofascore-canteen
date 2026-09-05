@@ -220,7 +220,7 @@ describe("Orders", () => {
       await user.click(screen.getByText("Save Changes"))
 
       await waitFor(() => {
-        expect(screen.getByText("Failed to update payment status")).toBeInTheDocument()
+        expect(screen.getByText(/Failed to update payment status/)).toBeInTheDocument()
       })
     })
 
@@ -237,14 +237,14 @@ describe("Orders", () => {
       await user.click(screen.getByText("Save Changes"))
 
       await waitFor(() => {
-        expect(screen.getByText("Failed to update payment status")).toBeInTheDocument()
+        expect(screen.getByText(/Failed to update payment status/)).toBeInTheDocument()
       })
 
       await user.click(screen.getByText("Cancel"))
 
       await user.click(screen.getByText("Edit Payment Status"))
 
-      expect(screen.queryByText("Failed to update payment status")).not.toBeInTheDocument()
+      expect(screen.queryByText(/Failed to update payment status/)).not.toBeInTheDocument()
     })
   })
 })
