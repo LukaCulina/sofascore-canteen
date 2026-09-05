@@ -1,9 +1,9 @@
-import { render, screen, waitFor } from "@testing-library/react"
+import { screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { IntlProvider } from "react-intl"
 import type { SWRResponse } from "swr"
 import * as httpClient from "@/api/http-client"
 import { Role, useAuthStore } from "@/stores/auth"
+import { renderWithProviders } from "@/test/renderWithProviders"
 import type { Order } from "@/types/orders"
 import { Orders } from "./Orders"
 
@@ -26,9 +26,6 @@ const employeeUser = { id: "2", email: "employee@test.com", role: Role.EMPLOYEE 
 
 const setAdmin = () =>
   useAuthStore.setState({ user: adminUser, token: "token", refreshToken: "refresh" })
-
-const renderWithProviders = (component: React.ReactElement) =>
-  render(<IntlProvider locale="en-US">{component}</IntlProvider>)
 
 const mockOrders = [
   {

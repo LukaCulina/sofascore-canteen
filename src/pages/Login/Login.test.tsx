@@ -4,6 +4,8 @@ import userEvent from "@testing-library/user-event"
 import * as httpClient from "@/api/http-client"
 import { useAuthStore } from "@/stores/auth"
 
+import { renderWithProviders } from "@/test/renderWithProviders"
+
 import { Login } from "./Login"
 
 // Mock TanStack Router
@@ -24,7 +26,7 @@ describe("Login", () => {
   })
 
   it("renders the login form", () => {
-    render(<Login />)
+    renderWithProviders(<Login />)
 
     expect(screen.getByText("Welcome to Canteen")).toBeInTheDocument()
     expect(screen.getByText("Sign in to order your meals")).toBeInTheDocument()
@@ -34,13 +36,13 @@ describe("Login", () => {
   })
 
   it("renders the Google sign-in button", () => {
-    render(<Login />)
+    renderWithProviders(<Login />)
 
     expect(screen.getByText("Google")).toBeInTheDocument()
   })
 
   it("renders the footer with legal links", () => {
-    render(<Login />)
+    renderWithProviders(<Login />)
 
     expect(screen.getByText("Terms of Service")).toBeInTheDocument()
     expect(screen.getByText("Privacy Policy")).toBeInTheDocument()
@@ -48,7 +50,7 @@ describe("Login", () => {
 
   it("updates email and password fields on input", async () => {
     const user = userEvent.setup()
-    render(<Login />)
+    renderWithProviders(<Login />)
 
     const emailInput = screen.getByLabelText("email")
     const passwordInput = screen.getByLabelText("password")
@@ -71,7 +73,7 @@ describe("Login", () => {
 
     vi.mocked(httpClient.postJson).mockResolvedValueOnce(mockResponse)
 
-    render(<Login />)
+    renderWithProviders(<Login />)
 
     await user.type(screen.getByLabelText("email"), "user@test.com")
     await user.type(screen.getByLabelText("password"), "secret123")
@@ -95,7 +97,7 @@ describe("Login", () => {
     // Never-resolving promise to keep the button disabled
     vi.mocked(httpClient.postJson).mockReturnValueOnce(new Promise(() => {}))
 
-    render(<Login />)
+    renderWithProviders(<Login />)
 
     const signInButton = screen.getByText("Sign In").closest("button")!
 
