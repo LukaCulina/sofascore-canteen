@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event"
 import type { SWRResponse } from "swr"
 import * as httpClient from "@/api/http-client"
 import { Role, useAuthStore } from "@/stores/auth"
+import { useToastStore } from "@/stores/toast"
 import { renderWithProviders } from "@/test/renderWithProviders"
 import type { Order } from "@/types/orders"
 import { Orders } from "./Orders"
@@ -73,6 +74,7 @@ describe("Orders", () => {
   beforeEach(() => {
     vi.clearAllMocks()
     useAuthStore.setState({ user: null, token: null, refreshToken: null })
+    useToastStore.setState({ toasts: [] })
   })
 
   describe("data fetching states", () => {
@@ -207,7 +209,7 @@ describe("Orders", () => {
       })
     })
 
-    it("failed save shows error message", async () => {
+    it("failed save shows error toast", async () => {
       const user = userEvent.setup()
       mockSWR()
       vi.mocked(httpClient.requestJson).mockRejectedValueOnce(new Error("fail"))
@@ -220,11 +222,16 @@ describe("Orders", () => {
       await user.click(screen.getByText("Save Changes"))
 
       await waitFor(() => {
-        expect(screen.getByText(/Failed to update payment status/)).toBeInTheDocument()
+        expect(useToastStore.getState().toasts).toEqual([
+          expect.objectContaining({
+            message: "Failed to update payment status. Please try again.",
+            type: "error",
+          }),
+        ])
       })
     })
 
-    it("Cancel clears save error", async () => {
+    it("Cancel still works after a failed save", async () => {
       const user = userEvent.setup()
       mockSWR()
       vi.mocked(httpClient.requestJson).mockRejectedValueOnce(new Error("fail"))
@@ -237,14 +244,13 @@ describe("Orders", () => {
       await user.click(screen.getByText("Save Changes"))
 
       await waitFor(() => {
-        expect(screen.getByText(/Failed to update payment status/)).toBeInTheDocument()
+        expect(useToastStore.getState().toasts).toHaveLength(1)
       })
 
       await user.click(screen.getByText("Cancel"))
 
-      await user.click(screen.getByText("Edit Payment Status"))
-
-      expect(screen.queryByText(/Failed to update payment status/)).not.toBeInTheDocument()
+      expect(screen.getByText("Edit Payment Status")).toBeInTheDocument()
+      expect(screen.queryByText("Save Changes")).not.toBeInTheDocument()
     })
   })
 })
