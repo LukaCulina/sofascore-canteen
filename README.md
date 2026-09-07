@@ -1,58 +1,104 @@
-# Sofascore canteen
+# Sofascore Canteen
 
-A React application built with Vite, TanStack Router, Panda CSS, and Zustand.
+Full-stack food management and ordering web application built with React, Vite, and TanStack Router, backed by Deno and PostgreSQL on Supabase.
+
+The repository includes a containerized multi-stage build setup, an automated GitHub Actions CI/CD pipeline, and external health monitoring to ensure serverless availability.
+
+---
+
+## Architecture Overview
+
+* **Frontend Client:** React 19 single-page application built on Vite with code-based routing via TanStack Router. State management handled by Zustand, server-state caching via SWR, styling via Panda CSS, and internationalization with React Intl.
+* **Backend & Persistence:** Serverless REST API built with Deno and hosted on Deno Deploy, communicating with a PostgreSQL database provisioned on Supabase.
+* **CI/CD Automation:** GitHub Actions workflow triggered on pull requests and pushes to `main`. Executes Biome lint checks and Vitest test suites prior to deployment.
+* **Containerization:** Multi-stage `Dockerfile` using Node Alpine for compilation and Nginx Alpine for serving static assets with client-side routing fallbacks. Images are published to GitHub Container Registry (GHCR).
+* **High Availability & Keep-Alive:** Automated external cron-job pinging the API layer to prevent serverless database pause cycles on free-tier infrastructure.
+
+---
+
+## Tech Stack
+
+* **Frontend:** React 19, TypeScript, Vite, TanStack Router, Zustand, SWR, Panda CSS, React Intl
+* **Code Quality & Testing:** Biome, Vitest, React Testing Library
+* **DevOps & Infrastructure:** Docker, Nginx, GitHub Actions, GHCR, Deno Deploy, Supabase (PostgreSQL), Vercel
+
+---
 
 ## Prerequisites
 
-- **Node.js** v22 — download and install from [nodejs.org](https://nodejs.org/)
-- **Yarn** — install globally after Node is set up:
-  ```bash
-  npm install -g yarn
-  ```
-- **VS Code** with the [Biome extension](https://marketplace.visualstudio.com/items?itemName=biomejs.biome)
+* **Node.js:** v22.x
+* **Package Manager:** Yarn (`corepack enable` or `npm install -g yarn`)
+* **Docker Engine:** Optional, required only for local container testing
+
+---
 
 ## Getting Started
 
-1. Install dependencies:
+### 1. Clone & Install
 
 ```bash
-yarn install
+git clone [https://github.com/](https://github.com/)<your-username>/sofascore-canteen.git
+cd sofascore-canteen
+yarn install --frozen-lockfile
 ```
 
-2. Start the development server:
+### 2. Development Server
+
+Start the local Vite development server with Hot Module Replacement (HMR):
 
 ```bash
 yarn dev
 ```
 
-## Testing the Application
-The application supports multiple user roles. You can explore the system using the following test credentials:
+### 3. Verification
 
-| Role | Email | Password |
-| :--- | :--- | :--- |
-| **Employee** | `user@example.com` | `user` |
-| **Catering Manager** | `catering@example.com` | `catering` |
- 
-## Available Commands
+Run linters and automated tests before committing:
 
-| Command | Description |
-| --- | --- |
-| `yarn dev` | Start the Vite dev server |
-| `yarn build` | Type-check and build for production |
-| `yarn preview` | Preview the production build locally |
-| `yarn lint` | Run Biome linting |
-| `yarn lint:fix` | Run Biome linting and auto-fix issues |
-| `yarn format` | Format code with Biome |
-| `yarn test` | Run tests in watch mode (Vitest) |
-| `yarn test:run` | Run tests once |
+```bash
+# Verify code formatting and lint rules
+yarn lint
 
-## Tech Stack
+# Execute Vitest test suite once
+yarn test:run
+```
 
-- **React 19** — UI library
-- **Vite** — Build tool and dev server
-- **TanStack Router** — Type-safe file-based routing
-- **Panda CSS** — Zero-runtime CSS-in-JS
-- **Zustand** — State management
-- **SWR** — Data fetching
-- **Biome** — Linting and formatting
-- **Vitest** — Testing
+---
+
+## Docker Execution
+
+To build and run the application in an environment identical to production:
+
+```bash
+# Build the production image
+docker build -t sofascore-canteen .
+
+# Run container on port 8080
+docker run -d -p 8080:80 --name canteen-app sofascore-canteen
+```
+
+Access the containerized instance at `http://localhost:8080`.
+
+---
+
+## Available Scripts
+
+| Command | Action |
+| :--- | :--- |
+| `yarn dev` | Runs the Vite development server |
+| `yarn build` | Validates TypeScript types and outputs production bundle to `/dist` |
+| `yarn preview` | Locally serves the production bundle for testing |
+| `yarn lint` | Runs Biome code analysis across the codebase |
+| `yarn lint:fix` | Runs Biome and automatically fixes formatting/lint issues |
+| `yarn test` | Runs Vitest in watch mode |
+| `yarn test:run` | Executes the Vitest test suite once (used in CI) |
+
+---
+
+## Test Accounts
+
+The database comes pre-seeded with two primary roles for testing different authorization scopes:
+
+| Role | Email | Password | Permissions / Scope |
+| :--- | :--- | :--- | :--- |
+| **Employee** | `user@example.com` | `user` | View weekly menu, submit meal selections, submit meal feedback |
+| **Catering Manager** | `catering@example.com` | `catering` | Weekly planner management, meal catalog editing, review dashboard |
