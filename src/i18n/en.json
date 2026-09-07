@@ -24,6 +24,7 @@
   "canteen.weekOf": "Week of {start} - {end}",
   "canteen.chooseMeals": "Choose your meals for the upcoming work week.",
   "canteen.failedToLoadMealOptions": "Failed to load meal options",
+  "canteen.noActiveMenuPlan": "No active menu plan found for this week.",
   "canteen.saveChanges": "Save changes",
   "canteen.submit": "Submit Order",
   "summary.orderConfirmed": "Order Confirmed",

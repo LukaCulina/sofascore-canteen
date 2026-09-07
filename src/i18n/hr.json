@@ -24,6 +24,7 @@
   "canteen.weekOf": "Tjedan od {start} - {end}",
   "canteen.chooseMeals": "Odaberite obroke za nadolazeći radni tjedan.",
   "canteen.failedToLoadMealOptions": "Učitavanje opcija obroka nije uspjelo",
+  "canteen.noActiveMenuPlan": "Nema aktivnog jelovnika za ovaj tjedan.",
   "canteen.saveChanges": "Spremi promjene",
   "canteen.submit": "Pošalji narudžbu",
   "summary.orderConfirmed": "Narudžba potvrđena",

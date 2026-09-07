@@ -67,6 +67,16 @@ export const CanteenPage = () => {
       </Flex>
     )
 
+  if (!data.plan) {
+    return (
+      <Flex justify="center" align="center" py="6xl">
+        <StatusMessage variant="info">
+          <FormattedMessage id="canteen.noActiveMenuPlan" />
+        </StatusMessage>
+      </Flex>
+    )
+  }
+
   return (
     <Flex direction="column" gap="xl">
       <Flex direction="column" gap="lg">
